@@ -12,7 +12,7 @@ public class AzureChatClient : MonoBehaviour
     private string endpoint = "https://teste-gabriel-resource.openai.azure.com/";
     private string deploymentName = "gpt-4.1";
     private string apiVersion = "2024-02-15-preview";
-    
+    private string apiKey;
 
     [Header("Chat")]
     public TMP_InputField inputField;
@@ -70,6 +70,13 @@ ESTILO E TOM:
   'Entendo.'
   'Posso ajudá-lo no que precisar neste ambiente.'
 ";
+
+    private void Start()
+    {
+        //APIManager apiManager;
+        //apiKey = apiManager.GetKey();
+    }
+
     public void OnSendButton()
     {
         string message = inputField.text.Trim();

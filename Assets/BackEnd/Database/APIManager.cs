@@ -106,6 +106,17 @@ public class APIManager : MonoBehaviour
 
     #endregion
 
+    public IEnumerator GetKey()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get(baseUrl + "/ExternalService/get-key"))
+        {
+            yield return www.SendWebRequest();
+            if (www.result == UnityWebRequest.Result.Success)
+                Debug.Log("📦 Produtos: " + www.downloadHandler.text);
+            else
+                Debug.LogError("❌ Erro ao pegar key: " + www.error);
+        }
+    }
 }
 
 [System.Serializable]

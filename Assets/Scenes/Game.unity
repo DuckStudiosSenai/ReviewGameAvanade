@@ -3091,9 +3091,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a30591a46f849874d9fe016790a816a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIChatBotManager
-  teleportButton: {fileID: 4775631391774628063}
+  teleportButton: {fileID: 0}
   mainMenu: {fileID: 1897912815}
   teleportMenu: {fileID: 1323040077}
+  animDuration: 0.3
+  animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!224 &8993028417572507343
 RectTransform:
   m_ObjectHideFlags: 0
