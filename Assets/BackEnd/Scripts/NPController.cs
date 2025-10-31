@@ -21,13 +21,11 @@ public class NPCController : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
-    // Para suavizar movimento (interpolação)
     private Vector3 targetPosition;
     private Vector3 smoothedVelocity;
 
-    // Para limitar atualizações pesadas
     private float nextDirectionCheck = 0f;
-    private const float directionInterval = 0.1f; // recalcula direção a cada 100ms
+    private const float directionInterval = 0.1f; 
 
     private void Awake()
     {
@@ -48,7 +46,7 @@ public class NPCController : MonoBehaviour
         targetPosition = transform.position;
     }
 
-    void FixedUpdate() // WebGL lida melhor com movimento em FixedUpdate
+    void FixedUpdate() 
     {
         if (player == null) return;
 
@@ -61,7 +59,6 @@ public class NPCController : MonoBehaviour
         }
         else if (isChasing)
         {
-            // só recalcula direção periodicamente
             if (Time.time >= nextDirectionCheck)
             {
                 nextDirectionCheck = Time.time + directionInterval;
@@ -81,7 +78,6 @@ public class NPCController : MonoBehaviour
             }
         }
 
-        // interpolação suave entre posição atual e alvo
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref smoothedVelocity, 0.08f);
 
         UpdateDirectionAnimation(targetPosition - transform.position);

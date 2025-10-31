@@ -1,22 +1,29 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
-public class NPCSpawner : MonoBehaviour
+public class NPCSpawner : MonoBehaviourPun
 {
     public GameObject npcPrefab;
-    public Transform player;
     public float spawnDistance = 10f;
 
+    private Transform player;
     private Camera mainCam;
     private GameObject activeNpc;
 
     void Start()
     {
+        if (!photonView.IsMine)
+        {
+            enabled = false;
+            return;
+        }
+
+        player = transform;
         mainCam = Camera.main;
     }
 
     void Update()
     {
-
         if (activeNpc == null)
             activeNpc = null;
     }
@@ -48,11 +55,8 @@ public class NPCSpawner : MonoBehaviour
 
     public void SendNPCAway()
     {
-        NPCController npc = GameObject.FindAnyObjectByType<NPCController>();
-        
-        if (npc == null) return;
-        
-        npc.SendAway();
+        if (activeNpc == null) return;
+        activeNpc.GetComponent<NPCController>().SendAway();
     }
 
     public GameObject GetActiveNPC()
