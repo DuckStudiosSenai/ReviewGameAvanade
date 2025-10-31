@@ -33,11 +33,6 @@ public class APIManager : MonoBehaviour
 
     public static string apiKey;
 
-    private void Start()
-    {
-        StartCoroutine(GetAllProducts());
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -171,7 +166,7 @@ public class APIManager : MonoBehaviour
 
     public IEnumerator GetReviewsByCategory(string category)
     {
-        string url = baseUrl + "/review/category/" + UnityWebRequest.EscapeURL(category);
+        string url = baseUrl + "/category/" + UnityWebRequest.EscapeURL(category);
 
         using (UnityWebRequest www = UnityWebRequest.Get(url))
         {
