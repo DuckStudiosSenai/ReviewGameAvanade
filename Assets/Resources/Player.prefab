@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5851904394879062077}
   - component: {fileID: -5341401159121145444}
   - component: {fileID: 1447213174017159423}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &5452385659491898139
 MonoBehaviour:
   m_ObjectHideFlags: 0

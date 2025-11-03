@@ -48,8 +48,8 @@ public class CategoryMenu : MonoBehaviour
         switch (productCategory)
         {
             case ProductCategory.DADOS_IA:
-                //category = "Dados e IA";
-                category = "Hardware";
+                category = "Dados e IA";
+                //category = "Hardware";
                 break;
             case ProductCategory.NUVEM_E_PLATAFORMAS:
                 category = "Nuvem e Plataformas";
@@ -79,17 +79,27 @@ public class CategoryMenu : MonoBehaviour
 
     public void OpenMenu()
     {
-
-        if (isAbleToOpen) menu.SetActive(true);
-
-        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen)
+        {
+            menu.SetActive(false);
+            isMenuOpen = false;
+            return;
+        }
 
         if (isAbleToOpen)
         {
+            menu.SetActive(true);
+            isMenuOpen = true;
+
             StartCoroutine(GetProducts());
             Debug.Log("📂 Abrindo menu de categorias...");
         }
+        else
+        {
+            Debug.LogWarning("⚠️ Menu não pode ser aberto no momento!");
+        }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

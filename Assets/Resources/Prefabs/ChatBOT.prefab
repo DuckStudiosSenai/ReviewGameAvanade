@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6155546078031417472}
   - component: {fileID: 3839343923221920460}
   - component: {fileID: 7514420619125391524}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: UI ChatBot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 6391059648360455237}
   - component: {fileID: 4038953102161576217}
   - component: {fileID: 2521852657473479183}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: ButtonChatBot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,7 +286,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7106664854090215630}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 7847076125937115262}
   - component: {fileID: 1928681249813058233}
   - component: {fileID: 1439144382196871649}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 4110869747753761862}
   - component: {fileID: 3578208257838393074}
   - component: {fileID: 1185000442754615515}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: TeleportButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -584,7 +584,7 @@ GameObject:
   - component: {fileID: 8926201499856822027}
   - component: {fileID: 2374371555122404242}
   - component: {fileID: 693887415776270037}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ChatBOT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -755,7 +755,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8094384918775412512}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: TeleportMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}

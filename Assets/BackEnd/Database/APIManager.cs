@@ -165,6 +165,26 @@ public class APIManager : MonoBehaviour
         public string productName;
     }
 
+    [System.Serializable]
+    public class ReviewCreateDTO
+    {
+        public int userId;
+        public int productId;
+        public int rating;
+        public string comment;
+    }
+
+    [System.Serializable]
+    public class ReviewResponseDto
+    {
+        public int id;
+        public int userId;
+        public int productId;
+        public int rating;
+        public string comment;
+        public string createdAt;
+    }
+
     //public IEnumerator GetReviewsByCategory(string category)
     //{
     //    string url = baseUrl + "/category/" + UnityWebRequest.EscapeURL(category);
@@ -188,6 +208,35 @@ public class APIManager : MonoBehaviour
     //    }
     //}
 
+    public IEnumerator CreateReview(ReviewCreateDTO newReview)
+    {
+        string json = JsonUtility.ToJson(newReview);
+
+        using (UnityWebRequest request = new UnityWebRequest(baseUrl + "/Reviews", "POST"))
+        {
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("✅ Review criada com sucesso!");
+                Debug.Log("Resposta: " + request.downloadHandler.text);
+
+                ReviewResponseDto response = JsonUtility.FromJson<ReviewResponseDto>(request.downloadHandler.text);
+                Debug.Log($"ID: {response.id} | Produto: {response.productId} | Nota: {response.rating}");
+            }
+            else
+            {
+                Debug.LogError($"❌ Erro ao criar review: {request.responseCode} - {request.error}");
+                Debug.LogError(request.downloadHandler.text);
+            }
+        }
+    }
+
     public IEnumerator GetReviewsByCategory(string category)
     {
         using (UnityWebRequest www = UnityWebRequest.Get(baseUrl + "/Products"))
@@ -197,20 +246,26 @@ public class APIManager : MonoBehaviour
             if (www.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("❌ Erro ao buscar produtos: " + www.error);
+                PopulateReviews(new List<ReviewObject>()); // limpa caso erro de rede
                 yield break;
             }
 
             string json = www.downloadHandler.text;
             List<ProductObject> products = JsonConvert.DeserializeObject<List<ProductObject>>(json);
 
-            var filtered = products.FindAll(p => p.category != null && p.category.Equals(category, System.StringComparison.OrdinalIgnoreCase));
+            // filtra produtos pela categoria
+            var filtered = products.FindAll(p => p.category != null &&
+                p.category.Equals(category, System.StringComparison.OrdinalIgnoreCase));
 
+            // caso não tenha nenhum produto, limpar reviews e sair
             if (filtered.Count == 0)
             {
                 Debug.LogWarning("⚠️ Nenhum produto encontrado na categoria: " + category);
+                PopulateReviews(new List<ReviewObject>()); // força limpar conteúdo
                 yield break;
             }
 
+            // busca os reviews de todos os produtos filtrados
             List<ReviewObject> allReviews = new List<ReviewObject>();
 
             foreach (var product in filtered)
@@ -233,9 +288,11 @@ public class APIManager : MonoBehaviour
                 }
             }
 
+            // popula reviews (mesmo se a lista estiver vazia)
             PopulateReviews(allReviews);
         }
     }
+
 
 
     #endregion
@@ -248,18 +305,30 @@ public class APIManager : MonoBehaviour
     public Transform contentParent;
     private void PopulateProducts(List<ProductObject> products)
     {
+        // limpa tudo sempre
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);
 
-        foreach (var product in products)
+        // cria apenas se houver produtos
+        if (products != null && products.Count > 0)
         {
-            GameObject item = Instantiate(prefabProduct, contentParent);
-            var ui = item.GetComponent<ProductItemUI>();
-            ui.SetData(product);
+            foreach (var product in products)
+            {
+                GameObject item = Instantiate(prefabProduct, contentParent);
+                var ui = item.GetComponent<ProductItemUI>();
+                if (ui != null)
+                    ui.SetData(product);
+            }
+        }
+        else
+        {
+            Debug.Log("🟡 Nenhum produto encontrado. Lista vazia, mas conteúdo limpo.");
         }
 
+        // força atualização do layout mesmo vazio
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentParent.GetComponent<RectTransform>());
     }
+
 
     [Header("UI Elements (Reviews)")]
     public GameObject prefabReview;
@@ -267,26 +336,41 @@ public class APIManager : MonoBehaviour
 
     private void PopulateReviews(List<ReviewObject> reviews)
     {
-        Debug.Log($"🧱 Populando {reviews.Count} reviews...");
+        StartCoroutine(DoPopulateReviews(reviews));
+    }
 
+    private IEnumerator DoPopulateReviews(List<ReviewObject> reviews)
+    {
+        Debug.Log($"🧱 Limpando {contentReviewParent.childCount} reviews antigos...");
+
+        // Limpa os filhos sempre
         foreach (Transform child in contentReviewParent)
             Destroy(child.gameObject);
 
-        foreach (var review in reviews)
-        {
-            Debug.Log($"➡️ Criando review de {review.userName} - {review.productName}");
-            GameObject item = Instantiate(prefabReview, contentReviewParent);
-            var ui = item.GetComponent<ReviewItemUI>();
+        // Espera 1 frame para o Unity processar as destruições
+        yield return null;
 
-            if (ui != null)
-                ui.SetData(review);
-            else
-                Debug.LogWarning("⚠️ ReviewItemUI não encontrado no prefab!");
+        if (reviews != null && reviews.Count > 0)
+        {
+            Debug.Log($"🧩 Adicionando {reviews.Count} novos reviews...");
+            foreach (var review in reviews)
+            {
+                GameObject item = Instantiate(prefabReview, contentReviewParent);
+                var ui = item.GetComponent<ReviewItemUI>();
+                if (ui != null)
+                    ui.SetData(review);
+            }
         }
+        else
+        {
+            Debug.Log("🟡 Nenhum review recebido — lista esvaziada corretamente.");
+        }
+
+        // Espera mais um frame para garantir layout atualizado
+        yield return null;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentReviewParent.GetComponent<RectTransform>());
     }
-
 
 }
 
