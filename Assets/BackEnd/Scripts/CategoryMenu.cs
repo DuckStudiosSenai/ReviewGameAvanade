@@ -37,41 +37,59 @@ public class CategoryMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(GetProducts());
             OpenMenu();
         }
     }
 
     private IEnumerator GetProducts()
     {
-        string category = productCategory.ToString();
+        string category = null;
 
         switch (productCategory)
         {
             case ProductCategory.DADOS_IA:
+                //category = "Dados e IA";
+                category = "Hardware";
+                break;
             case ProductCategory.NUVEM_E_PLATAFORMAS:
+                category = "Nuvem e Plataformas";
+                break;
             case ProductCategory.SEGURANCA:
+                category = "Segurança";
+                break;
             case ProductCategory.TECNOLOGIA_INOVACAO:
+                category = "Tecnologia e Inovação";
+                break;
             case ProductCategory.OUTROS:
+                category = "Outros";
                 Debug.Log($"📂 Categoria selecionada: {category}");
-                yield return StartCoroutine(api.GetReviewsByCategory(category));
                 break;
 
             default:
                 Debug.LogWarning("⚠️ Categoria desconhecida.");
                 break;
         }
+
+        if (category != null)
+            yield return StartCoroutine(api.GetReviewsByCategory(category));
+        else
+            Debug.LogWarning("⚠️ Categoria nula.");
     }
 
-    
+
     public void OpenMenu()
     {
-        if (isAbleToOpen) menu.SetActive(!menu.activeSelf);
-        else menu.SetActive(false);
+
+        if (isAbleToOpen) menu.SetActive(true);
 
         isMenuOpen = !isMenuOpen;
-    }
 
+        if (isAbleToOpen)
+        {
+            StartCoroutine(GetProducts());
+            Debug.Log("📂 Abrindo menu de categorias...");
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

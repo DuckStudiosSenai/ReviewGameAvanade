@@ -17,6 +17,7 @@ public class APIManager : MonoBehaviour
     [System.Serializable]
     public class ProductObject
     {
+        public int id;
         public string name;
         public string description;
         public string enterprisename;
@@ -164,28 +165,78 @@ public class APIManager : MonoBehaviour
         public string productName;
     }
 
+    //public IEnumerator GetReviewsByCategory(string category)
+    //{
+    //    string url = baseUrl + "/category/" + UnityWebRequest.EscapeURL(category);
+
+    //    using (UnityWebRequest www = UnityWebRequest.Get(url))
+    //    {
+    //        yield return www.SendWebRequest();
+
+    //        if (www.result == UnityWebRequest.Result.Success)
+    //        {
+    //            string json = www.downloadHandler.text;
+    //            Debug.Log($"🗂️ Reviews da categoria '{category}': " + json);
+
+    //            List<ReviewObject> reviews = JsonConvert.DeserializeObject<List<ReviewObject>>(json);
+    //            PopulateReviews(reviews);
+    //        }
+    //        else
+    //        {
+    //            Debug.LogError("❌ Erro ao buscar reviews por categoria: " + www.error);
+    //        }
+    //    }
+    //}
+
     public IEnumerator GetReviewsByCategory(string category)
     {
-        string url = baseUrl + "/category/" + UnityWebRequest.EscapeURL(category);
-
-        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        using (UnityWebRequest www = UnityWebRequest.Get(baseUrl + "/Products"))
         {
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.Success)
+            if (www.result != UnityWebRequest.Result.Success)
             {
-                string json = www.downloadHandler.text;
-                Debug.Log($"🗂️ Reviews da categoria '{category}': " + json);
+                Debug.LogError("❌ Erro ao buscar produtos: " + www.error);
+                yield break;
+            }
 
-                List<ReviewObject> reviews = JsonConvert.DeserializeObject<List<ReviewObject>>(json);
-                PopulateReviews(reviews);
-            }
-            else
+            string json = www.downloadHandler.text;
+            List<ProductObject> products = JsonConvert.DeserializeObject<List<ProductObject>>(json);
+
+            var filtered = products.FindAll(p => p.category != null && p.category.Equals(category, System.StringComparison.OrdinalIgnoreCase));
+
+            if (filtered.Count == 0)
             {
-                Debug.LogError("❌ Erro ao buscar reviews por categoria: " + www.error);
+                Debug.LogWarning("⚠️ Nenhum produto encontrado na categoria: " + category);
+                yield break;
             }
+
+            List<ReviewObject> allReviews = new List<ReviewObject>();
+
+            foreach (var product in filtered)
+            {
+                string reviewUrl = $"{baseUrl}/Reviews/product/{product.id}";
+                using (UnityWebRequest wwwReviews = UnityWebRequest.Get(reviewUrl))
+                {
+                    yield return wwwReviews.SendWebRequest();
+
+                    if (wwwReviews.result == UnityWebRequest.Result.Success)
+                    {
+                        string reviewsJson = wwwReviews.downloadHandler.text;
+                        List<ReviewObject> reviews = JsonConvert.DeserializeObject<List<ReviewObject>>(reviewsJson);
+                        allReviews.AddRange(reviews);
+                    }
+                    else
+                    {
+                        Debug.LogError($"❌ Erro ao buscar reviews do produto '{product.name}': {wwwReviews.error}");
+                    }
+                }
+            }
+
+            PopulateReviews(allReviews);
         }
     }
+
 
     #endregion
 
@@ -216,20 +267,26 @@ public class APIManager : MonoBehaviour
 
     private void PopulateReviews(List<ReviewObject> reviews)
     {
+        Debug.Log($"🧱 Populando {reviews.Count} reviews...");
+
         foreach (Transform child in contentReviewParent)
             Destroy(child.gameObject);
 
         foreach (var review in reviews)
         {
+            Debug.Log($"➡️ Criando review de {review.userName} - {review.productName}");
             GameObject item = Instantiate(prefabReview, contentReviewParent);
             var ui = item.GetComponent<ReviewItemUI>();
 
             if (ui != null)
                 ui.SetData(review);
+            else
+                Debug.LogWarning("⚠️ ReviewItemUI não encontrado no prefab!");
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentReviewParent.GetComponent<RectTransform>());
     }
+
 
 }
 
