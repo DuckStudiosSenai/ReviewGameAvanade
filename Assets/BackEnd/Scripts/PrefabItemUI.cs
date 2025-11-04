@@ -1,8 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProductItemUI : MonoBehaviour
 {
+    public Button productButton;
     public TextMeshProUGUI txtProductName;
     public TextMeshProUGUI txtEnterpriseName;
     public TextMeshProUGUI txtCategory;

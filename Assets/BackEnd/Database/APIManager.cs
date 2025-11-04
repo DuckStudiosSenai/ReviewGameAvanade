@@ -171,8 +171,9 @@ public class APIManager : MonoBehaviour
         public int userId;
         public int productId;
         public int rating;
-        public string comment;
+        public string content;
     }
+
 
     [System.Serializable]
     public class ReviewResponseDto
@@ -210,7 +211,8 @@ public class APIManager : MonoBehaviour
 
     public IEnumerator CreateReview(ReviewCreateDTO newReview)
     {
-        string json = JsonUtility.ToJson(newReview);
+        // ✅ Cria o JSON exatamente como a API espera
+        string json = JsonConvert.SerializeObject(newReview);
 
         using (UnityWebRequest request = new UnityWebRequest(baseUrl + "/Reviews", "POST"))
         {
@@ -226,8 +228,15 @@ public class APIManager : MonoBehaviour
                 Debug.Log("✅ Review criada com sucesso!");
                 Debug.Log("Resposta: " + request.downloadHandler.text);
 
-                ReviewResponseDto response = JsonUtility.FromJson<ReviewResponseDto>(request.downloadHandler.text);
-                Debug.Log($"ID: {response.id} | Produto: {response.productId} | Nota: {response.rating}");
+                try
+                {
+                    ReviewResponseDto response = JsonConvert.DeserializeObject<ReviewResponseDto>(request.downloadHandler.text);
+                    Debug.Log($"🆔 ID: {response.id} | Produto: {response.productId} | Nota: {response.rating}");
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogWarning($"⚠️ Não foi possível desserializar a resposta: {ex.Message}");
+                }
             }
             else
             {
@@ -236,6 +245,9 @@ public class APIManager : MonoBehaviour
             }
         }
     }
+
+
+
 
     public IEnumerator GetReviewsByCategory(string category)
     {
@@ -293,6 +305,29 @@ public class APIManager : MonoBehaviour
         }
     }
 
+    public IEnumerator DeleteReview(int reviewId, System.Action<bool> onComplete = null)
+    {
+        string url = $"{baseUrl}/Reviews/{reviewId}";
+
+        using (UnityWebRequest request = UnityWebRequest.Delete(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"✅ Review {reviewId} deletada com sucesso!");
+                onComplete?.Invoke(true);
+            }
+            else
+            {
+                Debug.LogError($"❌ Erro ao deletar review {reviewId}: {request.responseCode} - {request.error}");
+                Debug.LogError(request.downloadHandler.text);
+                onComplete?.Invoke(false);
+            }
+        }
+    }
+
+
 
 
     #endregion
@@ -303,6 +338,8 @@ public class APIManager : MonoBehaviour
     [Header("UI Elements")]
     public GameObject prefabProduct;
     public Transform contentParent;
+    public MakeReview makeReview; // referência ao script MakeReview
+
     private void PopulateProducts(List<ProductObject> products)
     {
         // limpa tudo sempre
@@ -315,9 +352,27 @@ public class APIManager : MonoBehaviour
             foreach (var product in products)
             {
                 GameObject item = Instantiate(prefabProduct, contentParent);
+
+                // preenche dados visuais
                 var ui = item.GetComponent<ProductItemUI>();
                 if (ui != null)
                     ui.SetData(product);
+
+                // adiciona o evento de clique no botão da prefab
+                var button = item.GetComponentInChildren<Button>();
+                if (button != null)
+                {
+                    int capturedId = product.id; // evita bug de closure em loop
+                    string capturedName = product.name;
+                    button.onClick.AddListener(() =>
+                    {
+                        makeReview.OpenReviewMenu(true, capturedId, 1, capturedName);
+                    });
+                }
+                else
+                {
+                    Debug.LogWarning($"⚠️ Prefab {item.name} não possui Button configurado.");
+                }
             }
         }
         else
@@ -328,6 +383,7 @@ public class APIManager : MonoBehaviour
         // força atualização do layout mesmo vazio
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentParent.GetComponent<RectTransform>());
     }
+
 
 
     [Header("UI Elements (Reviews)")]
