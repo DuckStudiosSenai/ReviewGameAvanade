@@ -37,6 +37,9 @@ public class ChatManagerWeb : MonoBehaviour
 
     void Start()
     {
+        uiManager = FindAnyObjectByType<GameUIManager>();
+        categoryMenu = FindAnyObjectByType<CategoryMenu>();
+
         DeleteHistory();
         LoadHistory();
         sendButton.onClick.AddListener(SendMessage);
@@ -111,5 +114,20 @@ public class ChatManagerWeb : MonoBehaviour
         PlayerPrefs.DeleteKey("chat_history");
         PlayerPrefs.Save();
         chatHistory.messages.Clear();
+    }
+
+    private GameUIManager uiManager;
+    private CategoryMenu categoryMenu;
+    public void SetPlayerTypingState(bool state)
+    {
+        foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
+        {
+            if (p.photonView.IsMine)
+            {
+                if (!uiManager.GetProductsMenuState() && categoryMenu.GetMenuState())
+                    p.isTyping = state;
+                break;
+            }
+        }
     }
 }

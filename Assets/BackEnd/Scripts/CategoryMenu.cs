@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static APIManager;
@@ -20,6 +21,7 @@ public class CategoryMenu : MonoBehaviour
     public Transform contentParent;
     public GameObject prefab;
     public GameObject menu;
+    public TextMeshProUGUI productName;
 
     private APIManager api;
 
@@ -71,7 +73,10 @@ public class CategoryMenu : MonoBehaviour
         }
 
         if (category != null)
+        {
+            productName.text = category;
             yield return StartCoroutine(api.GetReviewsByCategory(category));
+        }
         else
             Debug.LogWarning("⚠️ Categoria nula.");
     }
@@ -81,24 +86,36 @@ public class CategoryMenu : MonoBehaviour
     {
         if (isMenuOpen)
         {
-            menu.SetActive(false);
-            isMenuOpen = false;
+            ToggleMenu(false);
             return;
         }
 
-        if (isAbleToOpen)
-        {
-            menu.SetActive(true);
-            isMenuOpen = true;
-
-            StartCoroutine(GetProducts());
-            Debug.Log("📂 Abrindo menu de categorias...");
-        }
-        else
+        if (!isAbleToOpen)
         {
             Debug.LogWarning("⚠️ Menu não pode ser aberto no momento!");
+            return;
+        }
+
+        ToggleMenu(true);
+        StartCoroutine(GetProducts());
+        Debug.Log("📂 Abrindo menu de categorias...");
+    }
+
+    private void ToggleMenu(bool open)
+    {
+        menu.SetActive(open);
+        isMenuOpen = open;
+
+        foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
+        {
+            if (p.photonView.IsMine)
+            {
+                p.isTyping = open;
+                break;
+            }
         }
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -115,5 +132,10 @@ public class CategoryMenu : MonoBehaviour
         {
             isAbleToOpen = false;
         }
+    }
+
+    public bool GetMenuState()
+    {
+        return isMenuOpen;
     }
 }

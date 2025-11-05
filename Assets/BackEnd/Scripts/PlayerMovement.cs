@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-using System.Collections;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviourPun, IPunObservable
 {
     [Header("Movimentação")]
@@ -11,25 +9,18 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     public bool isMoving = false;
     public bool isTyping = false;
 
-    private Rigidbody2D rb;
-    private Vector2 input;
     private Vector2 startPos;
     private Vector2 endPos;
+    private float moveProgress = 0f;
+    private Vector2 input;
+    private Vector2 networkPosition;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 0;
-        rb.freezeRotation = true;
-
-        // 🔒 Desativa controle nos jogadores remotos
         if (!photonView.IsMine)
-        {
-            enabled = false;
             return;
-        }
 
-        // 🧠 Protege caso a instância do player tenha vindo duplicada
+        // 🧠 evita duplicação de player local
         if (PhotonNetwork.LocalPlayer.TagObject != null &&
             PhotonNetwork.LocalPlayer.TagObject != gameObject)
         {
@@ -43,66 +34,63 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     void Update()
     {
-        if (!photonView.IsMine || isTyping || isMoving)
+        // Jogadores remotos só interpolam
+        if (!photonView.IsMine)
+        {
+            transform.position = Vector2.Lerp(transform.position, networkPosition, Time.deltaTime * 10f);
+            return;
+        }
+
+        if (isTyping)
             return;
 
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
+        if (isMoving)
+        {
+            moveProgress += Time.deltaTime * moveSpeed;
+            transform.position = Vector2.Lerp(startPos, endPos, moveProgress);
 
-        if (Mathf.Abs(moveX) > 0) moveY = 0; // impede diagonais
+            if (moveProgress >= 1f)
+            {
+                transform.position = endPos;
+                isMoving = false;
+            }
+            return;
+        }
+
+        float moveX = (Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0);
+        float moveY = (Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0);
+
+        if (Mathf.Abs(moveX) > 0) moveY = 0;
         input = new Vector2(moveX, moveY);
 
         if (input != Vector2.zero)
-            StartCoroutine(Move());
-    }
-
-    private IEnumerator Move()
-    {
-        isMoving = true;
-        startPos = rb.position;
-        endPos = startPos + input * tileSize;
-
-        float t = 0;
-        while (t < 1f)
         {
-            t += Time.deltaTime * moveSpeed;
-            rb.MovePosition(Vector2.Lerp(startPos, endPos, t));
-            yield return null;
+            startPos = transform.position;
+            endPos = startPos + input * tileSize;
+            moveProgress = 0f;
+            isMoving = true;
         }
-
-        rb.MovePosition(endPos);
-        isMoving = false;
     }
 
-    public void SetTypingState(bool typing) => isTyping = typing;
+    public void SetTypingState(bool typing)
+    {
+        isTyping = typing;
+    }
 
-    // 🔄 Sincronização de posição entre jogadores
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (!this || rb == null || photonView == null)
-            return; // proteção contra sincronização prematura
-
-        try
+        if (stream.IsWriting)
         {
-            if (stream.IsWriting)
-            {
-                stream.SendNext(rb.position);
-            }
-            else
-            {
-                Vector2 targetPos = (Vector2)stream.ReceiveNext();
-                rb.position = Vector2.Lerp(rb.position, targetPos, Time.deltaTime * 10);
-            }
+            stream.SendNext(transform.position);
         }
-        catch (System.Exception e)
+        else
         {
-            Debug.LogWarning($"[SerializeView] Exceção ignorada: {e.Message}");
+            networkPosition = (Vector2)stream.ReceiveNext();
         }
     }
 
     void OnDisable()
     {
-        // limpa referência ao sair ou ser destruído
         if (PhotonNetwork.LocalPlayer != null && PhotonNetwork.LocalPlayer.TagObject == gameObject)
             PhotonNetwork.LocalPlayer.TagObject = null;
     }
