@@ -38,7 +38,6 @@ public class ChatManagerWeb : MonoBehaviour
     void Start()
     {
         uiManager = FindAnyObjectByType<GameUIManager>();
-        categoryMenu = FindAnyObjectByType<CategoryMenu>();
 
         DeleteHistory();
         LoadHistory();
@@ -55,7 +54,7 @@ public class ChatManagerWeb : MonoBehaviour
         StartCoroutine(BotResponse(text));
     }
 
-    IEnumerator<System.Object> BotResponse(string userText)
+    IEnumerator BotResponse(string userText)
     {
         yield return new WaitForSeconds(0.5f);
         chatClient.SendMessage(userText, (reply) =>
@@ -117,14 +116,13 @@ public class ChatManagerWeb : MonoBehaviour
     }
 
     private GameUIManager uiManager;
-    private CategoryMenu categoryMenu;
     public void SetPlayerTypingState(bool state)
     {
         foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
         {
             if (p.photonView.IsMine)
             {
-                if (!uiManager.GetProductsMenuState() && categoryMenu.GetMenuState())
+                if (!uiManager.GetProductsMenuState() && !uiManager.isMenuOpen)
                     p.isTyping = state;
                 break;
             }

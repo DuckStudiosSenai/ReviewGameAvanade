@@ -395,13 +395,16 @@ public class APIManager : MonoBehaviour
         StartCoroutine(DoPopulateReviews(reviews));
     }
 
+    public void DeleteChildren()
+    {
+        foreach (Transform child in contentReviewParent)
+            Destroy(child.gameObject);
+    }
+
     private IEnumerator DoPopulateReviews(List<ReviewObject> reviews)
     {
         Debug.Log($"🧱 Limpando {contentReviewParent.childCount} reviews antigos...");
-
-        // Limpa os filhos sempre
-        foreach (Transform child in contentReviewParent)
-            Destroy(child.gameObject);
+        DeleteChildren();
 
         // Espera 1 frame para o Unity processar as destruições
         yield return null;

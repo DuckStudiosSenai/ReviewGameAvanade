@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -7,11 +7,27 @@ public class GameUIManager : MonoBehaviour
 
     private bool isProductsMenuActive = false;
 
+    private APIManager api;
+
+    public bool isMenuOpen = false;
+
+    private void Start()
+    {
+        api = GameObject.FindGameObjectWithTag("GameManager")
+            .GetComponent<APIManager>();
+    }
+
     public void ToggleProductsMenu()
     {
         isProductsMenuActive = !isProductsMenuActive;
 
+        if (isProductsMenuActive)
+            api.DeleteChildren();
+
         productsMenu.SetActive(isProductsMenuActive);
+
+        if (isProductsMenuActive)
+            StartCoroutine(api.GetAllProducts());
 
         foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
         {

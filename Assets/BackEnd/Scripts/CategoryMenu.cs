@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using static APIManager;
 
 public enum ProductCategory
@@ -24,21 +22,24 @@ public class CategoryMenu : MonoBehaviour
     public TextMeshProUGUI productName;
 
     private APIManager api;
+    private GameUIManager uiManager;
 
-    private bool isMenuOpen = false;
+    private bool isAbleToOpen = false;
 
-    public bool isAbleToOpen = false;
-
-    void Start()
+    private void Start()
     {
         api = GameObject.FindGameObjectWithTag("GameManager")
             .GetComponent<APIManager>();
+        uiManager = FindAnyObjectByType<GameUIManager>();
+
+        enabled = false;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
+            Debug.Log($"🧠 [{name}] pressionou E (isAbleToOpen={isAbleToOpen}, menuOpen={uiManager.isMenuOpen})");
             OpenMenu();
         }
     }
@@ -46,83 +47,86 @@ public class CategoryMenu : MonoBehaviour
     private IEnumerator GetProducts()
     {
         string category = null;
-
         switch (productCategory)
         {
-            case ProductCategory.DADOS_IA:
-                category = "Dados e IA";
-                //category = "Hardware";
-                break;
-            case ProductCategory.NUVEM_E_PLATAFORMAS:
-                category = "Nuvem e Plataformas";
-                break;
-            case ProductCategory.SEGURANCA:
-                category = "Segurança";
-                break;
-            case ProductCategory.TECNOLOGIA_INOVACAO:
-                category = "Tecnologia e Inovação";
-                break;
-            case ProductCategory.OUTROS:
-                category = "Outros";
-                Debug.Log($"📂 Categoria selecionada: {category}");
-                break;
-
-            default:
-                Debug.LogWarning("⚠️ Categoria desconhecida.");
-                break;
+            case ProductCategory.DADOS_IA: category = "Dados e IA"; break;
+            case ProductCategory.NUVEM_E_PLATAFORMAS: category = "Nuvem e Plataformas"; break;
+            case ProductCategory.SEGURANCA: category = "Segurança"; break;
+            case ProductCategory.TECNOLOGIA_INOVACAO: category = "Tecnologia e Inovação"; break;
+            case ProductCategory.OUTROS: category = "Outros"; break;
         }
 
-        if (category != null)
+        if (string.IsNullOrEmpty(category))
         {
-            productName.text = category;
-            yield return StartCoroutine(api.GetReviewsByCategory(category));
+            Debug.LogWarning("⚠️ Categoria nula ou inválida.");
+            yield break;
         }
-        else
-            Debug.LogWarning("⚠️ Categoria nula.");
-    }
 
+        productName.text = category;
+        yield return StartCoroutine(api.GetReviewsByCategory(category));
+        Debug.Log($"📦 Produtos carregados para: {category}");
+    }
 
     public void OpenMenu()
     {
-        if (isMenuOpen)
-        {
-            ToggleMenu(false);
-            return;
-        }
-
         if (!isAbleToOpen)
         {
-            Debug.LogWarning("⚠️ Menu não pode ser aberto no momento!");
+            Debug.LogWarning($"⚠️ [{name}] não pode abrir menu (fora da área).");
             return;
         }
 
-        ToggleMenu(true);
-        StartCoroutine(GetProducts());
-        Debug.Log("📂 Abrindo menu de categorias...");
-    }
+        if (uiManager.isMenuOpen)
+        {
+            CloseAllMenus();
+            return;
+        }
 
-    private void ToggleMenu(bool open)
-    {
-        menu.SetActive(open);
-        isMenuOpen = open;
+        CloseAllMenus();
+
+        api.DeleteChildren();
+        menu.SetActive(true);
+        uiManager.isMenuOpen = true;
+        StartCoroutine(GetProducts());
 
         foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
         {
             if (p.photonView.IsMine)
             {
-                p.isTyping = open;
+                p.isTyping = true;
+                break;
+            }
+        }
+
+        Debug.Log($"✅ [{name}] abriu o menu com sucesso!");
+    }
+
+    private void CloseAllMenus()
+    {
+        foreach (var other in FindObjectsByType<CategoryMenu>(FindObjectsSortMode.None))
+        {
+            if (other.menu != null)
+                other.menu.SetActive(false);
+        }
+
+        uiManager.isMenuOpen = false;
+
+        foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
+        {
+            if (p.photonView.IsMine)
+            {
+                p.isTyping = false;
                 break;
             }
         }
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             isAbleToOpen = true;
-            Debug.Log("🔓 Você pode abrir o menu de categorias. Pressione 'E' para abrir.");
+            enabled = true;
+            Debug.Log($"🔓 [{name}] pode abrir o menu (pressione E).");
         }
     }
 
@@ -131,11 +135,8 @@ public class CategoryMenu : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isAbleToOpen = false;
+            enabled = false; 
+            Debug.Log($"🔒 [{name}] saiu da área, desativando Update.");
         }
-    }
-
-    public bool GetMenuState()
-    {
-        return isMenuOpen;
     }
 }

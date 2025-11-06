@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviourPun, IPunObservable
 {
     [Header("Movimentação")]
@@ -9,6 +10,11 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     public bool isMoving = false;
     public bool isTyping = false;
 
+    [Header("Configuração de Física")]
+    public LayerMask collisionMask;  // Camadas sólidas (ex: "Default", "Map", etc.)
+    public float checkRadius = 0.2f; // Raio para checar colisão antes de mover
+
+    private Rigidbody2D rb;
     private Vector2 startPos;
     private Vector2 endPos;
     private float moveProgress = 0f;
@@ -17,6 +23,12 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0;
+        rb.freezeRotation = true;
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
         if (!photonView.IsMine)
             return;
 
@@ -34,10 +46,10 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     void Update()
     {
-        // Jogadores remotos só interpolam
         if (!photonView.IsMine)
         {
-            transform.position = Vector2.Lerp(transform.position, networkPosition, Time.deltaTime * 10f);
+            // Jogadores remotos interpolam suavemente a posição
+            rb.position = Vector2.Lerp(rb.position, networkPosition, Time.deltaTime * 10f);
             return;
         }
 
@@ -47,11 +59,12 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         if (isMoving)
         {
             moveProgress += Time.deltaTime * moveSpeed;
-            transform.position = Vector2.Lerp(startPos, endPos, moveProgress);
+            Vector2 newPos = Vector2.Lerp(startPos, endPos, moveProgress);
+            rb.MovePosition(newPos);
 
             if (moveProgress >= 1f)
             {
-                transform.position = endPos;
+                rb.MovePosition(endPos);
                 isMoving = false;
             }
             return;
@@ -60,15 +73,28 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         float moveX = (Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0);
         float moveY = (Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0);
 
+        // Movimento apenas em uma direção por vez (estilo grid)
         if (Mathf.Abs(moveX) > 0) moveY = 0;
         input = new Vector2(moveX, moveY);
 
         if (input != Vector2.zero)
         {
-            startPos = transform.position;
-            endPos = startPos + input * tileSize;
-            moveProgress = 0f;
-            isMoving = true;
+            Vector2 desiredEnd = rb.position + input * tileSize;
+
+            // ✅ Checa colisão antes de iniciar o movimento
+            bool blocked = Physics2D.OverlapCircle(desiredEnd, checkRadius, collisionMask);
+
+            if (!blocked)
+            {
+                startPos = rb.position;
+                endPos = desiredEnd;
+                moveProgress = 0f;
+                isMoving = true;
+            }
+            else
+            {
+                Debug.Log("🚫 Movimento bloqueado por colisão em " + desiredEnd);
+            }
         }
     }
 
@@ -81,7 +107,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(transform.position);
+            stream.SendNext(rb.position);
         }
         else
         {
@@ -94,4 +120,16 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         if (PhotonNetwork.LocalPlayer != null && PhotonNetwork.LocalPlayer.TagObject == gameObject)
             PhotonNetwork.LocalPlayer.TagObject = null;
     }
+
+#if UNITY_EDITOR
+    // Gizmo visual pra ver a área de colisão prevista
+    private void OnDrawGizmosSelected()
+    {
+        if (Application.isPlaying && photonView.IsMine)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(endPos, checkRadius);
+        }
+    }
+#endif
 }
