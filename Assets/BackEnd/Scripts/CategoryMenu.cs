@@ -63,7 +63,7 @@ public class CategoryMenu : MonoBehaviour
         }
 
         productName.text = category;
-        yield return StartCoroutine(api.GetReviewsByCategory(category));
+        yield return StartCoroutine(api.GetProductsByCategory(category));
         Debug.Log($"📦 Produtos carregados para: {category}");
     }
 

@@ -20,6 +20,7 @@ public class NPCController : MonoBehaviour
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private UIChatBotManager uiBot;
 
     private Vector3 targetPosition;
     private Vector3 smoothedVelocity;
@@ -42,6 +43,8 @@ public class NPCController : MonoBehaviour
 
     void Start()
     {
+        uiBot = GetComponentInChildren<UIChatBotManager>();
+
         mainCam = Camera.main;
         targetPosition = transform.position;
     }
@@ -140,4 +143,19 @@ public class NPCController : MonoBehaviour
         //     spriteRenderer.flipX = moveDir.x < 0;
         // }
     }
+
+    public void TeleportAndContinueChase(Vector2 newPos)
+    {
+        uiBot.CloseEveryMenuInstant();
+
+        smoothedVelocity = Vector3.zero;
+        offScreenTimer = 0f;
+
+        transform.position = newPos;
+        targetPosition = newPos;
+
+        isChasing = true;
+        isLeaving = false;
+    }
+
 }

@@ -48,7 +48,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     {
         if (!photonView.IsMine)
         {
-            // Jogadores remotos interpolam suavemente a posição
             rb.position = Vector2.Lerp(rb.position, networkPosition, Time.deltaTime * 10f);
             return;
         }
@@ -73,7 +72,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         float moveX = (Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0);
         float moveY = (Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0);
 
-        // Movimento apenas em uma direção por vez (estilo grid)
         if (Mathf.Abs(moveX) > 0) moveY = 0;
         input = new Vector2(moveX, moveY);
 
@@ -81,7 +79,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         {
             Vector2 desiredEnd = rb.position + input * tileSize;
 
-            // ✅ Checa colisão antes de iniciar o movimento
             bool blocked = Physics2D.OverlapCircle(desiredEnd, checkRadius, collisionMask);
 
             if (!blocked)
@@ -103,6 +100,23 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         isTyping = typing;
     }
 
+    public void TeleportTo(Vector2 newPos)
+    {
+        isMoving = false;                
+        moveProgress = 0f;
+        startPos = newPos;              
+        endPos = newPos;
+        rb.position = newPos;          
+        transform.position = newPos;    
+
+        NPCController npc = FindAnyObjectByType<NPCController>();
+
+        if (npc != null)
+            npc.TeleportAndContinueChase(new Vector2(newPos.x - 5, newPos.y));
+        
+    }
+
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -122,7 +136,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     }
 
 #if UNITY_EDITOR
-    // Gizmo visual pra ver a área de colisão prevista
     private void OnDrawGizmosSelected()
     {
         if (Application.isPlaying && photonView.IsMine)

@@ -1,17 +1,30 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class UIChatBotManager : MonoBehaviour
 {
     [Header("Buttons")]
     public GameObject teleportButton;
+    public GameObject secButton;
+    public GameObject techButton;
+    public GameObject dataButton;
+    public GameObject cloudButton;
+    public GameObject othersButton;
+
+    [Header("Locations")]
+    public Transform secLocation;
+    public Transform techLocation;
+    public Transform dataLocation;
+    public Transform cloudLocation;
+    public Transform othersLocation;
 
     [Header("Menus (objetos no mundo ou empties)")]
     public GameObject mainMenu;
     public GameObject teleportMenu;
 
-    [Header("Anima��o")]
+    [Header("Animação")]
     [Range(0.1f, 1.5f)]
     public float animDuration = 0.3f;
     public AnimationCurve animCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -19,11 +32,16 @@ public class UIChatBotManager : MonoBehaviour
     private bool mainMenuOpen = false;
     private bool isAnimating = false;
 
+    private NPCController npc;
+
     private Dictionary<GameObject, Coroutine> activeAnimations = new();
 
     private void Start()
     {
+        npc = GetComponentInParent<NPCController>();
+
         CloseEveryMenuInstant();
+        StartCoroutine(WaitForLocalPlayerAndSetup());
     }
 
     #region ==== Menus ====
@@ -39,7 +57,7 @@ public class UIChatBotManager : MonoBehaviour
 
     private void OpenMainMenu()
     {
-        CloseEveryMenu(); 
+        CloseEveryMenu();
         AnimateMenu(mainMenu, true);
     }
 
@@ -55,7 +73,7 @@ public class UIChatBotManager : MonoBehaviour
         AnimateMenu(teleportMenu, false);
     }
 
-    private void CloseEveryMenuInstant()
+    public void CloseEveryMenuInstant()
     {
         SetMenuInstant(mainMenu, false);
         SetMenuInstant(teleportMenu, false);
@@ -116,4 +134,62 @@ public class UIChatBotManager : MonoBehaviour
     }
 
     #endregion
+
+    #region ==== Buttons ====
+
+    private IEnumerator WaitForLocalPlayerAndSetup()
+    {
+        PlayerMovement player = null;
+
+        while (player == null)
+        {
+            foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
+            {
+                if (p.photonView.IsMine)
+                {
+                    player = p;
+                    break;
+                }
+            }
+
+            if (player == null)
+                yield return null;
+        }
+
+        SetupButtons(player);
+    }
+
+    private void SetupButtons(PlayerMovement player)
+    {
+        if (player == null)
+        {
+            Debug.LogError("❌ Player local não encontrado! Botões não configurados.");
+            return;
+        }
+
+        secLocation = GameObject.Find("TP_Sec_Location").transform;
+        techLocation = GameObject.Find("TP_Tech_Location").transform;
+        dataLocation = GameObject.Find("TP_Data_Location").transform;
+        cloudLocation = GameObject.Find("TP_Cloud_Location").transform;
+        //othersLocation = GameObject.Find("TP_Others_Location").transform;
+
+        secButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(secLocation.position));
+        techButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(techLocation.position));
+        dataButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(dataLocation.position));
+        cloudButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(cloudLocation.position));
+        //othersButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(othersLocation.position));
+
+        //secButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(secLocation.position.x - 5, secLocation.position.y)));
+        //techButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(techLocation.position.x - 5, techLocation.position.y)));
+        //dataButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(dataLocation.position.x - 5, dataLocation.position.y)));
+        //cloudButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(cloudLocation.position.x - 5, cloudLocation.position.y)));
+        ////othersButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(othersLocation.position.x - 5, othersLocation.position.y)));
+
+        Debug.Log("✅ Botões configurados com o player local!");
+    }
+
+
+    #endregion
+
 }
+

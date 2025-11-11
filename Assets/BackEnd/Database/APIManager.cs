@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine.UI;
+using System;
 
 public class APIManager : MonoBehaviour
 {
@@ -110,6 +111,56 @@ public class APIManager : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator GetProductsByCategory(string category)
+    { 
+        string url = $"{baseUrl}/Products/category/{category}";
+
+        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        {
+            Debug.Log($"🔍 Buscando produtos na categoria: {category}");
+
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                string json = www.downloadHandler.text;
+
+                Debug.Log("📦 Produtos filtrados: " + json);
+
+                try
+                {
+                    List<ProductObject> products =
+                        JsonConvert.DeserializeObject<List<ProductObject>>(json);
+
+                    if (products == null)
+                    {
+                        Debug.LogWarning("⚠️ Nenhum produto retornado (lista nula).");
+                        PopulateProducts(new List<ProductObject>());
+                    }
+                    else
+                    {
+                        PopulateProducts(products);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("❌ Erro ao desserializar JSON de produtos: " + ex.Message);
+                }
+            }
+            else
+            {
+                Debug.LogError("❌ Erro ao buscar produtos por categoria: " + www.error);
+
+                if (www.responseCode == 404)
+                {
+                    Debug.LogWarning("⚠️ Nenhum produto encontrado para essa categoria.");
+                    PopulateProducts(new List<ProductObject>());
+                }
+            }
+        }
+    }
+
 
     public IEnumerator GetProductById(int id)
     {
