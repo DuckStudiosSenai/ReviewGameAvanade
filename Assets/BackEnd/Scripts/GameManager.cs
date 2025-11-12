@@ -11,27 +11,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private string roomName = "SalaPrincipal";
 
-    void Start()
-    {
-        if (PhotonNetwork.IsConnectedAndReady)
-        {
-            Debug.Log("✅ Já está conectado. Entrando na sala...");
-            TryJoinOrCreateRoom();
-        }
-        else
-        {
-            Debug.Log("🔌 Conectando ao Photon...");
-            PhotonNetwork.ConnectUsingSettings();
-        }
-    }
-
     public override void OnConnectedToMaster()
     {
         Debug.Log("🌐 Conectado ao MasterServer!");
         TryJoinOrCreateRoom();
     }
 
-    private void TryJoinOrCreateRoom()
+    public void TryJoinOrCreateRoom()
     {
         Debug.Log("🏠 Tentando entrar em sala existente...");
         PhotonNetwork.JoinRandomRoom();
@@ -77,16 +63,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        // Remove tudo que pertencia ao jogador que saiu
         PhotonNetwork.DestroyPlayerObjects(otherPlayer);
     }
 
     public override void OnLeftRoom()
     {
-        // Se você próprio sair, limpe seus objetos também
         PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
     }
 }
