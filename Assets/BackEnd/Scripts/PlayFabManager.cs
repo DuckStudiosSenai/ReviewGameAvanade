@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using UnityEngine.Networking;
 using TMPro;
-using Photon.Pun; // integração com Photon
+using Photon.Pun;
 
 [Serializable]
 public class UserFromAPI
@@ -22,13 +22,10 @@ public class UserFromAPI
 public class PlayFabManager : MonoBehaviour
 {
     [Header("PlayFab Config")]
-    public string titleId = "17FF18"; 
+    public string titleId = "17FF18";
 
     [Header("API Config")]
-    public string apiBaseUrl = "https://reviewgameapi.squareweb.app"; 
-
-    [Header("UI")]
-    public TextMeshProUGUI playerNameText; 
+    public string apiBaseUrl = "https://reviewgameapi.squareweb.app";
 
     private string cachedUserName;
     private GameManager gm;
@@ -55,7 +52,6 @@ public class PlayFabManager : MonoBehaviour
         else
         {
             Debug.LogError("❌ ID inválido recebido: " + userIdString);
-            UpdateUI("❌ ID inválido!");
         }
     }
 
@@ -63,7 +59,6 @@ public class PlayFabManager : MonoBehaviour
     {
         string url = $"{apiBaseUrl}/api/Users/{userId}";
         Debug.Log("🔍 Buscando usuário no banco: " + url);
-        UpdateUI("🔍 Buscando usuário...");
 
         using (UnityWebRequest www = UnityWebRequest.Get(url))
         {
@@ -72,7 +67,6 @@ public class PlayFabManager : MonoBehaviour
             if (www.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("❌ Erro ao buscar usuário: " + www.error);
-                UpdateUI("❌ Erro ao buscar usuário!");
                 yield break;
             }
 
@@ -83,13 +77,11 @@ public class PlayFabManager : MonoBehaviour
             if (user == null || string.IsNullOrEmpty(user.email))
             {
                 Debug.LogError("⚠️ Usuário não encontrado ou sem senha válida.");
-                UpdateUI("⚠️ Usuário inválido!");
                 yield break;
             }
 
             cachedUserName = user.name;
             Debug.Log($"👤 Usuário encontrado: {cachedUserName} (ID: {user.id})");
-            UpdateUI("👤 Conectando " + cachedUserName + "...");
 
             LoginOrRegister(user.id.ToString(), user.email);
         }
@@ -108,13 +100,11 @@ public class PlayFabManager : MonoBehaviour
             {
                 Debug.Log($"✅ Login PlayFab bem-sucedido! PlayFabId: {result.PlayFabId}");
                 PhotonNetwork.NickName = cachedUserName;
-                UpdateUI("✅ Bem-vindo, " + cachedUserName + "!");
                 StartCoroutine(ActivateGameManagerDelayed());
             },
             error =>
             {
                 Debug.LogWarning($"⚠️ Login falhou ({error.ErrorMessage}), tentando criar conta...");
-                UpdateUI("⚙️ Criando conta no PlayFab...");
 
                 var registerRequest = new RegisterPlayFabUserRequest
                 {
@@ -128,13 +118,11 @@ public class PlayFabManager : MonoBehaviour
                     {
                         Debug.Log($"🟢 Conta criada com sucesso! PlayFabId: {registerResult.PlayFabId}");
                         PhotonNetwork.NickName = cachedUserName;
-                        UpdateUI("🟢 Conta criada para " + cachedUserName + "!");
                         StartCoroutine(ActivateGameManagerDelayed());
                     },
                     registerError =>
                     {
                         Debug.LogError("❌ Falha ao criar conta: " + registerError.GenerateErrorReport());
-                        UpdateUI("❌ Falha ao criar conta!");
                     }
                 );
             }
@@ -155,14 +143,5 @@ public class PlayFabManager : MonoBehaviour
 
         Debug.Log("✅ Photon conectado. Entrando na sala...");
         gm.TryJoinOrCreateRoom();
-    }
-
-
-    void UpdateUI(string message)
-    {
-        if (playerNameText != null)
-            playerNameText.text = message;
-        else
-            Debug.Log("ℹ️ " + message);
     }
 }
