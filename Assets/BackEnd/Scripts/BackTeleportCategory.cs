@@ -54,6 +54,6 @@ public class BackTeleportCategory : MonoBehaviour
                 break;
         }
 
-        pm.TeleportTo(targetPos);
+        pm.photonView.RPC("RPC_Teleport", pm.photonView.Owner, (Vector3)targetPos);
     }
 }

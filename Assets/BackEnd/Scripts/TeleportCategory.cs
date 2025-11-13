@@ -1,3 +1,4 @@
+﻿using Photon.Pun;
 using UnityEngine;
 
 public class TeleportCategory : MonoBehaviour
@@ -25,36 +26,42 @@ public class TeleportCategory : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag != "Player") return;
+        if (collision.tag != "Player")
+            return;
 
         PlayerMovement pm = collision.GetComponent<PlayerMovement>();
-        if (pm == null) return;
+        if (pm == null)
+            return;
 
-        Vector2 targetPos = Vector2.zero;
+        Vector3 finalPos = Vector3.zero;
 
         switch (productCategory)
         {
             case ProductCategory.DADOS_IA:
-                targetPos = dataLocation.position;
+                finalPos = dataLocation.position;
                 break;
+
             case ProductCategory.NUVEM_E_PLATAFORMAS:
-                targetPos = cloudLocation.position;
+                finalPos = cloudLocation.position;
                 break;
+
             case ProductCategory.SEGURANCA:
-                targetPos = securityLocation.position;
+                finalPos = securityLocation.position;
                 break;
+
             case ProductCategory.TECNOLOGIA_INOVACAO:
-                targetPos = techLocation.position;
+                finalPos = techLocation.position;
                 break;
+
             case ProductCategory.AVANADE:
-                targetPos = avanadeLocation.position;
+                finalPos = avanadeLocation.position;
                 break;
+
             case ProductCategory.OUTROS:
-                targetPos = othersLocation.position;
+                finalPos = othersLocation.position;
                 break;
         }
 
-        pm.TeleportTo(targetPos);
+        pm.photonView.RPC("RPC_Teleport", Photon.Pun.RpcTarget.All, finalPos);
     }
-
 }

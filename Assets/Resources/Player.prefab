@@ -159,12 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 15
   tileSize: 0.2
-  isMoving: 0
   isTyping: 0
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 0
-  checkRadius: 0.2
 --- !u!114 &5851904394879062077
 MonoBehaviour:
   m_ObjectHideFlags: 0

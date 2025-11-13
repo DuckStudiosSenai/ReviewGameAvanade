@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class UIChatBotManager : MonoBehaviour
 {
@@ -36,7 +36,7 @@ public class UIChatBotManager : MonoBehaviour
 
     private Dictionary<GameObject, Coroutine> activeAnimations = new();
 
-    private void Start()
+    void Start()
     {
         npc = GetComponentInParent<NPCController>();
 
@@ -45,6 +45,7 @@ public class UIChatBotManager : MonoBehaviour
     }
 
     #region ==== Menus ====
+
     public void OnClick_ChatBot()
     {
         if (isAnimating) return;
@@ -81,7 +82,8 @@ public class UIChatBotManager : MonoBehaviour
 
     #endregion
 
-    #region ==== Animation Menu ====
+
+    #region ==== Animação de Menus ====
 
     private void AnimateMenu(GameObject menu, bool show)
     {
@@ -135,7 +137,8 @@ public class UIChatBotManager : MonoBehaviour
 
     #endregion
 
-    #region ==== Buttons ====
+
+    #region ==== Botões e Teleporte ====
 
     private IEnumerator WaitForLocalPlayerAndSetup()
     {
@@ -167,29 +170,37 @@ public class UIChatBotManager : MonoBehaviour
             return;
         }
 
+        // Busca os pontos de teleporte pela cena
         secLocation = GameObject.Find("TP_Sec_Location").transform;
         techLocation = GameObject.Find("TP_Tech_Location").transform;
         dataLocation = GameObject.Find("TP_Data_Location").transform;
         cloudLocation = GameObject.Find("TP_Cloud_Location").transform;
-        //othersLocation = GameObject.Find("TP_Others_Location").transform;
 
-        secButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(secLocation.position));
-        techButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(techLocation.position));
-        dataButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(dataLocation.position));
-        cloudButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(cloudLocation.position));
-        //othersButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => player.TeleportTo(othersLocation.position));
+        // ---- Botões corrigidos: agora usando RPC_Teleport (SEM GLITCH!!) ----
 
-        //secButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(secLocation.position.x - 5, secLocation.position.y)));
-        //techButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(techLocation.position.x - 5, techLocation.position.y)));
-        //dataButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(dataLocation.position.x - 5, dataLocation.position.y)));
-        //cloudButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(cloudLocation.position.x - 5, cloudLocation.position.y)));
-        ////othersButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => npc.TeleportAndContinueChase(new Vector2(othersLocation.position.x - 5, othersLocation.position.y)));
+        secButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            player.photonView.RPC("RPC_Teleport", Photon.Pun.RpcTarget.All, secLocation.position);
+        });
 
-        Debug.Log("✅ Botões configurados com o player local!");
+        techButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            player.photonView.RPC("RPC_Teleport", Photon.Pun.RpcTarget.All, techLocation.position);
+        });
+
+        dataButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            player.photonView.RPC("RPC_Teleport", Photon.Pun.RpcTarget.All, dataLocation.position);
+        });
+
+        cloudButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            player.photonView.RPC("RPC_Teleport", Photon.Pun.RpcTarget.All, cloudLocation.position);
+        });
+
+        Debug.Log("✅ Botões configurados com teleporte sincronizado!");
     }
-
 
     #endregion
 
 }
-

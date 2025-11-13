@@ -11,7 +11,6 @@ public class ChatSlideController : MonoBehaviour
     public Button sendButton;
 
     [Header("Configuração de Deslize")]
-    [Tooltip("Multiplicador da distância de deslize (1 = altura total do painel)")]
     [SerializeField] private float slideMultiplier = 1f;
 
     private bool isLocalPlayer = false;
@@ -42,7 +41,11 @@ public class ChatSlideController : MonoBehaviour
         chatPanel.gameObject.SetActive(true);
         isLocalPlayer = true;
 
-        npc = FindAnyObjectByType<NPCSpawner>();
+        // --- PEGA O NPCSPAWNER CORRETO (DO PLAYER LOCAL) ---
+        var local = PhotonNetwork.LocalPlayer.TagObject as GameObject;
+        npc = local.GetComponent<NPCSpawner>();
+
+        // ---------------------------------------------
 
         visiblePosition = chatPanel.anchoredPosition;
         float distance = chatPanel.rect.height * slideMultiplier;
@@ -55,10 +58,9 @@ public class ChatSlideController : MonoBehaviour
     PhotonView FindLocalPlayerView()
     {
         foreach (var view in FindObjectsByType<PhotonView>(FindObjectsSortMode.None))
-        {
             if (view.IsMine && view.CompareTag("Player"))
                 return view;
-        }
+
         return null;
     }
 

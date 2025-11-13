@@ -4,62 +4,69 @@ using Photon.Pun;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviourPun, IPunObservable
 {
-    [Header("Movimentação")]
     public float moveSpeed = 3f;
     public float tileSize = 1f;
-    public bool isMoving = false;
     public bool isTyping = false;
+    public bool movementEnabled = true;
 
-    [Header("Configuração de Física")]
-    public LayerMask collisionMask;  // Camadas sólidas (ex: "Default", "Map", etc.)
-    public float checkRadius = 0.2f; // Raio para checar colisão antes de mover
-
-    private Rigidbody2D rb;
+    private bool isMoving = false;
     private Vector2 startPos;
     private Vector2 endPos;
     private float moveProgress = 0f;
     private Vector2 input;
+
+    private Rigidbody2D rb;
     private Vector2 networkPosition;
+    private bool hasInitialPosition = false;
+
+    private bool blockInterpolation = false;
+    private float interpBlockTimer = 0f;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
-        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
-        if (!photonView.IsMine)
-            return;
-
-        // 🧠 evita duplicação de player local
-        if (PhotonNetwork.LocalPlayer.TagObject != null &&
-            PhotonNetwork.LocalPlayer.TagObject != gameObject)
-        {
-            Debug.LogWarning("⚠️ Player duplicado detectado, destruindo o antigo.");
-            PhotonNetwork.Destroy(gameObject);
-            return;
-        }
-
-        PhotonNetwork.LocalPlayer.TagObject = gameObject;
+        if (photonView.IsMine)
+            photonView.RPC(nameof(SetInitialNetworkPosition), RpcTarget.OthersBuffered, rb.position);
     }
 
     void Update()
     {
+        HandleInterpolationBlock();
+
         if (!photonView.IsMine)
         {
-            rb.position = Vector2.Lerp(rb.position, networkPosition, Time.deltaTime * 10f);
+            if (!hasInitialPosition) return;
+
+            if (blockInterpolation)
+            {
+                rb.position = networkPosition;
+                return;
+            }
+
+            rb.position = Vector2.Lerp(rb.position, networkPosition, Time.deltaTime * 12f);
             return;
         }
 
-        if (isTyping)
+        if (isTyping || !movementEnabled)
             return;
 
+        HandleLocalMovement();
+    }
+
+    private void HandleLocalMovement()
+    {
         if (isMoving)
         {
             moveProgress += Time.deltaTime * moveSpeed;
-            Vector2 newPos = Vector2.Lerp(startPos, endPos, moveProgress);
-            rb.MovePosition(newPos);
+            rb.MovePosition(Vector2.Lerp(startPos, endPos, moveProgress));
 
             if (moveProgress >= 1f)
             {
@@ -69,80 +76,116 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             return;
         }
 
-        float moveX = (Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0);
-        float moveY = (Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0);
+        float mx = (Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0);
+        float my = (Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0);
 
-        if (Mathf.Abs(moveX) > 0) moveY = 0;
-        input = new Vector2(moveX, moveY);
+        if (Mathf.Abs(mx) > 0) my = 0;
 
-        if (input != Vector2.zero)
+        input = new Vector2(mx, my);
+        if (input == Vector2.zero) return;
+
+        Vector2 target = rb.position + input * tileSize;
+
+        if (!Physics2D.OverlapCircle(target, 0.2f, LayerMask.GetMask("Default")))
         {
-            Vector2 desiredEnd = rb.position + input * tileSize;
-
-            bool blocked = Physics2D.OverlapCircle(desiredEnd, checkRadius, collisionMask);
-
-            if (!blocked)
-            {
-                startPos = rb.position;
-                endPos = desiredEnd;
-                moveProgress = 0f;
-                isMoving = true;
-            }
-            else
-            {
-                Debug.Log("🚫 Movimento bloqueado por colisão em " + desiredEnd);
-            }
+            startPos = rb.position;
+            endPos = target;
+            moveProgress = 0f;
+            isMoving = true;
         }
     }
 
-    public void SetTypingState(bool typing)
+    private void HandleInterpolationBlock()
     {
-        isTyping = typing;
+        if (!blockInterpolation) return;
+
+        interpBlockTimer -= Time.deltaTime;
+        if (interpBlockTimer <= 0f)
+            blockInterpolation = false;
     }
 
     public void TeleportTo(Vector2 newPos)
     {
-        isMoving = false;                
-        moveProgress = 0f;
-        startPos = newPos;              
-        endPos = newPos;
-        rb.position = newPos;          
-        transform.position = newPos;    
-
-        NPCController npc = FindAnyObjectByType<NPCController>();
-
-        if (npc != null)
-            npc.TeleportAndContinueChase(new Vector2(newPos.x - 5, newPos.y));
-        
+        ResetMovementState(newPos);
+        rb.position = newPos;
+        transform.position = newPos;
     }
 
+    private void ResetMovementState(Vector2 pos)
+    {
+        isMoving = false;
+        moveProgress = 0f;
+        input = Vector2.zero;
+
+        startPos = pos;
+        endPos = pos;
+    }
+
+    [PunRPC]
+    public void RPC_Teleport(Vector3 newPos)
+    {
+        Vector2 pos = new Vector2(newPos.x, newPos.y);
+
+        if (!hasInitialPosition)
+        {
+            rb.position = pos;
+            networkPosition = pos;
+            hasInitialPosition = true;
+        }
+
+        ResetMovementState(pos);
+
+        rb.position = pos;
+        transform.position = pos;
+        networkPosition = pos;
+
+        var npcs = FindObjectsByType<NPCController>(FindObjectsSortMode.None);
+        foreach (var npc in npcs)
+            if (npc.player != null && npc.player == this.transform)
+                npc.TeleportAndContinueChase(new Vector2(pos.x - 5f, pos.y));
+
+        blockInterpolation = true;
+        interpBlockTimer = 0.2f;
+
+        PhotonNetwork.SendAllOutgoingCommands();
+    }
+
+    [PunRPC]
+    void SetInitialNetworkPosition(Vector2 pos)
+    {
+        rb.position = pos;
+        networkPosition = pos;
+        hasInitialPosition = true;
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
-        {
             stream.SendNext(rb.position);
-        }
         else
         {
             networkPosition = (Vector2)stream.ReceiveNext();
+
+            if (!hasInitialPosition)
+            {
+                rb.position = networkPosition;
+                transform.position = networkPosition;
+            }
+
+            hasInitialPosition = true;
         }
     }
 
-    void OnDisable()
+    public void DisableMovement()
     {
-        if (PhotonNetwork.LocalPlayer != null && PhotonNetwork.LocalPlayer.TagObject == gameObject)
-            PhotonNetwork.LocalPlayer.TagObject = null;
+        movementEnabled = false;
+        isMoving = false;
+        moveProgress = 0f;
+        input = Vector2.zero;
     }
 
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    public void EnableMovement()
     {
-        if (Application.isPlaying && photonView.IsMine)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(endPos, checkRadius);
-        }
+        movementEnabled = true;
     }
-#endif
 }
