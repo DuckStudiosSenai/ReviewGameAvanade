@@ -23,7 +23,8 @@ public class ChatManagerWeb : MonoBehaviour
     public TMP_InputField inputField;
     public Button sendButton;
     public Transform messageContainer;
-    public GameObject messagePrefab;
+    public GameObject botMessagePrefab;
+    public GameObject playerMessagePrefab;
     public ScrollRect scrollRect;
 
     private ChatHistory chatHistory = new ChatHistory();
@@ -49,7 +50,7 @@ public class ChatManagerWeb : MonoBehaviour
         string text = inputField.text.Trim();
         if (string.IsNullOrEmpty(text)) return;
 
-        AddMessage("Você", text);
+        AddMessage("Você", text, false);
         inputField.text = "";
         StartCoroutine(BotResponse(text));
     }
@@ -59,29 +60,39 @@ public class ChatManagerWeb : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         chatClient.SendMessage(userText, (reply) =>
         {
-            AddMessage("Bot", reply);
+            AddMessage("Bot", reply, true);
         });
     }
 
-    void AddMessage(string sender, string text)
+    void AddMessage(string sender, string text, bool isBot)
     {
-        GameObject msgObj = Instantiate(messagePrefab, messageContainer);
+        GameObject msgObj;
+
+        if (isBot)
+        {
+            msgObj = Instantiate(botMessagePrefab, messageContainer);
+        } else
+        {
+            msgObj = Instantiate(playerMessagePrefab, messageContainer);
+        }
+
         TMP_Text msgText = msgObj.GetComponentInChildren<TMP_Text>();
         msgText.text = $"<b>{sender}:</b> {text}";
 
         chatHistory.messages.Add(new ChatMessage { sender = sender, text = text });
-        SaveHistory();
 
         StartCoroutine(ScrollToBottomNextFrame());
     }
 
     IEnumerator ScrollToBottomNextFrame()
     {
-        yield return null;
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
 
-        if (scrollRect != null)
-            scrollRect.verticalNormalizedPosition = 0f;
+        Canvas.ForceUpdateCanvases();
+        scrollRect.verticalNormalizedPosition = 0f;
     }
+
 
     void SaveHistory()
     {
@@ -99,7 +110,7 @@ public class ChatManagerWeb : MonoBehaviour
 
             foreach (var msg in chatHistory.messages)
             {
-                GameObject msgObj = Instantiate(messagePrefab, messageContainer);
+                GameObject msgObj = Instantiate(playerMessagePrefab, messageContainer);
                 TMP_Text msgText = msgObj.GetComponentInChildren<TMP_Text>();
                 msgText.text = $"<b>{msg.sender}:</b> {msg.text}";
             }

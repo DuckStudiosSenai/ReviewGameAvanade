@@ -24,16 +24,13 @@ public class MakeReview : MonoBehaviour
 
     void Start()
     {
-        // Começa fechado
         reviewMenu.SetActive(false);
 
-        // Inicia a espera pelo player local
         StartCoroutine(WaitForLocalPlayer());
     }
 
     private IEnumerator WaitForLocalPlayer()
     {
-        // Espera até o player ser instanciado pela rede
         while (localPlayerView == null)
         {
             foreach (var view in FindObjectsByType<PhotonView>(FindObjectsSortMode.None))
@@ -50,7 +47,6 @@ public class MakeReview : MonoBehaviour
 
         Debug.Log("✅ Player local encontrado: " + localPlayerView.name);
 
-        // Agora que o player local existe, pode habilitar a UI e listeners
         InitializeUI();
     }
 
@@ -111,4 +107,6 @@ public class MakeReview : MonoBehaviour
 
         OpenReviewMenu(false, 0, 0, null);
     }
+
+
 }
