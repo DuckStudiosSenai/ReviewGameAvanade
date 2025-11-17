@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 8334395185228759120}
   - component: {fileID: 5282548867649656135}
   - component: {fileID: 4806327309042914046}
+  - component: {fileID: -5833451839440384301}
   m_Layer: 8
   m_Name: Warning
   m_TagString: Untagged
@@ -338,3 +339,15 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.8047432, y: 0.9190972}
   m_EdgeRadius: 0
+--- !u!114 &-5833451839440384301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6876128428220736120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60db1a17170e834cb7a4cff8e7f6dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WarningObject
