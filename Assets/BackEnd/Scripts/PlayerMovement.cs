@@ -22,9 +22,12 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     private bool blockInterpolation = false;
     private float interpBlockTimer = 0f;
 
+    private Animator anim;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     void Start()
@@ -59,6 +62,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             return;
 
         HandleLocalMovement();
+        HandleAnimations();
     }
 
     private void HandleLocalMovement()
@@ -78,7 +82,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
         float mx = (Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0);
         float my = (Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0);
-
         if (Mathf.Abs(mx) > 0) my = 0;
 
         input = new Vector2(mx, my);
@@ -93,6 +96,42 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             moveProgress = 0f;
             isMoving = true;
         }
+    }
+
+    private void HandleAnimations()
+    {
+        if (!anim) return;
+
+        if (input == Vector2.zero && !isMoving)
+        {
+            anim.ResetTrigger("WalkUp");
+            anim.ResetTrigger("WalkDown");
+            anim.ResetTrigger("WalkLeft");
+            anim.ResetTrigger("WalkRight");
+
+            if (Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0)
+                return;
+
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("WalkUp"))
+                anim.SetTrigger("IdleUp");
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("WalkDown"))
+                anim.SetTrigger("IdleDown");
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("WalkLeft"))
+                anim.SetTrigger("IdleLeft");
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("WalkRight"))
+                anim.SetTrigger("IdleRight");
+
+            return;
+        }
+
+        if (input.y > 0)
+            anim.SetTrigger("WalkUp");
+        else if (input.y < 0)
+            anim.SetTrigger("WalkDown");
+        else if (input.x > 0)
+            anim.SetTrigger("WalkRight");
+        else if (input.x < 0)
+            anim.SetTrigger("WalkLeft");
     }
 
     private void HandleInterpolationBlock()

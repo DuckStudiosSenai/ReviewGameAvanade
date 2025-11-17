@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Header("Player")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform playerSpawnPos;
+    public GameObject loadingMenu;
 
     private string roomName = "SalaPrincipal";
 
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.LocalPlayer.TagObject == null)
         {
+            DisableLoadingMenu();
             GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, playerSpawnPos.position, Quaternion.identity);
             PhotonNetwork.LocalPlayer.TagObject = player;
 
@@ -71,5 +73,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+    }
+
+    public void DisableLoadingMenu()
+    {
+        loadingMenu.SetActive(false);
     }
 }

@@ -44,6 +44,11 @@ public class APIManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        playfab = FindAnyObjectByType<PlayFabManager>();
+    }
+
     #region =====User=====
     public IEnumerator CreateUser(User newUser)
     {
@@ -424,7 +429,8 @@ public class APIManager : MonoBehaviour
     [Header("UI Elements")]
     public GameObject prefabProduct;
     public Transform contentParent;
-    public MakeReview makeReview; 
+    public MakeReview makeReview;
+    private PlayFabManager playfab;
 
     private void PopulateProducts(List<ProductObject> products)
     {
@@ -448,7 +454,7 @@ public class APIManager : MonoBehaviour
                     string capturedName = product.name;
                     button.onClick.AddListener(() =>
                     {
-                        makeReview.OpenReviewMenu(true, capturedId, 1, capturedName);
+                        makeReview.OpenReviewMenu(true, capturedId, playfab.GetUserId(), capturedName);
                     });
                 }
                 else

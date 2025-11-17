@@ -29,6 +29,7 @@ public class PlayFabManager : MonoBehaviour
 
     private string cachedUserName;
     private GameManager gm;
+    private int userId;
 
     private void Awake()
     {
@@ -48,6 +49,7 @@ public class PlayFabManager : MonoBehaviour
         if (int.TryParse(userIdString, out int userId))
         {
             StartCoroutine(GetUserAndLogin(userId));
+            this.userId = userId;
         }
         else
         {
@@ -143,5 +145,9 @@ public class PlayFabManager : MonoBehaviour
 
         Debug.Log("✅ Photon conectado. Entrando na sala...");
         gm.TryJoinOrCreateRoom();
+    }
+    public int GetUserId()
+    {
+        return userId;
     }
 }

@@ -105,7 +105,7 @@ public class MakeReview : MonoBehaviour
 
         StartCoroutine(apiManager.CreateReview(reviewData));
 
-        OpenReviewMenu(false, 0, 0, null);
+        OpenReviewMenu(false, 0, userId, null);
     }
 
 
