@@ -4605,7 +4605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec78820ef7bfb9418464b42e9bbe361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoRoomManager
-  playerPrefab: {fileID: 8529974955109631503, guid: d799d28fd5bbfdc449b209ea6f8e5495, type: 3}
+  playerPrefab: {fileID: 667045961697767247, guid: d799d28fd5bbfdc449b209ea6f8e5495, type: 3}
   playerSpawnPos: {fileID: 202271476}
   loadingMenu: {fileID: 55245775}
 --- !u!114 &1013167736
