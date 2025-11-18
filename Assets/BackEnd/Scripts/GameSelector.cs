@@ -25,9 +25,9 @@ public class GameSelector : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log($"[{name}] pressionou F");
+            Debug.Log($"[{name}] pressionou E");
             OpenScene();
         }
     }
@@ -73,7 +73,6 @@ public class GameSelector : MonoBehaviour
         }
 
         StartCoroutine(GetGames());
-        Debug.Log($"✅ [{name}] abriu o menu com sucesso!");
     }
 
     private void CloseAllMenus()
@@ -100,7 +99,6 @@ public class GameSelector : MonoBehaviour
         {
             isAbleToOpen = true;
             enabled = true;
-            Debug.Log($"🔓 [{name}] pode abrir o menu (pressione E).");
         }
     }
 
@@ -109,8 +107,7 @@ public class GameSelector : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isAbleToOpen = false;
-            enabled = false; 
-            Debug.Log($"🔒 [{name}] saiu da área, desativando Update.");
+            enabled = false;
         }
     }
 }
