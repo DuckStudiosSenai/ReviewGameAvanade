@@ -82,6 +82,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
         float mx = (Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0);
         float my = (Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0);
+
         if (Mathf.Abs(mx) > 0) my = 0;
 
         input = new Vector2(mx, my);
@@ -98,39 +99,62 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         }
     }
 
+    // ======================================
+    // ANIMAÇÃO + SINCRONIZAÇÃO VIA RPC
+    // ======================================
+
+    private void TriggerAnimation(string triggerName)
+    {
+        anim.SetTrigger(triggerName);
+
+        if (photonView.IsMine)
+            photonView.RPC(nameof(RPC_TriggerAnimation), RpcTarget.Others, triggerName);
+    }
+
+    [PunRPC]
+    private void RPC_TriggerAnimation(string triggerName)
+    {
+        anim.SetTrigger(triggerName);
+    }
+
     private void HandleAnimations()
     {
         if (!anim) return;
 
         AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
 
+        // IDLE
         if (input == Vector2.zero && !isMoving)
         {
             if (state.IsName("WalkUp"))
-                anim.SetTrigger("IdleUp");
+                TriggerAnimation("IdleUp");
             else if (state.IsName("WalkDown"))
-                anim.SetTrigger("IdleDown");
+                TriggerAnimation("IdleDown");
             else if (state.IsName("WalkLeft"))
-                anim.SetTrigger("IdleLeft");
+                TriggerAnimation("IdleLeft");
             else if (state.IsName("WalkRight"))
-                anim.SetTrigger("IdleRight");
+                TriggerAnimation("IdleRight");
 
             return;
         }
 
+        // WALK
         if (input.y > 0 && !state.IsName("WalkUp"))
-            anim.SetTrigger("WalkUp");
+            TriggerAnimation("WalkUp");
 
         else if (input.y < 0 && !state.IsName("WalkDown"))
-            anim.SetTrigger("WalkDown");
+            TriggerAnimation("WalkDown");
 
         else if (input.x > 0 && !state.IsName("WalkRight"))
-            anim.SetTrigger("WalkRight");
+            TriggerAnimation("WalkRight");
 
         else if (input.x < 0 && !state.IsName("WalkLeft"))
-            anim.SetTrigger("WalkLeft");
+            TriggerAnimation("WalkLeft");
     }
 
+    // ======================================
+    // INTERPOLAÇÃO DE REDE
+    // ======================================
 
     private void HandleInterpolationBlock()
     {
@@ -198,7 +222,9 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
+        {
             stream.SendNext(rb.position);
+        }
         else
         {
             networkPosition = (Vector2)stream.ReceiveNext();
@@ -212,6 +238,10 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             hasInitialPosition = true;
         }
     }
+
+    // ======================================
+    // MOVIMENTO ON/OFF
+    // ======================================
 
     public void DisableMovement()
     {

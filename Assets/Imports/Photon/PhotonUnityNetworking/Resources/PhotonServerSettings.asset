@@ -41,6 +41,7 @@ MonoBehaviour:
   - RespawnSpaceship
   - SetInitialNetworkPosition
   - RPC_Teleport
+  - RPC_TriggerAnimation
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
