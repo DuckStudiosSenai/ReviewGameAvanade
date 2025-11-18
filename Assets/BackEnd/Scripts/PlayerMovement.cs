@@ -102,37 +102,35 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     {
         if (!anim) return;
 
+        AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
+
         if (input == Vector2.zero && !isMoving)
         {
-            anim.ResetTrigger("WalkUp");
-            anim.ResetTrigger("WalkDown");
-            anim.ResetTrigger("WalkLeft");
-            anim.ResetTrigger("WalkRight");
-
-            if (Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0)
-                return;
-
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("WalkUp"))
+            if (state.IsName("WalkUp"))
                 anim.SetTrigger("IdleUp");
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("WalkDown"))
+            else if (state.IsName("WalkDown"))
                 anim.SetTrigger("IdleDown");
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("WalkLeft"))
+            else if (state.IsName("WalkLeft"))
                 anim.SetTrigger("IdleLeft");
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("WalkRight"))
+            else if (state.IsName("WalkRight"))
                 anim.SetTrigger("IdleRight");
 
             return;
         }
 
-        if (input.y > 0)
+        if (input.y > 0 && !state.IsName("WalkUp"))
             anim.SetTrigger("WalkUp");
-        else if (input.y < 0)
+
+        else if (input.y < 0 && !state.IsName("WalkDown"))
             anim.SetTrigger("WalkDown");
-        else if (input.x > 0)
+
+        else if (input.x > 0 && !state.IsName("WalkRight"))
             anim.SetTrigger("WalkRight");
-        else if (input.x < 0)
+
+        else if (input.x < 0 && !state.IsName("WalkLeft"))
             anim.SetTrigger("WalkLeft");
     }
+
 
     private void HandleInterpolationBlock()
     {
