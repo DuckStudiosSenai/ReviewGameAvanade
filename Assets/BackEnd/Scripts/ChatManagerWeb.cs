@@ -28,11 +28,12 @@ public class ChatManagerWeb : MonoBehaviour
     public ScrollRect scrollRect;
 
     private ChatHistory chatHistory = new ChatHistory();
-    private AzureChatClient chatClient;
+    //private AzureChatClient chatClient;
+    private ALLMsgsAzure chatClient;
 
     private void Awake()
     {
-        chatClient = FindAnyObjectByType<AzureChatClient>();
+        chatClient = FindAnyObjectByType<ALLMsgsAzure>();
         if (chatClient == null) Debug.LogError("AzureChatClient não encontrado na cena.");
     }
 

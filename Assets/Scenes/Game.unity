@@ -134,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &55245776
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4534,6 +4534,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1013167732}
   - component: {fileID: 1013167733}
+  - component: {fileID: 1013167738}
   - component: {fileID: 1013167734}
   - component: {fileID: 1013167735}
   - component: {fileID: 1013167736}
@@ -4567,7 +4568,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1013167730}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aebdfbd226481af4eb57722897d9ca4f, type: 3}
   m_Name: 
@@ -4634,6 +4635,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66e4f5ac7bce4ff4ea56bcc50c43ddbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnonymousLogin
+--- !u!114 &1013167738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013167730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd10233ab26a6240a5911e9bb2c1a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ALLMsgsAzure
+  inputField: {fileID: 2978673006478920460}
+  textOutputs: []
+  sendButton: {fileID: 1637114207546833880}
+  apiUrl: https://reviewgameapi.squareweb.app/api/ChatBot/respond
 --- !u!1001 &1035569749
 PrefabInstance:
   m_ObjectHideFlags: 0
