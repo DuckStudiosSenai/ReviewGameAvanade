@@ -5,29 +5,32 @@ using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using TMPro;
 using System;
-using System.Collections.Generic;
+using Photon.Pun;
 
 public class ALLMsgsAzure : MonoBehaviour
 {
-    [Header("Chat")]
     public TMP_InputField inputField;
     public TextMeshProUGUI[] textOutputs;
     public UnityEngine.UI.Button sendButton;
 
-    [Header("API Endpoint")]
     public string apiUrl = "https://reviewgameapi.squareweb.app/api/ChatBot/respond";
 
     private bool apiOnline = false;
 
-    private List<string> messageHistory = new List<string>();
+    public string playerId;
+
+    private PlayFabManager playfab;
 
     private void Start()
     {
+        playfab = FindAnyObjectByType<PlayFabManager>();
+
+        playerId = playfab.GetUserId().ToString();
+
         foreach (var text in textOutputs)
             text.text = "Verificando conexão...";
 
-        if (sendButton != null)
-            sendButton.interactable = false;
+        sendButton.interactable = false;
 
         StartCoroutine(TestarConexao());
     }
@@ -46,10 +49,7 @@ public class ALLMsgsAzure : MonoBehaviour
                 foreach (var text in textOutputs)
                     text.text = "✅ Conectado! Pronto para conversar.";
 
-                if (sendButton != null)
-                    sendButton.interactable = true;
-
-                Debug.Log("✅ API online e acessível.");
+                sendButton.interactable = true;
             }
             else
             {
@@ -57,22 +57,14 @@ public class ALLMsgsAzure : MonoBehaviour
                 foreach (var text in textOutputs)
                     text.text = "⚠️ Erro: servidor indisponível.";
 
-                if (sendButton != null)
-                    sendButton.interactable = false;
-
-                Debug.LogError($"❌ Falha ao conectar na API: {request.error}");
+                sendButton.interactable = false;
             }
         }
     }
 
     public void OnSendButton()
     {
-        if (!apiOnline)
-        {
-            foreach (var text in textOutputs)
-                text.text = "⚠️ Servidor ainda não está pronto.";
-            return;
-        }
+        if (!apiOnline) return;
 
         string message = inputField.text.Trim();
         if (string.IsNullOrEmpty(message)) return;
@@ -80,29 +72,25 @@ public class ALLMsgsAzure : MonoBehaviour
         foreach (var text in textOutputs)
             text.text = "Digitando...";
 
-        SendMessage(message, (response) =>
+        SendMessage(message, response =>
         {
-            Debug.Log($"[IA] Resposta: {response}");
-
             foreach (var text in textOutputs)
                 text.text = response;
         });
     }
 
-    public void SendMessage(string mensagem, Action<string> callback)
+    public void SendMessage(string userMessage, Action<string> callback)
     {
-        StartCoroutine(SendRequisition(mensagem, callback));
+        StartCoroutine(Request(userMessage, callback));
     }
 
-    private IEnumerator SendRequisition(string usuarioMensagem, Action<string> callback)
+    private IEnumerator Request(string userMessage, Action<string> callback)
     {
-        messageHistory.Add("Usuário: " + usuarioMensagem);
-
         var jsonBody = new JObject
         {
-            ["message"] = usuarioMensagem.Trim(),
-            ["content"] = "topdown",
-            ["history"] = string.Join("\n", messageHistory)
+            ["playerId"] = playerId,
+            ["message"] = userMessage,
+            ["context"] = "topdown"
         };
 
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody.ToString());
@@ -117,26 +105,13 @@ public class ALLMsgsAzure : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                try
-                {
-                    var responseJson = JObject.Parse(request.downloadHandler.text);
-                    string resposta = responseJson["message"]?.ToString()?.Trim();
-
-                    if (string.IsNullOrEmpty(resposta))
-                        resposta = "Ainda não possuo essas informações, mas posso auxiliá-lo neste ambiente.";
-
-                    messageHistory.Add("IA: " + resposta);
-
-                    callback?.Invoke(resposta);
-                }
-                catch (Exception e)
-                {
-                    callback?.Invoke($"Erro ao interpretar resposta: {e.Message}");
-                }
+                var responseJson = JObject.Parse(request.downloadHandler.text);
+                string resposta = responseJson["message"]?.ToString() ?? "Erro ao interpretar resposta.";
+                callback?.Invoke(resposta);
             }
             else
             {
-                callback?.Invoke($"Erro de conexão: {request.error}");
+                callback?.Invoke("Erro de conexão: " + request.error);
             }
         }
     }
