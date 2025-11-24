@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class BackTeleportCategory : MonoBehaviour
@@ -15,7 +16,7 @@ public class BackTeleportCategory : MonoBehaviour
     [Header("Category")]
     public ProductCategory productCategory;
 
-    [Header("Teleport Positions")]
+    [Header("Back Teleport Positions")]
     public Transform backDataLocation;
     public Transform backCloudLocation;
     public Transform backSecurityLocation;
@@ -25,35 +26,46 @@ public class BackTeleportCategory : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag != "Player") return;
+        if (!collision.CompareTag("Player"))
+            return;
 
         PlayerMovement pm = collision.GetComponent<PlayerMovement>();
-        if (pm == null) return;
+        if (pm == null)
+            return;
 
-        Vector2 targetPos = Vector2.zero;
+        // Só o dono do player executa o teleporte
+        if (!pm.photonView.IsMine)
+            return;
 
+        Vector3 targetPos = GetTeleportPosition();
+
+        // Teleporta e sincroniza com todos
+        pm.photonView.RPC("RPC_Teleport", RpcTarget.AllBuffered, targetPos);
+    }
+
+    private Vector3 GetTeleportPosition()
+    {
         switch (productCategory)
         {
             case ProductCategory.DADOS_IA:
-                targetPos = backDataLocation.position;
-                break;
+                return backDataLocation.position;
+
             case ProductCategory.NUVEM_E_PLATAFORMAS:
-                targetPos = backCloudLocation.position;
-                break;
+                return backCloudLocation.position;
+
             case ProductCategory.SEGURANCA:
-                targetPos = backSecurityLocation.position;
-                break;
+                return backSecurityLocation.position;
+
             case ProductCategory.TECNOLOGIA_INOVACAO:
-                targetPos = backTechLocation.position;
-                break;
+                return backTechLocation.position;
+
             case ProductCategory.AVANADE:
-                targetPos = backAvanadeLocation.position;
-                break;
+                return backAvanadeLocation.position;
+
             case ProductCategory.OUTROS:
-                targetPos = backOthersLocation.position;
-                break;
+                return backOthersLocation.position;
         }
 
-        pm.photonView.RPC("RPC_Teleport", pm.photonView.Owner, (Vector3)targetPos);
+        return Vector3.zero;
     }
 }

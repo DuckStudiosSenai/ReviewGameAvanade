@@ -17,6 +17,7 @@ public class UserFromAPI
     public string enterprise;
     public int points;
     public int currentpoints;
+    public int role;
 }
 
 public class PlayFabManager : MonoBehaviour
@@ -149,5 +150,30 @@ public class PlayFabManager : MonoBehaviour
     public int GetUserId()
     {
         return userId;
+    }
+
+    public IEnumerator GetUserRole(int userId, System.Action<int> callback)
+    {
+        string url = $"{apiBaseUrl}/api/Users/{userId}";
+
+        using (UnityWebRequest req = UnityWebRequest.Get(url))
+        {
+            req.SetRequestHeader("Content-Type", "application/json");
+
+            yield return req.SendWebRequest();
+
+            if (req.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erro ao buscar usuário: " + req.error);
+                callback?.Invoke(-1);
+                yield break;
+            }
+
+            string json = req.downloadHandler.text;
+
+            UserFromAPI user = JsonUtility.FromJson<UserFromAPI>(json);
+
+            callback?.Invoke(user.role);
+        }
     }
 }

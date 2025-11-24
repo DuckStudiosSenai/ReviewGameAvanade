@@ -34,8 +34,8 @@ Transform:
   m_GameObject: {fileID: 667045961697767247}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.236206, y: -3.5051804, z: 0}
-  m_LocalScale: {x: 1.9412655, y: 1.9412655, z: 1.9412655}
+  m_LocalPosition: {x: -52.77948, y: 51.417946, z: 0}
+  m_LocalScale: {x: 2.3, y: 2.3, z: 2.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6979466137756282805}
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ac81dd63352d84193d15ddbc95416f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 20
+  moveSpeed: 30
   tileSize: 0.2
   isTyping: 0
   movementEnabled: 1
@@ -696,7 +696,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 391a97c6c4cd3ec448d8ad0c6f763130, type: 3}
+  m_Texture: {fileID: 2800000, guid: 9e2a204f1e0026843b676d30a85e1f86, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0

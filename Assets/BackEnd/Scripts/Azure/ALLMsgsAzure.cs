@@ -25,7 +25,7 @@ public class ALLMsgsAzure : MonoBehaviour
     {
         playfab = FindAnyObjectByType<PlayFabManager>();
 
-        playerId = playfab.GetUserId().ToString();
+        StartCoroutine(WaitForPlayerId());
 
         foreach (var text in textOutputs)
             text.text = "Verificando conexão...";
@@ -115,4 +115,26 @@ public class ALLMsgsAzure : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator WaitForPlayerId()
+    {
+        playfab = FindAnyObjectByType<PlayFabManager>();
+
+        while (playfab == null || playfab.GetUserId() == 0)
+        {
+            Debug.Log("Aguardando PlayerID...");
+            yield return null;
+        }
+
+        playerId = playfab.GetUserId().ToString();
+        Debug.Log("PlayerID carregado: " + playerId);
+
+        foreach (var text in textOutputs)
+            text.text = "Verificando conexão...";
+
+        sendButton.interactable = false;
+
+        StartCoroutine(TestarConexao());
+    }
+
 }

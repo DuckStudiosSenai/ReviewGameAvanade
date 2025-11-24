@@ -1634,7 +1634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCController
   player: {fileID: 0}
-  speed: 15
+  speed: 28
   stopDistance: 2
   offScreenDespawnDelay: 5
 --- !u!114 &2374371555122404242
