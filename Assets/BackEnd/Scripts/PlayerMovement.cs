@@ -22,12 +22,16 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     private bool blockInterpolation = false;
     private float interpBlockTimer = 0f;
 
-    private Animator anim;
+    // ⬇ AQUI: Em vez do Animator do próprio root, você arrasta o Animator do Body
+    public Animator bodyAnimator;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+
+        // bodyAnimator é configurado no Inspector
+        if (!bodyAnimator)
+            Debug.LogError("PlayerMovement: bodyAnimator não foi atribuído no Inspector!");
     }
 
     void Start()
@@ -99,13 +103,13 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         }
     }
 
-    // ======================================
-    // ANIMAÇÃO + SINCRONIZAÇÃO VIA RPC
-    // ======================================
+    // ======================================================
+    // SINCRONIZAÇÃO DE ANIMAÇÕES (corpo é o MASTER)
+    // ======================================================
 
     private void TriggerAnimation(string triggerName)
     {
-        anim.SetTrigger(triggerName);
+        bodyAnimator.SetTrigger(triggerName);
 
         if (photonView.IsMine)
             photonView.RPC(nameof(RPC_TriggerAnimation), RpcTarget.Others, triggerName);
@@ -114,16 +118,16 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void RPC_TriggerAnimation(string triggerName)
     {
-        anim.SetTrigger(triggerName);
+        bodyAnimator.SetTrigger(triggerName);
     }
 
     private void HandleAnimations()
     {
-        if (!anim) return;
+        if (!bodyAnimator) return;
 
-        AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo state = bodyAnimator.GetCurrentAnimatorStateInfo(0);
 
-        // IDLE
+        // ---------- IDLE ----------
         if (input == Vector2.zero && !isMoving)
         {
             if (state.IsName("WalkUp"))
@@ -138,7 +142,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             return;
         }
 
-        // WALK
+        // ---------- WALK ----------
         if (input.y > 0 && !state.IsName("WalkUp"))
             TriggerAnimation("WalkUp");
 
@@ -152,9 +156,8 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             TriggerAnimation("WalkLeft");
     }
 
-    // ======================================
-    // INTERPOLAÇÃO DE REDE
-    // ======================================
+    // (todo o resto permanece igual)
+    // INTERPOLAÇÃO, SERIALIZAÇÃO, TELEPORT, MOVIMENTO ON/OFF...
 
     private void HandleInterpolationBlock()
     {
@@ -238,10 +241,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             hasInitialPosition = true;
         }
     }
-
-    // ======================================
-    // MOVIMENTO ON/OFF
-    // ======================================
 
     public void DisableMovement()
     {
