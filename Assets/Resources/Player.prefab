@@ -34,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 667045961697767247}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.244024, y: 17.71397, z: 0}
+  m_LocalPosition: {x: -12.236206, y: -3.5051804, z: 0}
   m_LocalScale: {x: 1.9412655, y: 1.9412655, z: 1.9412655}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -164,6 +164,7 @@ MonoBehaviour:
   tileSize: 0.2
   isTyping: 0
   movementEnabled: 1
+  bodyAnimator: {fileID: 8803371867378656463}
 --- !u!114 &647202131738371044
 MonoBehaviour:
   m_ObjectHideFlags: 0
