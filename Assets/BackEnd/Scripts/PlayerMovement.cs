@@ -22,14 +22,17 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     private bool blockInterpolation = false;
     private float interpBlockTimer = 0f;
 
-    // ⬇ AQUI: Em vez do Animator do próprio root, você arrasta o Animator do Body
     public Animator bodyAnimator;
+
+    [Header("Audio")]
+    public AudioSource stepsAudio;
+    public AudioClip[] footstepClips;
+
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
 
-        // bodyAnimator é configurado no Inspector
         if (!bodyAnimator)
             Debug.LogError("PlayerMovement: bodyAnimator não foi atribuído no Inspector!");
     }
@@ -254,4 +257,15 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     {
         movementEnabled = true;
     }
+
+    public void PlayFootstep()
+    {
+        if (!photonView.IsMine) return;
+        if (footstepClips.Length == 0) return;
+        if (!movementEnabled || !isMoving) return;
+
+        int index = Random.Range(0, footstepClips.Length);
+        stepsAudio.PlayOneShot(footstepClips[index]);
+    }
+
 }

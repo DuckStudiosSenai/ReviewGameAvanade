@@ -122,7 +122,6 @@ public class ALLMsgsAzure : MonoBehaviour
 
         while (playfab == null || playfab.GetUserId() == 0)
         {
-            Debug.Log("Aguardando PlayerID...");
             yield return null;
         }
 

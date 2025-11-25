@@ -1,15 +1,17 @@
-using System.Collections;
+ï»¿using System.Collections;
 using TMPro;
 using UnityEngine;
-
 
 [RequireComponent(typeof(TMP_Text))]
 public class TypewritterEffect : MonoBehaviour
 {
     private TMP_Text targetTextBox;
+    public GameObject secretaryDialogue;
 
-    [Header("Test Text")]
+    [Header("Texts")]
     public string[] testText;
+    private int currentTextIndex = 0;
+
     private int currentlyVisibleCharacterIndex;
     private Coroutine typewritterCoroutine;
     private WaitForSeconds simpleDelay;
@@ -23,98 +25,118 @@ public class TypewritterEffect : MonoBehaviour
 
     [Header("Audio Settings")]
     [SerializeField] private AudioClip[] dialogueTypingAudioClips;
-    [SerializeField] private bool stopAudioSource; /* Determina se o áudio anterior para no momento em que um áudio seguinte é tocado */
     private AudioSource audioSource;
 
-    [Range(1,5)]
-    [SerializeField] private int frequencyLevel;
+    private float lastSoundTime = 0f;
+    private float soundCooldown = 0.07f;
 
-    [Range(-3f, 3f)]
-    [SerializeField] private float minPitch;
+    private PlayerMovement localPlayerMovement;
+    public bool isTyping = false;
+    public bool isFristTime = true;
 
-    [Range(-3f, 3f)]
-    [SerializeField] private float maxPitch;
+    [Header("Background Music")]
+    public GameObject bgmPrefab;
+    private GameObject bgmInstance;
 
-    private void Awake()
+    void Awake()
     {
         targetTextBox = GetComponent<TMP_Text>();
-        simpleDelay = new WaitForSeconds(1 /  charactersPerSecond);
-        interpunctuationDelay = new WaitForSeconds(interpunctuationDelayValue);
-        eraseTextDelay = new WaitForSeconds(eraseDelayValue / 500);
-
-        audioSource = this.gameObject.AddComponent<AudioSource>();
+        audioSource = gameObject.AddComponent<AudioSource>();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        targetTextBox.maxVisibleCharacters = 0;
-        currentlyVisibleCharacterIndex = 0;
-        //Tenha em mente que para criar uma linha nova, você terá que por "<br>" na váriavel testText, aonde você quiser criar uma nova linha.
-        SetText(testText[0]);
+        simpleDelay = new WaitForSeconds(1f / charactersPerSecond);
+        interpunctuationDelay = new WaitForSeconds(interpunctuationDelayValue);
+        eraseTextDelay = new WaitForSeconds(eraseDelayValue);
+
+        localPlayerMovement = FindAnyObjectByType<PlayerMovement>();
+
+        // Instancia BGM local para o jogador
+        if (bgmPrefab != null)
+        {
+            bgmInstance = Instantiate(bgmPrefab);
+            bgmInstance.SetActive(false);
+            DontDestroyOnLoad(bgmInstance);
+        }
+
+        SetText(testText[currentTextIndex]);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnNextTextRequested()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (isTyping)
         {
-            SetText(testText[0]);
+            StopCoroutine(typewritterCoroutine);
+            targetTextBox.maxVisibleCharacters = targetTextBox.text.Length;
+            isTyping = false;
+            return;
+        }
+
+        if (currentTextIndex < testText.Length - 1)
+        {
+            currentTextIndex++;
+            SetText(testText[currentTextIndex]);
+            return;
+        }
+
+        if (localPlayerMovement != null)
+            localPlayerMovement.EnableMovement();
+
+        if (secretaryDialogue != null)
+            secretaryDialogue.SetActive(false);
+
+        if (isFristTime)
+        {
+            if (bgmInstance != null)
+                bgmInstance.SetActive(true);
+
+            isFristTime = false;
         }
     }
 
     public void SetText(string text)
     {
+        targetTextBox.text = text;
+        currentlyVisibleCharacterIndex = 0;
+        targetTextBox.maxVisibleCharacters = 0;
+
         if (typewritterCoroutine != null)
-        {
             StopCoroutine(typewritterCoroutine);
-        }
 
-
-        typewritterCoroutine = StartCoroutine(Typewritter());
+        typewritterCoroutine = StartCoroutine(TypewritterCoroutine(text));
     }
 
-    private IEnumerator Typewritter()
+    private IEnumerator TypewritterCoroutine(string text)
     {
-        TMP_TextInfo textInfo = targetTextBox.textInfo;
+        isTyping = true;
 
-        while (currentlyVisibleCharacterIndex > 0 && targetTextBox.maxVisibleCharacters > 0)
+        foreach (char c in text)
         {
-            currentlyVisibleCharacterIndex--;
-            targetTextBox.maxVisibleCharacters--;
-            yield return eraseTextDelay;
-        }
-
-        while (currentlyVisibleCharacterIndex < textInfo.characterCount + 1)
-        {
-            char character = textInfo.characterInfo[currentlyVisibleCharacterIndex].character;
             targetTextBox.maxVisibleCharacters++;
-            if ("?.,:;!-".Contains(character))
-            {
-                yield return interpunctuationDelay;
-            }
-            else 
-            {
-                yield return simpleDelay;
-            }
-            PlayDialogueSound(currentlyVisibleCharacterIndex);
             currentlyVisibleCharacterIndex++;
+
+            if (dialogueTypingAudioClips.Length > 0 && audioSource != null)
+            {
+                if (Time.time - lastSoundTime >= soundCooldown)
+                {
+                    audioSource.PlayOneShot(dialogueTypingAudioClips[Random.Range(0, dialogueTypingAudioClips.Length)]);
+                    lastSoundTime = Time.time;
+                }
+            }
+
+            if (c == '.' || c == ',' || c == '!' || c == '?')
+                yield return interpunctuationDelay;
+            else
+                yield return simpleDelay;
         }
 
+        isTyping = false;
     }
 
-    private void PlayDialogueSound(int currentlyDisplayedCharacterCount)
+    void Update()
     {
-        if (currentlyDisplayedCharacterCount % frequencyLevel == 0)
-        {
-            if (stopAudioSource)
-            {
-                audioSource.Stop();
-            }
-            int randomIndex = Random.Range(0, dialogueTypingAudioClips.Length);
-            AudioClip soundClip = dialogueTypingAudioClips[randomIndex];
-            audioSource.pitch = Random.Range(minPitch, maxPitch);
-            audioSource.PlayOneShot(soundClip);
-        }
+        if (Input.GetKeyDown(KeyCode.Return))
+            OnNextTextRequested();
     }
 }

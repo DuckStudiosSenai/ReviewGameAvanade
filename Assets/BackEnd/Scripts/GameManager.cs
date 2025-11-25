@@ -8,9 +8,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Header("Player")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform playerSpawnPos;
+
+    public GameObject secretaryUi;
     public GameObject loadingMenu;
 
     private string roomName = "SalaPrincipal";
+
+    private const string FIRST_TIME_KEY = "FirstTimePlayed";
 
     public override void OnConnectedToMaster()
     {
@@ -45,10 +49,29 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log($"🎮 Entrou na sala: {PhotonNetwork.CurrentRoom.Name}");
 
+        // CHECK DE PRIMEIRA VEZ
+        bool isFirstTime = true; //CheckFirstTime();
+        if (isFirstTime)
+        {
+            Debug.Log("✨ PRIMEIRA VEZ DO JOGADOR!");
+            
+            playerSpawnPos = GameObject.Find("FirstTimeSpawnPos").transform;
+            secretaryUi.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("🔁 Jogador retornando ao jogo.");
+        }
+
         if (PhotonNetwork.LocalPlayer.TagObject == null)
         {
             DisableLoadingMenu();
-            GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, playerSpawnPos.position, Quaternion.identity);
+            GameObject player = PhotonNetwork.Instantiate(
+                playerPrefab.name,
+                playerSpawnPos.position,
+                Quaternion.identity
+            );
+
             PhotonNetwork.LocalPlayer.TagObject = player;
 
             Debug.Log($"[GameManager] Player instanciado: {PhotonNetwork.NickName}, dono: {player.GetComponent<PhotonView>().Owner.NickName}");
@@ -58,11 +81,22 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 nameTag.text = PhotonNetwork.NickName;
             }
+
+            if (isFirstTime)
+            {
+                Animator playerAnim = player.GetComponent<Animator>();
+                if (playerAnim != null)
+                {
+                    playerAnim.SetTrigger("IdleUp");
+                }
+            }
         }
         else
         {
             Debug.LogWarning("⚠️ O jogador já possui um objeto instanciado. Ignorando duplicata.");
         }
+
+
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -78,5 +112,17 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void DisableLoadingMenu()
     {
         loadingMenu.SetActive(false);
+    }
+
+    private bool CheckFirstTime()
+    {
+        if (!PlayerPrefs.HasKey(FIRST_TIME_KEY))
+        {
+            PlayerPrefs.SetInt(FIRST_TIME_KEY, 1);
+            PlayerPrefs.Save();  
+            return true;        
+        }
+
+        return false;  
     }
 }

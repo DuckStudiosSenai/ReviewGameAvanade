@@ -14,67 +14,44 @@ public enum ProductCategory
 
 public class CategoryMenu : MonoBehaviour
 {
-    [Header("Category")]
     public ProductCategory productCategory;
-    public Transform contentParent;
-    public GameObject prefab;
     public GameObject menu;
     public TextMeshProUGUI productName;
 
     private APIManager api;
     private GameUIManager uiManager;
+    private PlayerMovement localPlayer;
 
     private bool isAbleToOpen = false;
 
     private void Start()
     {
-        api = GameObject.FindGameObjectWithTag("GameManager")
-            .GetComponent<APIManager>();
+        api = GameObject.FindGameObjectWithTag("GameManager").GetComponent<APIManager>();
         uiManager = FindAnyObjectByType<GameUIManager>();
+
+        // Encontre uma vez o player local
+        foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
+        {
+            if (p.photonView.IsMine)
+            {
+                localPlayer = p;
+                break;
+            }
+        }
 
         enabled = false;
     }
 
     private void Update()
     {
+        if (!isAbleToOpen) return;
+
         if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log($"🧠 [{name}] pressionou E (isAbleToOpen={isAbleToOpen}, menuOpen={uiManager.isMenuOpen})");
             OpenMenu();
-        }
-    }
-
-    private IEnumerator GetProducts()
-    {
-        string category = null;
-        switch (productCategory)
-        {
-            case ProductCategory.DADOS_IA: category = "Dados e IA"; break;
-            case ProductCategory.NUVEM_E_PLATAFORMAS: category = "Nuvem e Plataformas"; break;
-            case ProductCategory.SEGURANCA: category = "Segurança"; break;
-            case ProductCategory.TECNOLOGIA_INOVACAO: category = "Tecnologia e Inovação"; break;
-            case ProductCategory.OUTROS: category = "Outros"; break;
-        }
-
-        if (string.IsNullOrEmpty(category))
-        {
-            Debug.LogWarning("⚠️ Categoria nula ou inválida.");
-            yield break;
-        }
-
-        productName.text = category;
-        yield return StartCoroutine(api.GetProductsByCategory(category));
-        Debug.Log($"📦 Produtos carregados para: {category}");
     }
 
     public void OpenMenu()
     {
-        if (!isAbleToOpen)
-        {
-            Debug.LogWarning($"⚠️ [{name}] não pode abrir menu (fora da área).");
-            return;
-        }
-
         if (uiManager.isMenuOpen)
         {
             CloseAllMenus();
@@ -86,57 +63,59 @@ public class CategoryMenu : MonoBehaviour
         api.DeleteChildren();
         menu.SetActive(true);
         uiManager.isMenuOpen = true;
+
         StartCoroutine(GetProducts());
 
-        foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
-        {
-            if (p.photonView.IsMine)
-            {
-                p.isTyping = true;
-                break;
-            }
-        }
+        localPlayer.isTyping = true;
+    }
 
-        Debug.Log($"✅ [{name}] abriu o menu com sucesso!");
+    private IEnumerator GetProducts()
+    {
+        string category = productCategory switch
+        {
+            ProductCategory.DADOS_IA => "Dados e IA",
+            ProductCategory.NUVEM_E_PLATAFORMAS => "Nuvem e Plataformas",
+            ProductCategory.SEGURANCA => "Segurança",
+            ProductCategory.TECNOLOGIA_INOVACAO => "Tecnologia e Inovação",
+            _ => "Outros"
+        };
+
+        productName.text = category;
+        yield return StartCoroutine(api.GetProductsByCategory(category));
     }
 
     private void CloseAllMenus()
     {
         foreach (var other in FindObjectsByType<CategoryMenu>(FindObjectsSortMode.None))
-        {
-            if (other.menu != null)
-                other.menu.SetActive(false);
-        }
+            other.menu.SetActive(false);
 
         uiManager.isMenuOpen = false;
 
-        foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
-        {
-            if (p.photonView.IsMine)
-            {
-                p.isTyping = false;
-                break;
-            }
-        }
+        if (localPlayer != null)
+            localPlayer.isTyping = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (!collision.CompareTag("Player")) return;
+
+        PlayerMovement pm = collision.GetComponent<PlayerMovement>();
+        if (pm != null && pm.photonView.IsMine)
         {
             isAbleToOpen = true;
             enabled = true;
-            Debug.Log($"🔓 [{name}] pode abrir o menu (pressione E).");
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (!collision.CompareTag("Player")) return;
+
+        PlayerMovement pm = collision.GetComponent<PlayerMovement>();
+        if (pm != null && pm.photonView.IsMine)
         {
             isAbleToOpen = false;
-            enabled = false; 
-            Debug.Log($"🔒 [{name}] saiu da área, desativando Update.");
+            enabled = false;
         }
     }
 }
