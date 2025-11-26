@@ -41,7 +41,8 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     {
         rb.gravityScale = 0;
         rb.freezeRotation = true;
-        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+
+        rb.interpolation = RigidbodyInterpolation2D.None;
 
         if (photonView.IsMine)
             photonView.RPC(nameof(SetInitialNetworkPosition), RpcTarget.OthersBuffered, rb.position);
@@ -61,7 +62,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
                 return;
             }
 
-            rb.position = Vector2.Lerp(rb.position, networkPosition, Time.deltaTime * 12f);
+            rb.position = Vector2.Lerp(rb.position, networkPosition, Time.deltaTime * 6f);
             return;
         }
 

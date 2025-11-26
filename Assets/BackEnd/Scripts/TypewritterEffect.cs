@@ -65,6 +65,7 @@ public class TypewritterEffect : MonoBehaviour
 
     private void OnNextTextRequested()
     {
+        // Se ainda está digitando, revela tudo
         if (isTyping)
         {
             StopCoroutine(typewritterCoroutine);
@@ -73,6 +74,7 @@ public class TypewritterEffect : MonoBehaviour
             return;
         }
 
+        // Avança para o próximo texto
         if (currentTextIndex < testText.Length - 1)
         {
             currentTextIndex++;
@@ -80,12 +82,14 @@ public class TypewritterEffect : MonoBehaviour
             return;
         }
 
+        // Último texto → libera movimento
         if (localPlayerMovement != null)
             localPlayerMovement.EnableMovement();
 
         if (secretaryDialogue != null)
             secretaryDialogue.SetActive(false);
 
+        // Ativa a música apenas na primeira vez
         if (isFristTime)
         {
             if (bgmInstance != null)
@@ -97,6 +101,10 @@ public class TypewritterEffect : MonoBehaviour
 
     public void SetText(string text)
     {
+        // Travar movimento durante o diálogo
+        if (localPlayerMovement != null)
+            localPlayerMovement.DisableMovement();
+
         targetTextBox.text = text;
         currentlyVisibleCharacterIndex = 0;
         targetTextBox.maxVisibleCharacters = 0;
@@ -116,6 +124,7 @@ public class TypewritterEffect : MonoBehaviour
             targetTextBox.maxVisibleCharacters++;
             currentlyVisibleCharacterIndex++;
 
+            // Som de digitação
             if (dialogueTypingAudioClips.Length > 0 && audioSource != null)
             {
                 if (Time.time - lastSoundTime >= soundCooldown)
@@ -125,6 +134,7 @@ public class TypewritterEffect : MonoBehaviour
                 }
             }
 
+            // Delay de pontuação
             if (c == '.' || c == ',' || c == '!' || c == '?')
                 yield return interpunctuationDelay;
             else

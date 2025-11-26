@@ -13,6 +13,10 @@ public class UIChatBotManager : MonoBehaviour
     public GameObject cloudButton;
     public GameObject othersButton;
 
+    [Header("Audio Source")]
+    public AudioSource buttonAudioSource;
+    public AudioSource teleportAudio;
+
     [Header("Locations")]
     public Transform secLocation;
     public Transform techLocation;
@@ -170,35 +174,51 @@ public class UIChatBotManager : MonoBehaviour
             return;
         }
 
-        // Busca os pontos de teleporte pela cena
         secLocation = GameObject.Find("TP_Sec_Location").transform;
         techLocation = GameObject.Find("TP_Tech_Location").transform;
         dataLocation = GameObject.Find("TP_Data_Location").transform;
         cloudLocation = GameObject.Find("TP_Cloud_Location").transform;
 
-        // ---- Botões corrigidos: agora usando RPC_Teleport (SEM GLITCH!!) ----
 
         secButton.GetComponent<Button>().onClick.AddListener(() =>
         {
             player.photonView.RPC("RPC_Teleport", Photon.Pun.RpcTarget.All, secLocation.position);
+            PlayTeleportSound();
         });
 
         techButton.GetComponent<Button>().onClick.AddListener(() =>
         {
             player.photonView.RPC("RPC_Teleport", Photon.Pun.RpcTarget.All, techLocation.position);
+            PlayTeleportSound();
         });
 
         dataButton.GetComponent<Button>().onClick.AddListener(() =>
         {
             player.photonView.RPC("RPC_Teleport", Photon.Pun.RpcTarget.All, dataLocation.position);
+            PlayTeleportSound();
         });
 
         cloudButton.GetComponent<Button>().onClick.AddListener(() =>
         {
             player.photonView.RPC("RPC_Teleport", Photon.Pun.RpcTarget.All, cloudLocation.position);
+            PlayTeleportSound();
         });
 
         Debug.Log("✅ Botões configurados com teleporte sincronizado!");
+    }
+
+    #endregion
+
+    #region ==== Audios ====
+
+    public void PlayButtonSound()
+    {
+        buttonAudioSource.Play();
+    }
+
+    public void PlayTeleportSound()
+    {
+        teleportAudio.Play();
     }
 
     #endregion
