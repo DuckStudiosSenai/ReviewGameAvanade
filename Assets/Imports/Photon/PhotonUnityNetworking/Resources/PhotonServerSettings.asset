@@ -42,6 +42,7 @@ MonoBehaviour:
   - SetInitialNetworkPosition
   - RPC_Teleport
   - RPC_TriggerAnimation
+  - RPC_RequestRespawn
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

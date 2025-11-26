@@ -27,9 +27,13 @@ public class LoadImageFromURL : MonoBehaviour
     public float spacing = 10f;
     public Vector2 padding = new Vector2(20f, 10f);
 
+    private PlayFabManager playfab;
+
     private void Start()
     {
-        StartCoroutine(GetUserAndLoadAvatar(1));
+        playfab = FindAnyObjectByType<PlayFabManager>();
+
+        StartCoroutine(GetUserAndLoadAvatar(playfab.GetUserId()));
     }
 
     void LateUpdate()

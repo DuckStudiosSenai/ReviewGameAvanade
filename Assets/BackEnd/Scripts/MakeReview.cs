@@ -71,7 +71,7 @@ public class MakeReview : MonoBehaviour
 
         if (open)
         {
-            productName.text = "Produto: " + name;
+            productName.text = name;
             this.productId = productId;
             this.userId = userId;
 

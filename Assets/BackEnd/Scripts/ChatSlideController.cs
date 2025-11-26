@@ -30,10 +30,11 @@ public class ChatSlideController : MonoBehaviour
     {
         PhotonView localView = null;
 
+        // 🔄 Espera Player local ser instanciado novamente
         while (localView == null)
         {
             localView = FindLocalPlayerView();
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
         }
 
         Debug.Log("✅ Player local encontrado!");
@@ -41,12 +42,13 @@ public class ChatSlideController : MonoBehaviour
         chatPanel.gameObject.SetActive(true);
         isLocalPlayer = true;
 
-        // --- PEGA O NPCSPAWNER CORRETO (DO PLAYER LOCAL) ---
-        var local = PhotonNetwork.LocalPlayer.TagObject as GameObject;
-        npc = local.GetComponent<NPCSpawner>();
+        // 🚀 Obtém o NPCSpawner diretamente do Player local
+        npc = localView.GetComponent<NPCSpawner>();
 
-        // ---------------------------------------------
+        if (npc == null)
+            Debug.LogWarning("⚠ Player local não tem NPCSpawner!");
 
+        // Configurações do slide
         visiblePosition = chatPanel.anchoredPosition;
         float distance = chatPanel.rect.height * slideMultiplier;
         hiddenPosition = new Vector2(visiblePosition.x, visiblePosition.y - distance);

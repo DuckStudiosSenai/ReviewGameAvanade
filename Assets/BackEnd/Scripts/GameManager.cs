@@ -16,6 +16,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private const string FIRST_TIME_KEY = "FirstTimePlayed";
 
+    private void Start()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PlayerLastLocation();
+        }
+    }
+
     public override void OnConnectedToMaster()
     {
         Debug.Log("🌐 Conectado ao MasterServer!");
@@ -124,5 +132,23 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         return false;  
+    }
+
+    private void AlreadyInRoom()
+    {
+        loadingMenu.SetActive(false);
+        secretaryUi.SetActive(false);
+
+
+    }
+
+    private void PlayerLastLocation()
+    {
+        DisableLoadingMenu();
+        GameObject player = PhotonNetwork.Instantiate(
+                playerPrefab.name,
+                new Vector2(PlayerPrefs.GetFloat("px"), PlayerPrefs.GetFloat("py")),
+                Quaternion.identity
+            );
     }
 }

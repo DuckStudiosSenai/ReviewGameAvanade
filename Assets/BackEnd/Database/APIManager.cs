@@ -26,6 +26,18 @@ public class APIManager : MonoBehaviour
     }
 
     [System.Serializable]
+    public class UserDto
+    {
+        public int id;
+        public string name;
+        public string email;
+        public string enterprise;
+        public int points;
+        public int currentpoints;
+    }
+
+
+    [System.Serializable]
     public class ProductList
     {
         public List<ProductObject> products;

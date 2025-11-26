@@ -66,7 +66,6 @@ public class CategoryMenu : MonoBehaviour
 
         StartCoroutine(GetProducts());
 
-        localPlayer.isTyping = true;
     }
 
     private IEnumerator GetProducts()

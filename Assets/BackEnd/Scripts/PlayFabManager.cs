@@ -40,6 +40,7 @@ public class PlayFabManager : MonoBehaviour
 
     void Start()
     {
+        PhotonNetwork.AutomaticallySyncScene = false;
         gm = GetComponent<GameManager>();
     }
 
