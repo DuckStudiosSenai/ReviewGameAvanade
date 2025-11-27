@@ -1,12 +1,14 @@
-using Photon.Pun;
+﻿using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum MiniGameLocationType
 {
     EXAMPLE_GAME
 }
 
-public class MiniGameLocation : MonoBehaviour
+public class MiniGameLocation : MonoBehaviourPunCallbacks
 {
     private bool isAbleToEnter = false;
     private PhotonView localPlayerPV;
@@ -20,7 +22,7 @@ public class MiniGameLocation : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             SavePlayerLocation();
-            LoadGameScene();
+            GoToPrivateScene();
         }
     }
 
@@ -29,7 +31,7 @@ public class MiniGameLocation : MonoBehaviour
         switch (locationType)
         {
             case MiniGameLocationType.EXAMPLE_GAME:
-                PhotonNetwork.LoadLevel("ExampleGame");
+                SceneManager.LoadScene("ExampleGame");
                 break;
 
             default:
@@ -75,5 +77,22 @@ public class MiniGameLocation : MonoBehaviour
             isAbleToEnter = false;
             localPlayerPV = null;
         }
+    }
+
+    public void GoToPrivateScene()
+    {
+        Debug.Log("➡️ Indo para o mini-jogo privado...");
+        PhotonNetwork.Disconnect();
+    }
+
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.LocalPlayer.TagObject = null;
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log("🔌 Desconectado do Photon. Carregando cena do mini-jogo...");
+        LoadGameScene();
     }
 }

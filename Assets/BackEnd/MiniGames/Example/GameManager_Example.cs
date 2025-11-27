@@ -1,4 +1,4 @@
-using Photon.Pun;
+﻿using Photon.Pun;
 using UnityEngine;
 
 public class GameManager_Example : MonoBehaviour
@@ -13,6 +13,7 @@ public class GameManager_Example : MonoBehaviour
 
     private void FinishGame()
     {
+        Debug.Log("🏁 Jogo Finalizado! Retornando ao jogo principal...");
         PhotonNetwork.LoadLevel("Game");
     }
 }

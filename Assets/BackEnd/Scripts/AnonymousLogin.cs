@@ -15,7 +15,6 @@ public class AnonymousLogin : MonoBehaviour
         }
     }
 
-    // ---------------- PLAYFAB ----------------
     void Login()
     {
         Debug.Log("🔐 Logando PlayFab...");
@@ -34,7 +33,6 @@ public class AnonymousLogin : MonoBehaviour
         Debug.Log("✅ PlayFab Login Sucesso!");
         isLogged = true;
 
-        // (Opcional) define nickname no Photon
         PhotonNetwork.NickName = "Player_" + Random.Range(1000, 9999);
 
         ConectarPhoton();
@@ -45,7 +43,6 @@ public class AnonymousLogin : MonoBehaviour
         Debug.LogError("❌ PlayFab Error: " + error.GenerateErrorReport());
     }
 
-    // ---------------- PHOTON ----------------
     void ConectarPhoton()
     {
         Debug.Log("🌐 Conectando Photon...");

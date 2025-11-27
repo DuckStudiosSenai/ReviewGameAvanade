@@ -2,6 +2,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -18,17 +19,34 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (PhotonNetwork.InRoom)
+        if (PlayerPrefs.HasKey("px"))
         {
             PlayerLastLocation();
+            PhotonNetwork.ConnectUsingSettings();
         }
     }
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("🌐 Conectado ao MasterServer!");
+        Debug.Log("🌐 Voltou ao master. Tentando ReconnectAndRejoin...");
+
+        if (PhotonNetwork.ReconnectAndRejoin())
+        {
+            Debug.Log("🔄 Tentando voltar para a sala anterior...");
+        }
+        else
+        {
+            Debug.Log("⚠️ Não conseguiu ReconnectAndRejoin. Entrando no fluxo normal...");
+            PhotonNetwork.JoinLobby();
+        }
+    }
+
+    public override void OnJoinedLobby()
+    {
+        Debug.Log("✅ Entrou no Lobby com sucesso!");
         TryJoinOrCreateRoom();
     }
+
 
     public void TryJoinOrCreateRoom()
     {
@@ -45,8 +63,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             MaxPlayers = 10,
             IsVisible = true,
             IsOpen = true,
-            CleanupCacheOnLeave = false,
-            PlayerTtl = -1,
+            CleanupCacheOnLeave = true,
             EmptyRoomTtl = 0
         };
 
@@ -57,14 +74,17 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log($"🎮 Entrou na sala: {PhotonNetwork.CurrentRoom.Name}");
 
-        // CHECK DE PRIMEIRA VEZ
         bool isFirstTime = true; //CheckFirstTime();
         if (isFirstTime)
         {
             Debug.Log("✨ PRIMEIRA VEZ DO JOGADOR!");
             
-            playerSpawnPos = GameObject.Find("FirstTimeSpawnPos").transform;
-            secretaryUi.SetActive(true);
+            if (!PlayerPrefs.HasKey("px"))
+            {
+                playerSpawnPos = GameObject.Find("FirstTimeSpawnPos").transform;
+                secretaryUi.SetActive(true);
+            }
+            
         }
         else
         {
@@ -79,8 +99,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                 playerSpawnPos.position,
                 Quaternion.identity
             );
-
-            PhotonNetwork.LocalPlayer.TagObject = player;
 
             Debug.Log($"[GameManager] Player instanciado: {PhotonNetwork.NickName}, dono: {player.GetComponent<PhotonView>().Owner.NickName}");
 
@@ -104,17 +122,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogWarning("⚠️ O jogador já possui um objeto instanciado. Ignorando duplicata.");
         }
 
-
-    }
-
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        PhotonNetwork.DestroyPlayerObjects(otherPlayer);
-    }
-
-    public override void OnLeftRoom()
-    {
-        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+        PlayerPrefs.DeleteKey("px");
+        PlayerPrefs.DeleteKey("py");
     }
 
     public void DisableLoadingMenu()
@@ -138,17 +147,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         loadingMenu.SetActive(false);
         secretaryUi.SetActive(false);
-
-
     }
 
     private void PlayerLastLocation()
     {
-        DisableLoadingMenu();
-        GameObject player = PhotonNetwork.Instantiate(
-                playerPrefab.name,
-                new Vector2(PlayerPrefs.GetFloat("px"), PlayerPrefs.GetFloat("py")),
-                Quaternion.identity
-            );
+        playerSpawnPos.position = new Vector2(
+            PlayerPrefs.GetFloat("px"),
+            PlayerPrefs.GetFloat("py")
+        );
+        AlreadyInRoom();
     }
 }
