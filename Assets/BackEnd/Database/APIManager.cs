@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 
 public class APIManager : MonoBehaviour
 {
@@ -254,6 +255,15 @@ public class APIManager : MonoBehaviour
         public string createdAt;
     }
 
+    [System.Serializable]
+    public class LeaderboardUser
+    {
+        public int id;
+        public string name;
+        public int reviewsCount;
+        public float averageRating;
+    }
+
     //public IEnumerator GetReviewsByCategory(string category)
     //{
     //    string url = baseUrl + "/category/" + UnityWebRequest.EscapeURL(category);
@@ -433,6 +443,117 @@ public class APIManager : MonoBehaviour
         }
     }
 
+    public IEnumerator GetUsersWithReviews()
+    {
+        string url = $"{baseUrl}/Users";
+
+        Debug.Log("🔍 Buscando todos os usuários para leaderboard em: " + url);
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                string json = request.downloadHandler.text;
+                Debug.Log("📦 Usuários para leaderboard: " + json);
+
+                List<UserDto> users = null;
+                bool hasError = false;
+
+                try
+                {
+                    users = JsonConvert.DeserializeObject<List<UserDto>>(json);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("❌ Erro ao processar usuários para leaderboard: " + ex.Message);
+                    hasError = true;
+                }
+
+                if (hasError || users == null)
+                {
+                    Debug.LogWarning("⚠️ Lista de usuários veio nula. Exibindo leaderboard vazia.");
+                    PopulateLeaderboard(new List<LeaderboardUser>());
+                }
+                else
+                {
+                    // Buscar reviews para contar por usuário
+                    yield return StartCoroutine(GetReviewsCountForUsers(users));
+                }
+            }
+            else
+            {
+                Debug.LogError($"❌ Erro ao buscar usuários para leaderboard: {request.responseCode} - {request.error}");
+                PopulateLeaderboard(new List<LeaderboardUser>());
+            }
+        }
+    }
+
+    private IEnumerator GetReviewsCountForUsers(List<UserDto> users)
+    {
+        string reviewsUrl = $"{baseUrl}/Reviews";
+        
+        using (UnityWebRequest request = UnityWebRequest.Get(reviewsUrl))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                string json = request.downloadHandler.text;
+                List<ReviewObject> reviews = JsonConvert.DeserializeObject<List<ReviewObject>>(json);
+
+                List<LeaderboardUser> leaderboardUsers = ProcessUsersWithReviewsCount(users, reviews);
+                Debug.Log($"🏆 Total de usuários na leaderboard: {leaderboardUsers.Count}");
+                PopulateLeaderboard(leaderboardUsers);
+            }
+            else
+            {
+                Debug.LogError($"❌ Erro ao buscar reviews: {request.responseCode} - {request.error}");
+                PopulateLeaderboard(new List<LeaderboardUser>());
+            }
+        }
+    }
+
+    private List<LeaderboardUser> ProcessUsersWithReviewsCount(List<UserDto> users, List<ReviewObject> reviews)
+    {
+        Dictionary<int, int> userReviewCounts = new Dictionary<int, int>();
+
+        // Contar reviews por usuário
+        foreach (var review in reviews)
+        {
+            if (userReviewCounts.ContainsKey(review.userId))
+                userReviewCounts[review.userId]++;
+            else
+                userReviewCounts[review.userId] = 1;
+        }
+
+        List<LeaderboardUser> leaderboardUsers = new List<LeaderboardUser>();
+
+        // Criar leaderboard com todos os usuários
+        foreach (var user in users)
+        {
+            int reviewCount = userReviewCounts.ContainsKey(user.id) ? userReviewCounts[user.id] : 0;
+            
+            leaderboardUsers.Add(new LeaderboardUser
+            {
+                id = user.id,
+                name = user.name ?? "Usuário Desconhecido",
+                reviewsCount = reviewCount,
+                averageRating = 0f
+            });
+        }
+
+        // Ordenar: mais reviews primeiro, alfabético para empates, limite de 25
+        var sortedUsers = leaderboardUsers
+            .OrderByDescending(u => u.reviewsCount) // Mais reviews primeiro
+            .ThenBy(u => u.name) // Alfabético para empates
+            .Take(25) // Limite de 25 usuários
+            .ToList();
+
+        return sortedUsers;
+    }
+
     #endregion
 
 
@@ -489,6 +610,10 @@ public class APIManager : MonoBehaviour
     public GameObject prefabReview;
     public Transform contentReviewParent;
 
+    [Header("UI Elements (Leaderboard)")]
+    public GameObject prefabLeaderboard;
+    public Transform contentLeaderboardParent;
+
     private void PopulateReviews(List<ReviewObject> reviews)
     {
         StartCoroutine(DoPopulateReviews(reviews));
@@ -526,6 +651,51 @@ public class APIManager : MonoBehaviour
         yield return null;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentReviewParent.GetComponent<RectTransform>());
+    }
+
+    private void PopulateLeaderboard(List<LeaderboardUser> users)
+    {
+        StartCoroutine(DoPopulateLeaderboard(users));
+    }
+
+    public void DeleteLeaderboardChildren()
+    {
+        if (contentLeaderboardParent == null)
+        {
+            Debug.LogWarning("⚠️ contentLeaderboardParent não atribuído no APIManager!");
+            return;
+        }
+
+        foreach (Transform child in contentLeaderboardParent)
+            Destroy(child.gameObject);
+    }
+
+    private IEnumerator DoPopulateLeaderboard(List<LeaderboardUser> users)
+    {
+        Debug.Log($"🧱 Limpando {contentLeaderboardParent.childCount} itens antigos da leaderboard...");
+        DeleteLeaderboardChildren();
+
+        yield return null;
+
+        if (users != null && users.Count > 0)
+        {
+            Debug.Log($"🏆 Adicionando {users.Count} usuários na leaderboard...");
+            for (int i = 0; i < users.Count; i++)
+            {
+                GameObject item = Instantiate(prefabLeaderboard, contentLeaderboardParent);
+                var ui = item.GetComponent<LeaderboardItemUI>();
+                if (ui != null)
+                    ui.SetData(users[i], i + 1);
+            }
+        }
+        else
+        {
+            Debug.Log("🟡 Nenhum usuário encontrado — leaderboard vazia.");
+        }
+
+        yield return null;
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(contentLeaderboardParent.GetComponent<RectTransform>());
     }
 
 }

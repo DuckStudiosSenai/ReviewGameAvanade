@@ -5,7 +5,10 @@ using UnityEngine.SceneManagement;
 
 public enum MiniGameLocationType
 {
-    EXAMPLE_GAME
+    EXAMPLE_GAME,
+    DUCK_GAME,
+    MEMORY_GAME,
+    BREAK_GAME
 }
 
 public class MiniGameLocation : MonoBehaviourPunCallbacks
@@ -32,6 +35,18 @@ public class MiniGameLocation : MonoBehaviourPunCallbacks
         {
             case MiniGameLocationType.EXAMPLE_GAME:
                 SceneManager.LoadScene("ExampleGame");
+                break;
+
+            case MiniGameLocationType.DUCK_GAME:
+                SceneManager.LoadScene("DuckGame");
+                break;
+
+            case MiniGameLocationType.MEMORY_GAME:
+                SceneManager.LoadScene("MemoryGame");
+                break;
+
+            case MiniGameLocationType.BREAK_GAME:
+                SceneManager.LoadScene("BreakGame");
                 break;
 
             default:

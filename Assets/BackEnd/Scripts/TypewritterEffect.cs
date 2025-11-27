@@ -12,6 +12,9 @@ public class TypewritterEffect : MonoBehaviour
     public string[] testText;
     private int currentTextIndex = 0;
 
+    [Header("UI Buttons")]
+    public GameObject UIButtons;
+
     private int currentlyVisibleCharacterIndex;
     private Coroutine typewritterCoroutine;
     private WaitForSeconds simpleDelay;
@@ -89,7 +92,12 @@ public class TypewritterEffect : MonoBehaviour
         if (secretaryDialogue != null)
             secretaryDialogue.SetActive(false);
 
-        // Ativa a música apenas na primeira vez
+        if (UIButtons != null)
+        {
+            UIButtons.SetActive(true);
+            Debug.Log("✅ UI Buttons ativados após diálogo da secretária!");
+        }
+
         if (isFristTime)
         {
             if (bgmInstance != null)
