@@ -18,9 +18,13 @@ public class CategoryMenu : MonoBehaviour
     public GameObject menu;
     public TextMeshProUGUI productName;
 
+    public GameObject suggestUi;
+
+    public MakeReview makeReview;
+
     private APIManager api;
     private GameUIManager uiManager;
-    private PlayerMovement localPlayer;
+    private PlayerMovement player;
 
     private bool isAbleToOpen = false;
 
@@ -29,12 +33,11 @@ public class CategoryMenu : MonoBehaviour
         api = GameObject.FindGameObjectWithTag("GameManager").GetComponent<APIManager>();
         uiManager = FindAnyObjectByType<GameUIManager>();
 
-        // Encontre uma vez o player local
         foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
         {
             if (p.photonView.IsMine)
             {
-                localPlayer = p;
+                player = p;
                 break;
             }
         }
@@ -46,15 +49,19 @@ public class CategoryMenu : MonoBehaviour
     {
         if (!isAbleToOpen) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !makeReview.isOpen)
             OpenMenu();
     }
 
     public void OpenMenu()
     {
+        if (!player.photonView.IsMine) return;
+
         if (uiManager.isMenuOpen)
         {
             CloseAllMenus();
+            suggestUi.SetActive(true);
+            player.EnableMovement();
             return;
         }
 
@@ -63,6 +70,8 @@ public class CategoryMenu : MonoBehaviour
         api.DeleteChildren();
         menu.SetActive(true);
         uiManager.isMenuOpen = true;
+        player.DisableMovement();
+        suggestUi.SetActive(false);
 
         StartCoroutine(GetProducts());
 
@@ -89,9 +98,6 @@ public class CategoryMenu : MonoBehaviour
             other.menu.SetActive(false);
 
         uiManager.isMenuOpen = false;
-
-        if (localPlayer != null)
-            localPlayer.isTyping = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -101,9 +107,12 @@ public class CategoryMenu : MonoBehaviour
         PlayerMovement pm = collision.GetComponent<PlayerMovement>();
         if (pm != null && pm.photonView.IsMine)
         {
+            player = pm;
             isAbleToOpen = true;
             enabled = true;
         }
+
+        suggestUi = collision.gameObject.transform.Find("PlayerCanvas/Suggest/PressE").gameObject;
     }
 
     private void OnTriggerExit2D(Collider2D collision)

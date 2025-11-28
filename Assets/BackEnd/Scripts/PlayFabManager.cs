@@ -52,6 +52,7 @@ public class PlayFabManager : MonoBehaviour
         {
             StartCoroutine(GetUserAndLogin(userId));
             this.userId = userId;
+            PlayerPrefs.SetInt("UserId", userId);
         }
         else
         {

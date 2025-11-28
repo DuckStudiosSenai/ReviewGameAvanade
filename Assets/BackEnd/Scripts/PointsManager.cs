@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 using System.Collections;
 using System.Text;
 using System;
+using TMPro;
 
 [System.Serializable]
 public class UserUpdateDto
@@ -14,6 +15,8 @@ public class UserUpdateDto
 
 public class PointsManager : MonoBehaviour
 {
+    public TextMeshProUGUI coinsText;
+
     private PlayFabManager playfab;
     private APIManager api;
 
@@ -22,6 +25,8 @@ public class PointsManager : MonoBehaviour
     {
         playfab = FindAnyObjectByType<PlayFabManager>();
         api = FindAnyObjectByType<APIManager>();
+
+        
     }
 
 
@@ -161,6 +166,20 @@ public class PointsManager : MonoBehaviour
         ));
     }
 
-
+    public void LoadPoints()
+    {
+        StartCoroutine(GetUserPoints(
+                userId: playfab.GetUserId(),
+                onSuccess: (points) =>
+                {
+                    Debug.Log("Pontos do jogador: " + points);
+                    coinsText.text = points.ToString();
+                },
+                onError: (err) =>
+                {
+                    Debug.LogError("Erro ao buscar pontos: " + err);
+                }
+            ));
+    }
 
 }

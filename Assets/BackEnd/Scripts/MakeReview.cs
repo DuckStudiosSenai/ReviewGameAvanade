@@ -6,6 +6,8 @@ using Photon.Pun;
 
 public class MakeReview : MonoBehaviour
 {
+    public bool isOpen = false;
+
     [Header("References")]
     public GameObject reviewMenu;
     public TextMeshProUGUI productName;
@@ -68,6 +70,7 @@ public class MakeReview : MonoBehaviour
     public void OpenReviewMenu(bool open, int productId, int userId, string name)
     {
         reviewMenu.SetActive(open);
+        isOpen = open;
 
         if (open)
         {

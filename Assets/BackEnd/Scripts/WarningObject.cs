@@ -7,6 +7,8 @@ public class WarningObject : MonoBehaviour
     private CanvasGroup[] canvasGroups;
     private CanvasRenderer[] canvasRenderers;
 
+    public GameObject suggestUi;
+
     private void Awake()
     {
         renderers = GetComponentsInChildren<Renderer>(true);
@@ -43,6 +45,9 @@ public class WarningObject : MonoBehaviour
             foreach (var cr in canvasRenderers)
                 cr.SetAlpha(0f); 
         }
+
+        suggestUi = collision.gameObject.transform.Find("PlayerCanvas/Suggest/PressE").gameObject;
+        suggestUi.SetActive(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -66,5 +71,7 @@ public class WarningObject : MonoBehaviour
             foreach (var cr in canvasRenderers)
                 cr.SetAlpha(1f);
         }
+
+        suggestUi.SetActive(false);
     }
 }

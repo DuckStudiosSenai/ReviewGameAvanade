@@ -1,0 +1,2409 @@
+fileFormatVersion: 2
+guid: a1d06a54f5b257043b41854e9a454e17
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5188103180875604992
+    second: "Seguran\xE7a_0"
+  - first:
+      213: 3589729522546789995
+    second: "Seguran\xE7a_1"
+  - first:
+      213: 7460002243237236750
+    second: "Seguran\xE7a_2"
+  - first:
+      213: -2228258880787749780
+    second: "Seguran\xE7a_3"
+  - first:
+      213: 6456347210807690748
+    second: "Seguran\xE7a_4"
+  - first:
+      213: 4330274588554166584
+    second: "Seguran\xE7a_5"
+  - first:
+      213: -2737996165703614809
+    second: "Seguran\xE7a_6"
+  - first:
+      213: -7696501367546183900
+    second: "Seguran\xE7a_7"
+  - first:
+      213: -2021512920833999792
+    second: "Seguran\xE7a_8"
+  - first:
+      213: 313733782909129289
+    second: "Seguran\xE7a_9"
+  - first:
+      213: -4005812377612400297
+    second: "Seguran\xE7a_10"
+  - first:
+      213: 4315240070183140109
+    second: "Seguran\xE7a_11"
+  - first:
+      213: 2624370983434927605
+    second: "Seguran\xE7a_12"
+  - first:
+      213: -8514896351383637596
+    second: "Seguran\xE7a_13"
+  - first:
+      213: 5159228210286638514
+    second: "Seguran\xE7a_14"
+  - first:
+      213: 6635777808182007642
+    second: "Seguran\xE7a_15"
+  - first:
+      213: 8898161434092070650
+    second: "Seguran\xE7a_16"
+  - first:
+      213: 6310731782726244915
+    second: "Seguran\xE7a_17"
+  - first:
+      213: -3155533405218388808
+    second: "Seguran\xE7a_18"
+  - first:
+      213: -3365221454911597553
+    second: "Seguran\xE7a_19"
+  - first:
+      213: 8607464018224458068
+    second: "Seguran\xE7a_20"
+  - first:
+      213: -6366712547921377717
+    second: "Seguran\xE7a_21"
+  - first:
+      213: 8283320923087518388
+    second: "Seguran\xE7a_22"
+  - first:
+      213: 3811694404906722632
+    second: "Seguran\xE7a_23"
+  - first:
+      213: -8840122990215827814
+    second: "Seguran\xE7a_24"
+  - first:
+      213: -498671016493919853
+    second: "Seguran\xE7a_25"
+  - first:
+      213: -5082344401707188350
+    second: "Seguran\xE7a_26"
+  - first:
+      213: 773231038775597978
+    second: "Seguran\xE7a_27"
+  - first:
+      213: -1839792834984245611
+    second: "Seguran\xE7a_28"
+  - first:
+      213: -1450021145113981200
+    second: "Seguran\xE7a_29"
+  - first:
+      213: 6041817199269989865
+    second: "Seguran\xE7a_30"
+  - first:
+      213: -1631811311410237386
+    second: "Seguran\xE7a_31"
+  - first:
+      213: 2932339833526109899
+    second: "Seguran\xE7a_32"
+  - first:
+      213: -4280347809829327886
+    second: "Seguran\xE7a_33"
+  - first:
+      213: -6969795935126757770
+    second: "Seguran\xE7a_34"
+  - first:
+      213: -7079059391578547118
+    second: "Seguran\xE7a_35"
+  - first:
+      213: -4047981264810369092
+    second: "Seguran\xE7a_36"
+  - first:
+      213: -1767087780686924774
+    second: "Seguran\xE7a_37"
+  - first:
+      213: 8995944301835076259
+    second: "Seguran\xE7a_38"
+  - first:
+      213: 4615495875043690698
+    second: "Seguran\xE7a_39"
+  - first:
+      213: -5737409580005621279
+    second: "Seguran\xE7a_40"
+  - first:
+      213: -3605320072707467110
+    second: "Seguran\xE7a_41"
+  - first:
+      213: -6168359992152003188
+    second: "Seguran\xE7a_42"
+  - first:
+      213: 6562967653166172937
+    second: "Seguran\xE7a_43"
+  - first:
+      213: -6239177534358282219
+    second: "Seguran\xE7a_44"
+  - first:
+      213: -3150932263054442663
+    second: "Seguran\xE7a_45"
+  - first:
+      213: -5042723909798830516
+    second: "Seguran\xE7a_46"
+  - first:
+      213: -3371640909511325879
+    second: "Seguran\xE7a_47"
+  - first:
+      213: 2007170260955062807
+    second: "Seguran\xE7a_48"
+  - first:
+      213: -1172618508337632946
+    second: "Seguran\xE7a_49"
+  - first:
+      213: 9151567795512272455
+    second: "Seguran\xE7a_50"
+  - first:
+      213: -4845985192727596618
+    second: "Seguran\xE7a_51"
+  - first:
+      213: -7031254104108229587
+    second: "Seguran\xE7a_52"
+  - first:
+      213: 7445086530398721328
+    second: "Seguran\xE7a_53"
+  - first:
+      213: 5910605095390662
+    second: "Seguran\xE7a_54"
+  - first:
+      213: 1991635688883439415
+    second: "Seguran\xE7a_55"
+  - first:
+      213: 793845447770183362
+    second: "Seguran\xE7a_56"
+  - first:
+      213: 7686863598714771418
+    second: "Seguran\xE7a_57"
+  - first:
+      213: 3088278682794269643
+    second: "Seguran\xE7a_58"
+  - first:
+      213: -4944177919706266549
+    second: "Seguran\xE7a_59"
+  - first:
+      213: 2084880711485316869
+    second: "Seguran\xE7a_60"
+  - first:
+      213: -4126638753922373923
+    second: "Seguran\xE7a_61"
+  - first:
+      213: 2228144509161002548
+    second: "Seguran\xE7a_62"
+  - first:
+      213: -6281165011604762562
+    second: "Seguran\xE7a_63"
+  - first:
+      213: 6152396028320372415
+    second: "Seguran\xE7a_64"
+  - first:
+      213: 6406246338690293882
+    second: "Seguran\xE7a_65"
+  - first:
+      213: -5958629121478891139
+    second: "Seguran\xE7a_66"
+  - first:
+      213: 2319128545802637878
+    second: "Seguran\xE7a_67"
+  - first:
+      213: 379299520965128527
+    second: "Seguran\xE7a_68"
+  - first:
+      213: -4592747287510270801
+    second: "Seguran\xE7a_69"
+  - first:
+      213: 4918279027260535845
+    second: "Seguran\xE7a_70"
+  - first:
+      213: 4422529329327063021
+    second: "Seguran\xE7a_71"
+  - first:
+      213: 3570243508015100750
+    second: "Seguran\xE7a_72"
+  - first:
+      213: -1775824643033353254
+    second: "Seguran\xE7a_73"
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "Seguran\xE7a_0"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1215
+        width: 129
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0042a22fa58dff740800000000000000
+      internalID: 5188103180875604992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle6
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 1151
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6e42274bf741d130800000000000000
+      internalID: 3589729522546789995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_2"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1023
+        width: 769
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e00d5c3f380478760800000000000000
+      internalID: 7460002243237236750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_3"
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 1023
+        width: 34
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c64690f8a52a311e0800000000000000
+      internalID: -2228258880787749780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_4"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 961
+        width: 385
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf5c6ceb49d899950800000000000000
+      internalID: 6456347210807690748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_5"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 897
+        width: 385
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8310ca6abc9381c30800000000000000
+      internalID: 4330274588554166584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_6"
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7aebada6efea00ad0800000000000000
+      internalID: -2737996165703614809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_7"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 767
+        width: 385
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42ff916b8c8803590800000000000000
+      internalID: -7696501367546183900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_8"
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 773
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05cb3dc75b422f3e0800000000000000
+      internalID: -2021512920833999792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_9"
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 773
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 942965c963b9a5400800000000000000
+      internalID: 313733782909129289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_10"
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 773
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 759cc83cdde7868c0800000000000000
+      internalID: -4005812377612400297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_11"
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 773
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0b3ccf0bffc2eb30800000000000000
+      internalID: 4315240070183140109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_12"
+      rect:
+        serializedVersion: 2
+        x: 581
+        y: 773
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fd3b724183ab6420800000000000000
+      internalID: 2624370983434927605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_13"
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 773
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a1328cd1e205d980800000000000000
+      internalID: -8514896351383637596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_14"
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 773
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b53f45f8b2499740800000000000000
+      internalID: 5159228210286638514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_15"
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 773
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a57db1932c4071c50800000000000000
+      internalID: 6635777808182007642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_16"
+      rect:
+        serializedVersion: 2
+        x: 709
+        y: 773
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af663290eae9c7b70800000000000000
+      internalID: 8898161434092070650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_17"
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 775
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33a5a26ee19349750800000000000000
+      internalID: 6310731782726244915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_18"
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 773
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b44411361b4534d0800000000000000
+      internalID: -3155533405218388808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_19"
+      rect:
+        serializedVersion: 2
+        x: 805
+        y: 773
+        width: 22
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f04987d9ae45c41d0800000000000000
+      internalID: -3365221454911597553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_20"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 703
+        width: 769
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 459a9379bead37770800000000000000
+      internalID: 8607464018224458068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_21"
+      rect:
+        serializedVersion: 2
+        x: 777
+        y: 711
+        width: 44
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b46cf128ba4e4a7a0800000000000000
+      internalID: -6366712547921377717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_22"
+      rect:
+        serializedVersion: 2
+        x: 841
+        y: 711
+        width: 44
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ba313d1e7444f270800000000000000
+      internalID: 8283320923087518388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_23"
+      rect:
+        serializedVersion: 2
+        x: 905
+        y: 711
+        width: 44
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8452fc4bddbd5e430800000000000000
+      internalID: 3811694404906722632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_24"
+      rect:
+        serializedVersion: 2
+        x: 975
+        y: 711
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9eeb653af2915580800000000000000
+      internalID: -8840122990215827814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_25"
+      rect:
+        serializedVersion: 2
+        x: 1039
+        y: 711
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 391d8124a5d5419f0800000000000000
+      internalID: -498671016493919853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_26"
+      rect:
+        serializedVersion: 2
+        x: 1103
+        y: 711
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28f3c0ea1b2e779b0800000000000000
+      internalID: -5082344401707188350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_27"
+      rect:
+        serializedVersion: 2
+        x: 1163
+        y: 711
+        width: 44
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9b968378811bba00800000000000000
+      internalID: 773231038775597978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_28"
+      rect:
+        serializedVersion: 2
+        x: 1227
+        y: 711
+        width: 44
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 596847a0a2eb776e0800000000000000
+      internalID: -1839792834984245611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_29"
+      rect:
+        serializedVersion: 2
+        x: 1291
+        y: 711
+        width: 44
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fe0da8737d70ebe0800000000000000
+      internalID: -1450021145113981200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_30"
+      rect:
+        serializedVersion: 2
+        x: 1359
+        y: 703
+        width: 36
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ed45585bb8d8d350800000000000000
+      internalID: 6041817199269989865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_31"
+      rect:
+        serializedVersion: 2
+        x: 1423
+        y: 703
+        width: 36
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 630bdea0244aa59e0800000000000000
+      internalID: -1631811311410237386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_32"
+      rect:
+        serializedVersion: 2
+        x: 1487
+        y: 703
+        width: 36
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc64d0ada83c1b820800000000000000
+      internalID: 2932339833526109899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_33"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 639
+        width: 1537
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fb600068562994c0800000000000000
+      internalID: -4280347809829327886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_34"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 575
+        width: 1281
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67edec9468f464f90800000000000000
+      internalID: -6969795935126757770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_35"
+      rect:
+        serializedVersion: 2
+        x: 1415
+        y: 579
+        width: 20
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25c51156df022cd90800000000000000
+      internalID: -7079059391578547118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_36"
+      rect:
+        serializedVersion: 2
+        x: 1443
+        y: 579
+        width: 26
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbf9a8d9c7ea2d7c0800000000000000
+      internalID: -4047981264810369092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_37"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 511
+        width: 1792
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a14f831a60b0a77e0800000000000000
+      internalID: -1767087780686924774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_38"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 447
+        width: 1792
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a244121ea308dc70800000000000000
+      internalID: 8995944301835076259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_39"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 383
+        width: 769
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac8824e5b098d0040800000000000000
+      internalID: 4615495875043690698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_40"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 319
+        width: 769
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e187d49260a060b0800000000000000
+      internalID: -5737409580005621279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_41"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 255
+        width: 769
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a989fa4ee7457fdc0800000000000000
+      internalID: -3605320072707467110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_42"
+      rect:
+        serializedVersion: 2
+        x: 883
+        y: 259
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8d6c0db445956aa0800000000000000
+      internalID: -6168359992152003188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_43"
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 267
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90b4957fe48541b50800000000000000
+      internalID: 6562967653166172937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_44"
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 263
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5102afdc61df969a0800000000000000
+      internalID: -6239177534358282219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_45"
+      rect:
+        serializedVersion: 2
+        x: 987
+        y: 269
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95f72551dc3a544d0800000000000000
+      internalID: -3150932263054442663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_46"
+      rect:
+        serializedVersion: 2
+        x: 1019
+        y: 267
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4e52105255a40ab0800000000000000
+      internalID: -5042723909798830516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_47"
+      rect:
+        serializedVersion: 2
+        x: 1051
+        y: 265
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 947076ed4768531d0800000000000000
+      internalID: -3371640909511325879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_48"
+      rect:
+        serializedVersion: 2
+        x: 1081
+        y: 263
+        width: 38
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71264f7c7b6eadb10800000000000000
+      internalID: 2007170260955062807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_49"
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 271
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e49ac71fda50abfe0800000000000000
+      internalID: -1172618508337632946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_50"
+      rect:
+        serializedVersion: 2
+        x: 1247
+        y: 259
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 746e9654c66e00f70800000000000000
+      internalID: 9151567795512272455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_51"
+      rect:
+        serializedVersion: 2
+        x: 1285
+        y: 267
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b13ba0742a9fbcb0800000000000000
+      internalID: -4845985192727596618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_52"
+      rect:
+        serializedVersion: 2
+        x: 1319
+        y: 263
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2c1f1f35a7fb6e90800000000000000
+      internalID: -7031254104108229587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_53"
+      rect:
+        serializedVersion: 2
+        x: 1369
+        y: 265
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 035167ee0c2425760800000000000000
+      internalID: 7445086530398721328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_54"
+      rect:
+        serializedVersion: 2
+        x: 1401
+        y: 267
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cd4e1df9aff41000800000000000000
+      internalID: 5910605095390662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_55"
+      rect:
+        serializedVersion: 2
+        x: 1433
+        y: 269
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73743ed5b16b3ab10800000000000000
+      internalID: 1991635688883439415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_56"
+      rect:
+        serializedVersion: 2
+        x: 1481
+        y: 267
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c617e09a3e440b00800000000000000
+      internalID: 793845447770183362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_57"
+      rect:
+        serializedVersion: 2
+        x: 1521
+        y: 267
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad7564e57b93daa60800000000000000
+      internalID: 7686863598714771418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_58"
+      rect:
+        serializedVersion: 2
+        x: 779
+        y: 259
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bcb1d5f7915cbda20800000000000000
+      internalID: 3088278682794269643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_59"
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 259
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b44049d9060c26bb0800000000000000
+      internalID: -4944177919706266549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_60"
+      rect:
+        serializedVersion: 2
+        x: 841
+        y: 257
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50f552ff5fbfeec10800000000000000
+      internalID: 2084880711485316869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_61"
+      rect:
+        serializedVersion: 2
+        x: 987
+        y: 261
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd6a81ccaeb3bb6c0800000000000000
+      internalID: -4126638753922373923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_62"
+      rect:
+        serializedVersion: 2
+        x: 1019
+        y: 259
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43657c830a5fbee10800000000000000
+      internalID: 2228144509161002548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_63"
+      rect:
+        serializedVersion: 2
+        x: 1051
+        y: 257
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e309fa373b1d4d8a0800000000000000
+      internalID: -6281165011604762562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_64"
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 263
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb65f894793b16550800000000000000
+      internalID: 6152396028320372415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_65"
+      rect:
+        serializedVersion: 2
+        x: 1163
+        y: 259
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7028417a1f87e850800000000000000
+      internalID: 6406246338690293882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_66"
+      rect:
+        serializedVersion: 2
+        x: 1197
+        y: 259
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d79e3f95262be4da0800000000000000
+      internalID: -5958629121478891139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_67"
+      rect:
+        serializedVersion: 2
+        x: 1229
+        y: 257
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 632d80900233f2020800000000000000
+      internalID: 2319128545802637878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_68"
+      rect:
+        serializedVersion: 2
+        x: 1457
+        y: 255
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f413a9a97ea834500800000000000000
+      internalID: 379299520965128527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_69"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 191
+        width: 513
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: facbfc8eca84340c0800000000000000
+      internalID: -4592747287510270801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_70"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 127
+        width: 769
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5243e1697bc314440800000000000000
+      internalID: 4918279027260535845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_71"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 63
+        width: 403
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: def39435efaff5d30800000000000000
+      internalID: 4422529329327063021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_72"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 385
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4372e8fd8d0c8130800000000000000
+      internalID: 3570243508015100750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_73"
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 13
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad3bc9855e00b57e0800000000000000
+      internalID: -1775824643033353254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle5
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 1151
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57e848b0c41f4fd45a115325516bc99b
+      internalID: -1988903911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle4
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 1151
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ba8b9f9f41918f428dc4d07db96be4c
+      internalID: -732344178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle3
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 1151
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5350554692e554c498380e70171064a8
+      internalID: -478529012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle2
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 1151
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f347c1ac22637a42922432e3e6b95cc
+      internalID: 1155081477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle1
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 1151
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2f7a6aee29595f4e87104a52f47f6c1
+      internalID: -1088063421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_79"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f71cbbc0137a6744b4898a027575481
+      internalID: 835421084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_80"
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d71b07ef4636d764eb6f40ed14ca39ea
+      internalID: 1032791738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_81"
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7687707cd426fc441a02f6dd7c39b10c
+      internalID: 1952971796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_82"
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2173439b6fc503a45974ac00c059b152
+      internalID: -1005223639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_83"
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 616157b637ca9374ca0096891d43b976
+      internalID: -1019292624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_84"
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a90579a02a1ed04b8f23de46cab21af
+      internalID: 495733428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_85"
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47fcc04b7b3b03d4bb238a4c70dfaafe
+      internalID: 364745883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_86"
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4097c7434f687a64d96951b0c5432d66
+      internalID: 807440485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_87"
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddab176a0ee944a46b8b9dd89522dfa7
+      internalID: 2043545550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_88"
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d5d6407b3511364fa5fb970afcd9da6
+      internalID: -1304648746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Seguran\xE7a_89"
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 831
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9114819191e26404dbdd34c4692cd456
+      internalID: 1083233611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: b9b41cc03b88f7f428005a831c7c42b5
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Idle1: -1088063421
+      Idle2: 1155081477
+      Idle3: -478529012
+      Idle4: -732344178
+      Idle5: -1988903911
+      Idle6: 3589729522546789995
+      "Seguran\xE7a_0": 5188103180875604992
+      "Seguran\xE7a_10": -4005812377612400297
+      "Seguran\xE7a_11": 4315240070183140109
+      "Seguran\xE7a_12": 2624370983434927605
+      "Seguran\xE7a_13": -8514896351383637596
+      "Seguran\xE7a_14": 5159228210286638514
+      "Seguran\xE7a_15": 6635777808182007642
+      "Seguran\xE7a_16": 8898161434092070650
+      "Seguran\xE7a_17": 6310731782726244915
+      "Seguran\xE7a_18": -3155533405218388808
+      "Seguran\xE7a_19": -3365221454911597553
+      "Seguran\xE7a_2": 7460002243237236750
+      "Seguran\xE7a_20": 8607464018224458068
+      "Seguran\xE7a_21": -6366712547921377717
+      "Seguran\xE7a_22": 8283320923087518388
+      "Seguran\xE7a_23": 3811694404906722632
+      "Seguran\xE7a_24": -8840122990215827814
+      "Seguran\xE7a_25": -498671016493919853
+      "Seguran\xE7a_26": -5082344401707188350
+      "Seguran\xE7a_27": 773231038775597978
+      "Seguran\xE7a_28": -1839792834984245611
+      "Seguran\xE7a_29": -1450021145113981200
+      "Seguran\xE7a_3": -2228258880787749780
+      "Seguran\xE7a_30": 6041817199269989865
+      "Seguran\xE7a_31": -1631811311410237386
+      "Seguran\xE7a_32": 2932339833526109899
+      "Seguran\xE7a_33": -4280347809829327886
+      "Seguran\xE7a_34": -6969795935126757770
+      "Seguran\xE7a_35": -7079059391578547118
+      "Seguran\xE7a_36": -4047981264810369092
+      "Seguran\xE7a_37": -1767087780686924774
+      "Seguran\xE7a_38": 8995944301835076259
+      "Seguran\xE7a_39": 4615495875043690698
+      "Seguran\xE7a_4": 6456347210807690748
+      "Seguran\xE7a_40": -5737409580005621279
+      "Seguran\xE7a_41": -3605320072707467110
+      "Seguran\xE7a_42": -6168359992152003188
+      "Seguran\xE7a_43": 6562967653166172937
+      "Seguran\xE7a_44": -6239177534358282219
+      "Seguran\xE7a_45": -3150932263054442663
+      "Seguran\xE7a_46": -5042723909798830516
+      "Seguran\xE7a_47": -3371640909511325879
+      "Seguran\xE7a_48": 2007170260955062807
+      "Seguran\xE7a_49": -1172618508337632946
+      "Seguran\xE7a_5": 4330274588554166584
+      "Seguran\xE7a_50": 9151567795512272455
+      "Seguran\xE7a_51": -4845985192727596618
+      "Seguran\xE7a_52": -7031254104108229587
+      "Seguran\xE7a_53": 7445086530398721328
+      "Seguran\xE7a_54": 5910605095390662
+      "Seguran\xE7a_55": 1991635688883439415
+      "Seguran\xE7a_56": 793845447770183362
+      "Seguran\xE7a_57": 7686863598714771418
+      "Seguran\xE7a_58": 3088278682794269643
+      "Seguran\xE7a_59": -4944177919706266549
+      "Seguran\xE7a_6": -2737996165703614809
+      "Seguran\xE7a_60": 2084880711485316869
+      "Seguran\xE7a_61": -4126638753922373923
+      "Seguran\xE7a_62": 2228144509161002548
+      "Seguran\xE7a_63": -6281165011604762562
+      "Seguran\xE7a_64": 6152396028320372415
+      "Seguran\xE7a_65": 6406246338690293882
+      "Seguran\xE7a_66": -5958629121478891139
+      "Seguran\xE7a_67": 2319128545802637878
+      "Seguran\xE7a_68": 379299520965128527
+      "Seguran\xE7a_69": -4592747287510270801
+      "Seguran\xE7a_7": -7696501367546183900
+      "Seguran\xE7a_70": 4918279027260535845
+      "Seguran\xE7a_71": 4422529329327063021
+      "Seguran\xE7a_72": 3570243508015100750
+      "Seguran\xE7a_73": -1775824643033353254
+      "Seguran\xE7a_79": 835421084
+      "Seguran\xE7a_8": -2021512920833999792
+      "Seguran\xE7a_80": 1032791738
+      "Seguran\xE7a_81": 1952971796
+      "Seguran\xE7a_82": -1005223639
+      "Seguran\xE7a_83": -1019292624
+      "Seguran\xE7a_84": 495733428
+      "Seguran\xE7a_85": 364745883
+      "Seguran\xE7a_86": 807440485
+      "Seguran\xE7a_87": 2043545550
+      "Seguran\xE7a_88": -1304648746
+      "Seguran\xE7a_89": 1083233611
+      "Seguran\xE7a_9": 313733782909129289
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

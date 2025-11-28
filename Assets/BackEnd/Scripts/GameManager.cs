@@ -17,8 +17,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private const string FIRST_TIME_KEY = "FirstTimePlayed";
 
+    private PointsManager pointsManager;
+
     private void Start()
     {
+        pointsManager = FindAnyObjectByType<PointsManager>();
+
         if (PlayerPrefs.HasKey("px"))
         {
             PlayerLastLocation();
@@ -122,6 +126,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogWarning("⚠️ O jogador já possui um objeto instanciado. Ignorando duplicata.");
         }
 
+        pointsManager.LoadPoints();
+
         PlayerPrefs.DeleteKey("px");
         PlayerPrefs.DeleteKey("py");
     }
@@ -145,7 +151,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void AlreadyInRoom()
     {
-        loadingMenu.SetActive(false);
         secretaryUi.SetActive(false);
     }
 

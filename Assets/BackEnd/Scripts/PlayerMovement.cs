@@ -106,11 +106,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
             isMoving = true;
         }
     }
-
-    // ======================================================
-    // SINCRONIZAÇÃO DE ANIMAÇÕES (corpo é o MASTER)
-    // ======================================================
-
     private void TriggerAnimation(string triggerName)
     {
         bodyAnimator.SetTrigger(triggerName);
@@ -131,7 +126,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
         AnimatorStateInfo state = bodyAnimator.GetCurrentAnimatorStateInfo(0);
 
-        // ---------- IDLE ----------
         if (input == Vector2.zero && !isMoving)
         {
             if (state.IsName("WalkUp"))
@@ -159,9 +153,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
         else if (input.x < 0 && !state.IsName("WalkLeft"))
             TriggerAnimation("WalkLeft");
     }
-
-    // (todo o resto permanece igual)
-    // INTERPOLAÇÃO, SERIALIZAÇÃO, TELEPORT, MOVIMENTO ON/OFF...
 
     private void HandleInterpolationBlock()
     {
@@ -209,7 +200,7 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
         var npcs = FindObjectsByType<NPCController>(FindObjectsSortMode.None);
         foreach (var npc in npcs)
-            if (npc.player != null && npc.player == this.transform)
+            if (npc.player != null && npc.player == this.transform && npc.isChasing)
                 npc.TeleportAndContinueChase(new Vector2(pos.x - 5f, pos.y));
 
         blockInterpolation = true;

@@ -29,7 +29,7 @@ public class MiniGameLocation : MonoBehaviourPunCallbacks
         }
     }
 
-    private void LoadGameScene()
+    public void LoadGameScene()
     {
         switch (locationType)
         {
@@ -38,11 +38,11 @@ public class MiniGameLocation : MonoBehaviourPunCallbacks
                 break;
 
             case MiniGameLocationType.DUCK_GAME:
-                SceneManager.LoadScene("DuckGame");
+                SceneManager.LoadScene("CatchGame");
                 break;
 
             case MiniGameLocationType.MEMORY_GAME:
-                SceneManager.LoadScene("MemoryGame");
+                SceneManager.LoadScene("MemoryGameScene");
                 break;
 
             case MiniGameLocationType.BREAK_GAME:
@@ -68,6 +68,8 @@ public class MiniGameLocation : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(locationType);
+
         if (!collision.CompareTag("Player"))
             return;
 
@@ -77,7 +79,10 @@ public class MiniGameLocation : MonoBehaviourPunCallbacks
         {
             isAbleToEnter = true;
             localPlayerPV = pv;
+
+            FindAnyObjectByType<PlayerMinigameManager>().minigameLocation = this;
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -105,9 +110,5 @@ public class MiniGameLocation : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.TagObject = null;
     }
 
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        Debug.Log("🔌 Desconectado do Photon. Carregando cena do mini-jogo...");
-        LoadGameScene();
-    }
+    
 }

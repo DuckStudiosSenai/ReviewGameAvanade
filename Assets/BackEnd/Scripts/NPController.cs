@@ -14,7 +14,7 @@ public class NPCController : MonoBehaviour
 
     private Camera mainCam;
     private float offScreenTimer = 0f;
-    private bool isChasing = true;
+    public bool isChasing = true;
     private bool isLeaving = false;
     private Vector3 leaveDirection;
 

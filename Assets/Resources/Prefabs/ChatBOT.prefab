@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 7818044578055977464}
   - component: {fileID: 7535397727443668066}
   - component: {fileID: 561049935882090697}
+  - component: {fileID: 6203318987274817693}
   m_Layer: 7
   m_Name: Tecnologia
   m_TagString: Untagged
@@ -257,6 +258,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!210 &6203318987274817693
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370552428108558673}
+  m_Enabled: 1
+  m_SortingLayerID: 1315775191
+  m_SortingLayer: 1
+  m_SortingOrder: 2
+  m_SortAtRoot: 0
 --- !u!1 &511607861768365595
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,6 +1020,7 @@ GameObject:
   - component: {fileID: 9128796943500574603}
   - component: {fileID: 8278342733671425051}
   - component: {fileID: 8009359342175565354}
+  - component: {fileID: 2840782797853244746}
   m_Layer: 7
   m_Name: "Seguran\xE7a"
   m_TagString: Untagged
@@ -1116,6 +1130,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!210 &2840782797853244746
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3255209413339164470}
+  m_Enabled: 1
+  m_SortingLayerID: 1315775191
+  m_SortingLayer: 1
+  m_SortingOrder: 2
+  m_SortAtRoot: 0
 --- !u!1 &3356057548198064934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,6 +1154,7 @@ GameObject:
   - component: {fileID: 3912852797161647887}
   - component: {fileID: 602788040306854128}
   - component: {fileID: 3908448407006418433}
+  - component: {fileID: 6430761734655292283}
   m_Layer: 7
   m_Name: Nuvem
   m_TagString: Untagged
@@ -1237,6 +1264,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!210 &6430761734655292283
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3356057548198064934}
+  m_Enabled: 1
+  m_SortingLayerID: 1315775191
+  m_SortingLayer: 1
+  m_SortingOrder: 2
+  m_SortAtRoot: 0
 --- !u!1 &3382966825875940545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1923,7 +1962,8 @@ MonoBehaviour:
   player: {fileID: 0}
   speed: 28
   stopDistance: 2
-  offScreenDespawnDelay: 5
+  offScreenDespawnDelay: 0.5
+  isChasing: 1
 --- !u!114 &2374371555122404242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1975,7 +2015,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 503236bfc2f43c445bbf1e4f7b9edd71, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2071,6 +2111,7 @@ GameObject:
   - component: {fileID: 4649350961341074229}
   - component: {fileID: 5006938571984515386}
   - component: {fileID: 2107097555715344417}
+  - component: {fileID: 6682299650581779856}
   m_Layer: 7
   m_Name: Dados
   m_TagString: Untagged
@@ -2180,6 +2221,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!210 &6682299650581779856
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7621190169724508958}
+  m_Enabled: 1
+  m_SortingLayerID: 1315775191
+  m_SortingLayer: 1
+  m_SortingOrder: 2
+  m_SortAtRoot: 0
 --- !u!1 &7764849687622405117
 GameObject:
   m_ObjectHideFlags: 0

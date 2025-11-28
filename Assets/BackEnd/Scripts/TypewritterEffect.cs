@@ -41,10 +41,21 @@ public class TypewritterEffect : MonoBehaviour
     public GameObject bgmPrefab;
     private GameObject bgmInstance;
 
+    private void OnEnable()
+    {
+        simpleDelay = new WaitForSeconds(1f / charactersPerSecond);
+        interpunctuationDelay = new WaitForSeconds(interpunctuationDelayValue);
+        eraseTextDelay = new WaitForSeconds(eraseDelayValue);
+
+        localPlayerMovement = FindAnyObjectByType<PlayerMovement>();
+
+        SetText(testText[currentTextIndex]);
+    }
+
     void Awake()
     {
         targetTextBox = GetComponent<TMP_Text>();
-        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -55,12 +66,14 @@ public class TypewritterEffect : MonoBehaviour
 
         localPlayerMovement = FindAnyObjectByType<PlayerMovement>();
 
-        // Instancia BGM local para o jogador
         if (bgmPrefab != null)
         {
-            bgmInstance = Instantiate(bgmPrefab);
-            bgmInstance.SetActive(false);
-            DontDestroyOnLoad(bgmInstance);
+            if (GameObject.FindGameObjectWithTag("BGM") == null)
+            {
+                bgmInstance = Instantiate(bgmPrefab);
+                bgmInstance.SetActive(false);
+                DontDestroyOnLoad(bgmInstance);
+            }
         }
 
         SetText(testText[currentTextIndex]);
@@ -68,7 +81,6 @@ public class TypewritterEffect : MonoBehaviour
 
     private void OnNextTextRequested()
     {
-        // Se ainda está digitando, revela tudo
         if (isTyping)
         {
             StopCoroutine(typewritterCoroutine);

@@ -1,5 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class BackTeleportCategory : MonoBehaviour
 {
@@ -24,6 +25,16 @@ public class BackTeleportCategory : MonoBehaviour
     public Transform backAvanadeLocation;
     public Transform backOthersLocation;
 
+    [Header("Audio")]
+    public AudioClip openDoorSound;
+    public AudioClip closeDoorSound;
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player"))
@@ -33,14 +44,13 @@ public class BackTeleportCategory : MonoBehaviour
         if (pm == null)
             return;
 
-        // Só o dono do player executa o teleporte
         if (!pm.photonView.IsMine)
             return;
 
         Vector3 targetPos = GetTeleportPosition();
 
-        // Teleporta e sincroniza com todos
         pm.photonView.RPC("RPC_Teleport", RpcTarget.AllBuffered, targetPos);
+        PlayDoorOpenSound();
     }
 
     private Vector3 GetTeleportPosition()
@@ -67,5 +77,16 @@ public class BackTeleportCategory : MonoBehaviour
         }
 
         return Vector3.zero;
+    }
+
+    private void PlayDoorOpenSound()
+    {
+        audioSource.PlayOneShot(openDoorSound);
+    }
+
+    private void PlayDoorCloseSound()
+    {
+        audioSource.PlayOneShot(closeDoorSound);
+
     }
 }

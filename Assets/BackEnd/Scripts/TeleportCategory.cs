@@ -14,6 +14,8 @@ public class TeleportCategory : MonoBehaviour
         OUTROS
     }
 
+    public GameObject notAllowed;
+
     [Header("Category")]
     public ProductCategory productCategory;
 
@@ -25,11 +27,17 @@ public class TeleportCategory : MonoBehaviour
     public Transform avanadeLocation;
     public Transform othersLocation;
 
+    [Header("Audio")]
+    public AudioClip openDoorSound;
+    public AudioClip closeDoorSound;
+    private AudioSource audioSource;
+
     private PlayFabManager playfab;
 
     private void Start()
     {
         playfab = FindAnyObjectByType<PlayFabManager>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -42,12 +50,11 @@ public class TeleportCategory : MonoBehaviour
         if (pm == null || !pm.photonView.IsMine)
             return;
 
-        // Se a categoria for Avanade, precisa validar cargo ANTES de teleportar
         if (productCategory == ProductCategory.AVANADE)
         {
             StartCoroutine(playfab.GetUserRole(playfab.GetUserId(), (role) =>
             {
-                if (role == 3) // ADMIN / FUNCIONÁRIO
+                if (role == 3)
                 {
                     Debug.Log("🟩 Cargo permitido. Teleportando para Avanade.");
                     Vector3 pos = avanadeLocation.position;
@@ -56,15 +63,16 @@ public class TeleportCategory : MonoBehaviour
                 else
                 {
                     Debug.Log("🟥 Cargo NÃO permitido. Bloqueando entrada.");
+                    notAllowed.SetActive(true);
                 }
             }));
 
-            return; // evita continuar
+            return;
         }
 
-        // Categorias normais — teleporta direto
         Vector3 finalPos = GetTeleportPosition(productCategory);
         pm.photonView.RPC("RPC_Teleport", RpcTarget.AllBuffered, finalPos);
+        PlayDoorOpenSound();
     }
 
     private Vector3 GetTeleportPosition(ProductCategory category)
@@ -84,5 +92,16 @@ public class TeleportCategory : MonoBehaviour
             default:
                 return Vector3.zero;
         }
+    }
+
+    private void PlayDoorOpenSound()
+    {
+        audioSource.PlayOneShot(openDoorSound);
+    }
+
+    private void PlayDoorCloseSound()
+    {
+        audioSource.PlayOneShot(closeDoorSound);
+
     }
 }
