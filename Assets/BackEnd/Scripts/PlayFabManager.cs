@@ -145,6 +145,9 @@ public class PlayFabManager : MonoBehaviour
         }
 
         yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
+        
+        // Delay extra para garantir que o Photon está 100% pronto
+        yield return new WaitForSeconds(2f);
 
         Debug.Log("✅ Photon conectado. Entrando na sala...");
         gm.TryJoinOrCreateRoom();
