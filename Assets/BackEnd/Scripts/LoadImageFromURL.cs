@@ -66,6 +66,7 @@ public class LoadImageFromURL : MonoBehaviourPun
     {
         if (string.IsNullOrEmpty(imageUrl))
         {
+            targetUI.gameObject.SetActive(false);
             Debug.LogWarning("URL do avatar está vazia ou nula.");
             yield break;
         }

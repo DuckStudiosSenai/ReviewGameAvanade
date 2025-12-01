@@ -7,6 +7,9 @@ TagManager:
   - GameManager
   - Bullet
   - BGM
+  - Trash
+  - Food
+  - Card
   layers:
   - Default
   - TransparentFX
@@ -41,11 +44,14 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Sorting
+    uniqueID: 1315775191
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Sorting
-    uniqueID: 1315775191
+  - name: 
+    uniqueID: 1516856499
     locked: 0
   m_RenderingLayers:
   - Default
