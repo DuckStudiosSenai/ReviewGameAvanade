@@ -48,15 +48,6 @@ public class APIManager : MonoBehaviour
 
     public static string apiKey;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            StartCoroutine(GetAllProducts());
-            Debug.Log("🔄 Recarregando produtos...");
-        }
-    }
-
     private void Awake()
     {
         playfab = FindAnyObjectByType<PlayFabManager>();
@@ -634,6 +625,10 @@ public class APIManager : MonoBehaviour
 
         if (reviews != null && reviews.Count > 0)
         {
+            reviews = reviews
+                .OrderByDescending(r => r.createdAt)                                   
+                .ToList();
+
             Debug.Log($"🧩 Adicionando {reviews.Count} novos reviews...");
             foreach (var review in reviews)
             {
@@ -652,6 +647,7 @@ public class APIManager : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentReviewParent.GetComponent<RectTransform>());
     }
+
 
     private void PopulateLeaderboard(List<LeaderboardUser> users)
     {

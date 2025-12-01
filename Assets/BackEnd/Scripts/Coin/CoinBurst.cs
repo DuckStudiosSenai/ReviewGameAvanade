@@ -3,18 +3,17 @@ using UnityEngine;
 public class CoinBurst : MonoBehaviour
 {
     public GameObject coinPrefab;
-    public int coinAmount = 10;
     public float explosionForce = 5f;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            SpawnCoins();
+            SpawnCoins(5);
         }
     }
 
-    public void SpawnCoins()
+    public void SpawnCoins(int coinAmount)
     {
         for (int i = 0; i < coinAmount; i++)
         {

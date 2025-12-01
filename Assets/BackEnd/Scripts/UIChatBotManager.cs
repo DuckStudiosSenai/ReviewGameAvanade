@@ -17,6 +17,9 @@ public class UIChatBotManager : MonoBehaviour
     public AudioSource buttonAudioSource;
     public AudioSource teleportAudio;
 
+    [Header("Audio Clips")]
+    public AudioClip teleportClip;
+
     [Header("Locations")]
     public Transform secLocation;
     public Transform techLocation;
@@ -218,7 +221,7 @@ public class UIChatBotManager : MonoBehaviour
 
     public void PlayTeleportSound()
     {
-        teleportAudio.Play();
+        teleportAudio.PlayOneShot(teleportClip);
     }
 
     #endregion

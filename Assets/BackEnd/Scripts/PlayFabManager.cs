@@ -30,7 +30,7 @@ public class PlayFabManager : MonoBehaviour
 
     private string cachedUserName;
     private GameManager gm;
-    private int userId;
+    public int userId;
 
     private void Awake()
     {
@@ -40,6 +40,10 @@ public class PlayFabManager : MonoBehaviour
 
     void Start()
     {
+        userId = PlayerPrefs.GetInt("UserId");
+        PhotonNetwork.LocalPlayer.CustomProperties["userIdPhoton"] = GetUserId();
+        PhotonNetwork.LocalPlayer.SetCustomProperties(PhotonNetwork.LocalPlayer.CustomProperties);
+
         PhotonNetwork.AutomaticallySyncScene = false;
         gm = GetComponent<GameManager>();
     }
@@ -53,6 +57,9 @@ public class PlayFabManager : MonoBehaviour
             StartCoroutine(GetUserAndLogin(userId));
             this.userId = userId;
             PlayerPrefs.SetInt("UserId", userId);
+            PhotonNetwork.LocalPlayer.CustomProperties["userIdPhoton"] = GetUserId();
+            PhotonNetwork.LocalPlayer.SetCustomProperties(PhotonNetwork.LocalPlayer.CustomProperties);
+
         }
         else
         {
@@ -136,7 +143,7 @@ public class PlayFabManager : MonoBehaviour
 
     IEnumerator ActivateGameManagerDelayed()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         if (!PhotonNetwork.IsConnected)
         {
@@ -144,7 +151,7 @@ public class PlayFabManager : MonoBehaviour
             PhotonNetwork.ConnectUsingSettings();
         }
 
-        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
+        yield return new WaitForSeconds(2f);
 
         Debug.Log("✅ Photon conectado. Entrando na sala...");
         gm.TryJoinOrCreateRoom();

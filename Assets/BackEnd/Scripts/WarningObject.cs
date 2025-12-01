@@ -43,12 +43,13 @@ public class WarningObject : MonoBehaviour
             }
 
             foreach (var cr in canvasRenderers)
-                cr.SetAlpha(0f); 
-        }
+                cr.SetAlpha(0f);
 
-        suggestUi = collision.gameObject.transform.Find("PlayerCanvas/Suggest/PressE").gameObject;
-        suggestUi.SetActive(true);
+            suggestUi = collision.transform.Find("PlayerCanvas/Suggest/PressE").gameObject;
+            suggestUi.SetActive(true);
+        }
     }
+
 
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -70,8 +71,9 @@ public class WarningObject : MonoBehaviour
 
             foreach (var cr in canvasRenderers)
                 cr.SetAlpha(1f);
-        }
 
-        suggestUi.SetActive(false);
+            suggestUi.SetActive(false);
+        }
     }
+
 }

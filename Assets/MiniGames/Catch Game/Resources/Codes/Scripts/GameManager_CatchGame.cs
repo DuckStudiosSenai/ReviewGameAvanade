@@ -50,24 +50,35 @@ public class GameManager_CatchGame : MonoBehaviour
         if (timeElapsed >= 180f)
         {
             score = 10;
-        }else if (timeElapsed >= 150f)
+        }
+        else if (timeElapsed >= 150f)
         {
             score = 6;
-        }else if (timeElapsed >= 120f)
+        }
+        else if (timeElapsed >= 120f)
         {
             score = 4;
-        }else if (timeElapsed >= 90f)
+        }
+        else if (timeElapsed >= 90f)
         {
             player.moveSpeed = 11f;
             delayToSpawnFood = 0.5f;
-        } else if (timeElapsed >= 60f)
+        }
+        else if (timeElapsed >= 60f)
         {
             player.moveSpeed = 9f;
             delayToSpawnFood = 1f;
-        } else if (timeElapsed >= 30f)
+        }
+        else if (timeElapsed >= 30f)
         {
             player.moveSpeed = 7f;
             delayToSpawnFood = 1.5f;
+        }
+        else if (timeElapsed >= 0f)
+        {
+            player.moveSpeed = 5f;
+            delayToSpawnFood = 2f;
+            score = 2;
         }
     }
 }

@@ -28,6 +28,9 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
     public AudioSource stepsAudio;
     public AudioClip[] footstepClips;
 
+    [Header("Canvas")]
+    public GameObject playerCanvas;
+
 
     void Awake()
     {
@@ -39,10 +42,14 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 
     void Start()
     {
+        playerCanvas.SetActive(photonView.IsMine);
+
         rb.gravityScale = 0;
         rb.freezeRotation = true;
 
         rb.interpolation = RigidbodyInterpolation2D.None;
+
+        bodyAnimator.SetTrigger("IdleDown");
 
         if (photonView.IsMine)
             photonView.RPC(nameof(SetInitialNetworkPosition), RpcTarget.OthersBuffered, rb.position);

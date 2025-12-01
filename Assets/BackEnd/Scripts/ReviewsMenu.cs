@@ -9,107 +9,106 @@ public class ReviewsMenu : MonoBehaviour
     public Transform contentParent;
     public GameObject prefab;
     public GameObject menu;
-    //public TextMeshProUGUI productName;
 
     private APIManager api;
     private GameUIManager uiManager;
 
-    private bool isAbleToOpen = false;
+    private bool isAbleToOpen = false; // só TRUE para o jogador local
 
     private void Start()
     {
         api = GameObject.FindGameObjectWithTag("GameManager")
             .GetComponent<APIManager>();
+
         uiManager = FindAnyObjectByType<GameUIManager>();
-        enabled = false;
+
+        enabled = false; // Update começa desativado
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log($"🧠 [{name}] pressionou E (isAbleToOpen={isAbleToOpen}, menuOpen={uiManager.isMenuOpen})");
             OpenMenu();
-        }
     }
 
     private IEnumerator GetReviews()
     {
         yield return StartCoroutine(api.GetAllReviews());
-        Debug.Log("✅ [{name}] carregou os produtos da categoria com sucesso!");
+        Debug.Log($"✅ [{name}] reviews carregados!");
     }
 
     public void OpenMenu()
     {
         if (!isAbleToOpen)
         {
-            Debug.LogWarning($"⚠️ [{name}] não pode abrir menu (fora da área).");
+            Debug.LogWarning($"⚠️ [{name}] não pode abrir o menu (fora da área).");
             return;
         }
 
         if (uiManager.isMenuOpen)
         {
-
-            CloseAllMenus();
+            CloseMenu();
             return;
         }
 
-        CloseAllMenus();
+        // Fecha apenas o próprio menu antes de abrir
+        CloseMenu();
 
         api.DeleteChildren();
         menu.SetActive(true);
         uiManager.isMenuOpen = true;
+
         StartCoroutine(GetReviews());
 
-        foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
-        {
-            if (p.photonView.IsMine)
-            {
-                p.isTyping = true;
-                break;
-            }
-        }
+        // Travar movimento somente do player local
+        SetLocalPlayerTyping(true);
 
-        Debug.Log($"✅ [{name}] abriu o menu com sucesso!");
+        Debug.Log($"📂 [{name}] menu aberto!");
     }
 
-    private void CloseAllMenus()
+    public void CloseMenu()
     {
-        foreach (var other in FindObjectsByType<ReviewsMenu>(FindObjectsSortMode.None))
-        {
-            if (other.menu != null)
-                other.menu.SetActive(false);
-        }
-
+        menu.SetActive(false);
         uiManager.isMenuOpen = false;
 
+        SetLocalPlayerTyping(false);
+    }
+
+    private void SetLocalPlayerTyping(bool state)
+    {
         foreach (var p in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
         {
-            if (p.photonView.IsMine)
+            if (p.photonView != null && p.photonView.IsMine)
             {
-                p.isTyping = false;
-                break;
+                p.isTyping = state;
+                return;
             }
         }
     }
 
+    // Somente ativa o menu para o jogador local
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        var pv = collision.GetComponentInParent<Photon.Pun.PhotonView>();
+
+        if (pv != null && pv.IsMine)
         {
             isAbleToOpen = true;
-            enabled = true;
-            Debug.Log($"🔓 [{name}] pode abrir o menu (pressione E).");
+            enabled = true; // habilita Update
+            Debug.Log($"🔓 [{name}] (LOCAL PLAYER) pode abrir o menu.");
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        var pv = collision.GetComponentInParent<Photon.Pun.PhotonView>();
+
+        if (pv != null && pv.IsMine)
         {
             isAbleToOpen = false;
-            enabled = false;
-            Debug.Log($"🔒 [{name}] saiu da área, desativando Update.");
+            enabled = false; // desabilita Update
+            CloseMenu();
+            Debug.Log($"🔒 [{name}] (LOCAL PLAYER) saiu da área.");
         }
     }
 }

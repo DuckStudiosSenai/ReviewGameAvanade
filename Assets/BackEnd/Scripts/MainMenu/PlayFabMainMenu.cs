@@ -1,0 +1,175 @@
+﻿using UnityEngine;
+using PlayFab;
+using PlayFab.ClientModels;
+using System;
+using System.Collections;
+using UnityEngine.Networking;
+using TMPro;
+using Photon.Pun;
+
+public class PlayFabMainMenu : MonoBehaviour
+{
+    [Header("PlayFab Config")]
+    public string titleId = "17FF18";
+
+    [Header("API Config")]
+    public string apiBaseUrl = "https://reviewgameapi.squareweb.app";
+
+    private string cachedUserName;
+    private GameManagerMainMenu gm;
+    public int userId;
+
+    private void Awake()
+    {
+        if (!string.IsNullOrEmpty(titleId))
+            PlayFabSettings.staticSettings.TitleId = titleId;
+    }
+
+    void Start()
+    {
+        userId = PlayerPrefs.GetInt("UserId");
+        PhotonNetwork.LocalPlayer.CustomProperties["userIdPhoton"] = GetUserId();
+        PhotonNetwork.LocalPlayer.SetCustomProperties(PhotonNetwork.LocalPlayer.CustomProperties);
+
+        PhotonNetwork.AutomaticallySyncScene = false;
+        gm = GetComponent<GameManagerMainMenu>();
+    }
+
+    public void OnSiteAuth(string userIdString)
+    {
+        Debug.Log("[PlayFabManager] Recebido ID: " + userIdString);
+
+        if (int.TryParse(userIdString, out int userId))
+        {
+            StartCoroutine(GetUserAndLogin(userId));
+            this.userId = userId;
+            PlayerPrefs.SetInt("UserId", userId);
+            PhotonNetwork.LocalPlayer.CustomProperties["userIdPhoton"] = GetUserId();
+            PhotonNetwork.LocalPlayer.SetCustomProperties(PhotonNetwork.LocalPlayer.CustomProperties);
+
+        }
+        else
+        {
+            Debug.LogError("❌ ID inválido recebido: " + userIdString);
+        }
+    }
+
+    IEnumerator GetUserAndLogin(int userId)
+    {
+        string url = $"{apiBaseUrl}/api/Users/{userId}";
+        Debug.Log("🔍 Buscando usuário no banco: " + url);
+
+        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("❌ Erro ao buscar usuário: " + www.error);
+                yield break;
+            }
+
+            string json = www.downloadHandler.text;
+            Debug.Log("📦 Resposta da API: " + json);
+
+            UserFromAPI user = JsonUtility.FromJson<UserFromAPI>(json);
+            if (user == null || string.IsNullOrEmpty(user.email))
+            {
+                Debug.LogError("⚠️ Usuário não encontrado ou sem senha válida.");
+                yield break;
+            }
+
+            cachedUserName = user.name;
+            Debug.Log($"👤 Usuário encontrado: {cachedUserName} (ID: {user.id})");
+
+            LoginOrRegister(user.id.ToString(), user.email);
+        }
+    }
+
+    void LoginOrRegister(string username, string password)
+    {
+        var loginRequest = new LoginWithPlayFabRequest
+        {
+            Username = "userId" + username,
+            Password = password
+        };
+
+        PlayFabClientAPI.LoginWithPlayFab(loginRequest,
+            result =>
+            {
+                Debug.Log($"✅ Login PlayFab bem-sucedido! PlayFabId: {result.PlayFabId}");
+                PhotonNetwork.NickName = cachedUserName;
+                StartCoroutine(ActivateGameManagerDelayed());
+            },
+            error =>
+            {
+                Debug.LogWarning($"⚠️ Login falhou ({error.ErrorMessage}), tentando criar conta...");
+
+                var registerRequest = new RegisterPlayFabUserRequest
+                {
+                    Username = "userId" + username,
+                    Password = password,
+                    RequireBothUsernameAndEmail = false
+                };
+
+                PlayFabClientAPI.RegisterPlayFabUser(registerRequest,
+                    registerResult =>
+                    {
+                        Debug.Log($"🟢 Conta criada com sucesso! PlayFabId: {registerResult.PlayFabId}");
+                        PhotonNetwork.NickName = cachedUserName;
+                        StartCoroutine(ActivateGameManagerDelayed());
+                    },
+                    registerError =>
+                    {
+                        Debug.LogError("❌ Falha ao criar conta: " + registerError.GenerateErrorReport());
+                    }
+                );
+            }
+        );
+    }
+
+    IEnumerator ActivateGameManagerDelayed()
+    {
+        yield return new WaitForSeconds(2f);
+
+        if (!PhotonNetwork.IsConnected)
+        {
+            Debug.Log("🔌 Conectando ao Photon...");
+            PhotonNetwork.ConnectUsingSettings();
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        Debug.Log("✅ Photon conectado. Entrando na sala...");
+        gm.TryJoinOrCreateRoom();
+    }
+    public int GetUserId()
+    {
+        return userId;
+    }
+
+    public IEnumerator GetUserRole(int userId, System.Action<int> callback)
+    {
+        string url = $"{apiBaseUrl}/api/Users/{userId}";
+
+        using (UnityWebRequest req = UnityWebRequest.Get(url))
+        {
+            req.SetRequestHeader("Content-Type", "application/json");
+
+            yield return req.SendWebRequest();
+
+            if (req.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erro ao buscar usuário: " + req.error);
+                callback?.Invoke(-1);
+                yield break;
+            }
+
+            string json = req.downloadHandler.text;
+
+            UserFromAPI user = JsonUtility.FromJson<UserFromAPI>(json);
+
+            callback?.Invoke(user.role);
+        }
+    }
+}

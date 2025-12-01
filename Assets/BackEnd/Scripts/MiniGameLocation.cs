@@ -17,6 +17,14 @@ public class MiniGameLocation : MonoBehaviourPunCallbacks
     private PhotonView localPlayerPV;
     public MiniGameLocationType locationType;
 
+    public AudioClip arcadeSound;
+    private AudioSource source;
+
+    private void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
+
     private void Update()
     {
         if (!isAbleToEnter || localPlayerPV == null || !localPlayerPV.IsMine)
@@ -25,7 +33,10 @@ public class MiniGameLocation : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.E))
         {
             SavePlayerLocation();
-            GoToPrivateScene();
+            source.PlayOneShot(arcadeSound);
+
+            if (source.isPlaying)
+                Invoke("GoToPrivateScene", arcadeSound.length);
         }
     }
 

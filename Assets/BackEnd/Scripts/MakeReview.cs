@@ -10,12 +10,18 @@ public class MakeReview : MonoBehaviour
 
     [Header("References")]
     public GameObject reviewMenu;
+    public GameObject productsMenu;
     public TextMeshProUGUI productName;
     public TMP_InputField reviewText;
     public TMP_Dropdown reviewDropdown;
     public Button submitButton;
     public Button closeButton;
     public APIManager apiManager;
+    
+    [Header("Audio")]    
+    public AudioSource audioSource;
+    public AudioClip coinSound;
+    public AudioClip submitReviewSound;
 
     [Header("Configuração de IDs")]
     private int userId;
@@ -23,10 +29,24 @@ public class MakeReview : MonoBehaviour
 
     private int selectedRating = 1;
     private PhotonView localPlayerView;
+    private PointsManager pointsManager;
+
+    private PlayerMovement localPlayerMovement;
+    private CoinBurst coinBurst;
+    private PlayerCoinText playerCoinText;
+    private Animator animator;
+
+    private PhotonView pv;
 
     void Start()
     {
+        pv = GetComponent<PhotonView>();
+
+        if (!pv.IsMine) return;
+
         reviewMenu.SetActive(false);
+
+        pointsManager = FindAnyObjectByType<PointsManager>();
 
         StartCoroutine(WaitForLocalPlayer());
     }
@@ -40,6 +60,10 @@ public class MakeReview : MonoBehaviour
                 if (view.IsMine && view.CompareTag("Player"))
                 {
                     localPlayerView = view;
+                    coinBurst = localPlayerView.GetComponent<CoinBurst>();
+                    localPlayerMovement = localPlayerView.GetComponent<PlayerMovement>();
+                    playerCoinText = localPlayerView.gameObject.transform.Find("PlayerCanvas/Coins/Counter").gameObject.GetComponent<PlayerCoinText>();
+                    animator = localPlayerView.gameObject.transform.Find("PlayerCanvas/Coins/Image").gameObject.GetComponent<Animator>();
                     break;
                 }
             }
@@ -109,7 +133,28 @@ public class MakeReview : MonoBehaviour
         StartCoroutine(apiManager.CreateReview(reviewData));
 
         OpenReviewMenu(false, 0, userId, null);
+
+        audioSource.PlayOneShot(submitReviewSound);
+
+        productsMenu.SetActive(false);
+
+        localPlayerMovement.EnableMovement();
+
+        if (localPlayerView.IsMine)
+        {
+            coinBurst.SpawnCoins(5);
+        }
+
+        pointsManager.AddPoints(userId, 5);
+        
+        StartCoroutine(LoadCoinsDelayed());
     }
 
-
+    private IEnumerator LoadCoinsDelayed()
+    {
+        yield return new WaitForSeconds(3f);
+        playerCoinText.LoadCoins();
+        animator.SetTrigger("Flip");
+        audioSource.PlayOneShot(coinSound);
+    }
 }

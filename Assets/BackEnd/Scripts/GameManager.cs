@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private PointsManager pointsManager;
 
+    [Header("Background Music")]
+    public GameObject bgmPrefab;
+    private GameObject bgmInstance;
+
     private void Start()
     {
         pointsManager = FindAnyObjectByType<PointsManager>();
@@ -26,8 +30,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PlayerPrefs.HasKey("px"))
         {
             PlayerLastLocation();
-            PhotonNetwork.ConnectUsingSettings();
+            
         }
+
+        PhotonNetwork.ConnectUsingSettings();
     }
 
     public override void OnConnectedToMaster()
@@ -78,7 +84,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log($"🎮 Entrou na sala: {PhotonNetwork.CurrentRoom.Name}");
 
-        bool isFirstTime = true; //CheckFirstTime();
+        bool isFirstTime = true;
         if (isFirstTime)
         {
             Debug.Log("✨ PRIMEIRA VEZ DO JOGADOR!");
@@ -126,7 +132,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogWarning("⚠️ O jogador já possui um objeto instanciado. Ignorando duplicata.");
         }
 
-        pointsManager.LoadPoints();
+        if (bgmPrefab != null)
+        {
+            if (GameObject.FindGameObjectWithTag("BGM") == null)
+            {
+                bgmInstance = Instantiate(bgmPrefab);
+                bgmInstance.SetActive(true);
+                DontDestroyOnLoad(bgmInstance);
+            }
+        }
 
         PlayerPrefs.DeleteKey("px");
         PlayerPrefs.DeleteKey("py");

@@ -6,50 +6,11 @@ using System.Text;
 using System;
 using TMPro;
 
-[System.Serializable]
-public class UserUpdateDto
-{
-    public int? points;
-    public int? currentpoints;
-}
-
 public class PointsManager : MonoBehaviour
 {
-    public TextMeshProUGUI coinsText;
-
-    private PlayFabManager playfab;
-    private APIManager api;
-
     private const string baseUrl = "https://reviewgameapi.squareweb.app/api";
-    private void Start()
-    {
-        playfab = FindAnyObjectByType<PlayFabManager>();
-        api = FindAnyObjectByType<APIManager>();
 
-        
-    }
-
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("Test Points Activated");
-            StartCoroutine(GetUserPoints(
-                userId: 1,
-                onSuccess: (points) =>
-                {
-                    Debug.Log("Pontos do jogador: " + points);
-                },
-                onError: (err) =>
-                {
-                    Debug.LogError("Erro ao buscar pontos: " + err);
-                }
-            ));
-        }
-    }
-
-    public IEnumerator GetUserPoints(int userId, System.Action<int> onSuccess, System.Action<string> onError)
+    public IEnumerator GetUserPoints(int userId, Action<int, int> onSuccess, Action<string> onError)
     {
         string url = $"{baseUrl}/Users/{userId}";
 
@@ -68,7 +29,7 @@ public class PointsManager : MonoBehaviour
             try
             {
                 UserDto user = JsonUtility.FromJson<UserDto>(request.downloadHandler.text);
-                onSuccess?.Invoke(user.currentpoints);
+                onSuccess?.Invoke(user.points, user.currentpoints);
             }
             catch (System.Exception e)
             {
@@ -81,6 +42,7 @@ public class PointsManager : MonoBehaviour
                                     Action onSuccess, Action<string> onError)
     {
         string url = $"{baseUrl}/Users/{userId}";
+        Debug.Log($"[UpdateUserPoints] URL: {url}");
 
         UserUpdateDto update = new UserUpdateDto
         {
@@ -88,41 +50,53 @@ public class PointsManager : MonoBehaviour
             currentpoints = currentPoints
         };
 
-        string json = JsonUtility.ToJson(update);
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(update);
+        Debug.Log($"[UpdateUserPoints] JSON ENVIADO: {json}");
 
-        using (UnityWebRequest request = UnityWebRequest.Put(url, json))
+        byte[] body = Encoding.UTF8.GetBytes(json);
+
+        using (UnityWebRequest request = new UnityWebRequest(url, "PUT"))
         {
-            request.SetRequestHeader("Content-Type", "application/json");
-            request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+            request.uploadHandler = new UploadHandlerRaw(body);
             request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
 
             yield return request.SendWebRequest();
 
+            Debug.Log($"[UpdateUserPoints] Status Code: {request.responseCode}");
+            Debug.Log($"[UpdateUserPoints] Response: {request.downloadHandler.text}");
+
             if (request.result != UnityWebRequest.Result.Success)
             {
+                Debug.LogError($"[UpdateUserPoints] ERRO: {request.error}");
+                Debug.LogError($"[UpdateUserPoints] Response de erro: {request.downloadHandler.text}");
+
                 onError?.Invoke(request.error);
                 yield break;
             }
 
             onSuccess?.Invoke();
         }
-    }
 
+        Debug.Log("JSON enviado: " + json);
+
+    }
     public void AddPoints(int userId, int amount)
     {
         StartCoroutine(GetUserPoints(
             userId,
-            onSuccess: (currentPoints) =>
+            onSuccess: (points, currentPoints) =>
             {
-                int newPoints = currentPoints + amount;
+                int newCurrentPoints = currentPoints + amount;
+                int newTotalPoints = points + amount;
 
                 StartCoroutine(UpdateUserPoints(
                     userId,
-                    points: null,
-                    currentPoints: newPoints,
+                    points: newTotalPoints,
+                    currentPoints: newCurrentPoints,
                     onSuccess: () =>
                     {
-                        Debug.Log($"✅ {amount} pontos adicionados ao usuário {userId}");
+                        Debug.Log($"✅ {amount} pontos adicionados ao usuário {userId}. Total: {newTotalPoints}, Current: {newCurrentPoints}");
                     },
                     onError: (err) =>
                     {
@@ -141,17 +115,17 @@ public class PointsManager : MonoBehaviour
     {
         StartCoroutine(GetUserPoints(
             userId,
-            onSuccess: (currentPoints) =>
+            onSuccess: (_, currentPoints) =>
             {
-                int newPoints = Mathf.Max(0, currentPoints - amount);
+                int newCurrentPoints = Mathf.Max(0, currentPoints - amount);
 
                 StartCoroutine(UpdateUserPoints(
                     userId,
                     points: null,
-                    currentPoints: newPoints,
+                    currentPoints: newCurrentPoints,
                     onSuccess: () =>
                     {
-                        Debug.Log($"❌ {amount} pontos removidos do usuário {userId}");
+                        Debug.Log($"❌ {amount} pontos removidos do usuário {userId}. CurrentPoints atualizado: {newCurrentPoints}");
                     },
                     onError: (err) =>
                     {
@@ -165,21 +139,20 @@ public class PointsManager : MonoBehaviour
             }
         ));
     }
+}
 
-    public void LoadPoints()
-    {
-        StartCoroutine(GetUserPoints(
-                userId: playfab.GetUserId(),
-                onSuccess: (points) =>
-                {
-                    Debug.Log("Pontos do jogador: " + points);
-                    coinsText.text = points.ToString();
-                },
-                onError: (err) =>
-                {
-                    Debug.LogError("Erro ao buscar pontos: " + err);
-                }
-            ));
-    }
+[Serializable]
+public class UserDto
+{
+    public int id;
+    public string username;
+    public int points;
+    public int currentpoints;
+}
 
+[Serializable]
+public class UserUpdateDto
+{
+    public int? points;
+    public int? currentpoints;
 }

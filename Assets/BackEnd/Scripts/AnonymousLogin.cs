@@ -6,6 +6,13 @@ using Photon.Pun;
 public class AnonymousLogin : MonoBehaviour
 {
     private bool isLogged = false;
+    private PlayFabManager playFab;
+
+    private void Awake()
+    {
+        playFab = FindAnyObjectByType<PlayFabManager>();
+        playFab.userId = 1;
+    }
 
     void Update()
     {
@@ -21,9 +28,11 @@ public class AnonymousLogin : MonoBehaviour
 
         var request = new LoginWithCustomIDRequest
         {
-            CustomId = System.Guid.NewGuid().ToString(),
-            CreateAccount = true
+            CustomId = "1",
+            
+            CreateAccount = false
         };
+        PlayerPrefs.SetInt("UserId", 1);
 
         PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnLoginError);
     }

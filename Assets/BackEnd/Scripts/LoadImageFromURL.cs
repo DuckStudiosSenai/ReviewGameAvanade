@@ -1,10 +1,11 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Networking;
+﻿using Photon.Pun;
 using System.Collections;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
-public class LoadImageFromURL : MonoBehaviour
+public class LoadImageFromURL : MonoBehaviourPun
 {
     [System.Serializable]
     public class UserPublicDto
@@ -32,8 +33,17 @@ public class LoadImageFromURL : MonoBehaviour
     private void Start()
     {
         playfab = FindAnyObjectByType<PlayFabManager>();
-
-        StartCoroutine(GetUserAndLoadAvatar(playfab.GetUserId()));
+        
+        if (!photonView.IsMine)
+        {
+            int otherUserId = (int)photonView.Owner.CustomProperties["userIdPhoton"];
+            StartCoroutine(GetUserAndLoadAvatar(otherUserId));
+        }
+        else
+        {
+            int myUserId = playfab.GetUserId();
+            StartCoroutine(GetUserAndLoadAvatar(myUserId));
+        }
     }
 
     void LateUpdate()
