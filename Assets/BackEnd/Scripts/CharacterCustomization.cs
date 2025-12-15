@@ -19,6 +19,13 @@ public class CharacterCustomization : MonoBehaviourPunCallbacks
     public RuntimeAnimatorController[] clothesOptions;
     public RuntimeAnimatorController[] backAccessoryOptions;
 
+    [Header("Shop Items")]
+    public ShopCosmeticItem[] bodyShopItems;
+    public ShopCosmeticItem[] hairShopItems;
+    public ShopCosmeticItem[] eyesShopItems;
+    public ShopCosmeticItem[] clothesShopItems;
+    public ShopCosmeticItem[] backAccessoryShopItems;
+
     private int bodyIndex = 0;
     private int hairIndex = 0;
     private int eyesIndex = 0;
@@ -36,6 +43,13 @@ public class CharacterCustomization : MonoBehaviourPunCallbacks
         if (pv.IsMine)
         {
             LoadCustomization();
+
+            AddShopItems(ref bodyOptions, bodyShopItems);
+            AddShopItems(ref hairOptions, hairShopItems);
+            AddShopItems(ref eyesOptions, eyesShopItems);
+            AddShopItems(ref clothesOptions, clothesShopItems);
+            AddShopItems(ref backAccessoryOptions, backAccessoryShopItems);
+
             ApplyLoadedOptions();
             SendCustomizationToOthers();
         }
@@ -88,16 +102,36 @@ public class CharacterCustomization : MonoBehaviourPunCallbacks
     public void ApplyLoadedOptions()
     {
         if (bodyOptions.Length > 0)
+        {
+            bodyIndex = ClampIndex(bodyIndex, bodyOptions.Length);
             bodyAnimator.runtimeAnimatorController = bodyOptions[bodyIndex];
+        }
+
         if (hairOptions.Length > 0)
+        {
+            hairIndex = ClampIndex(hairIndex, hairOptions.Length);
             hairAnimator.runtimeAnimatorController = hairOptions[hairIndex];
+        }
+
         if (eyesOptions.Length > 0)
+        {
+            eyesIndex = ClampIndex(eyesIndex, eyesOptions.Length);
             eyesAnimator.runtimeAnimatorController = eyesOptions[eyesIndex];
+        }
+
         if (clothesOptions.Length > 0)
+        {
+            clothesIndex = ClampIndex(clothesIndex, clothesOptions.Length);
             clothesAnimator.runtimeAnimatorController = clothesOptions[clothesIndex];
+        }
+
         if (backAccessoryOptions.Length > 0)
+        {
+            backAccessoryIndex = ClampIndex(backAccessoryIndex, backAccessoryOptions.Length);
             backAccessoryAnimator.runtimeAnimatorController = backAccessoryOptions[backAccessoryIndex];
+        }
     }
+
 
     // ----------------- PHOTON SYNC -----------------
 
@@ -154,4 +188,36 @@ public class CharacterCustomization : MonoBehaviourPunCallbacks
 
     public void NextBackAccessory() { backAccessoryIndex = (backAccessoryIndex + 1) % backAccessoryOptions.Length; backAccessoryAnimator.runtimeAnimatorController = backAccessoryOptions[backAccessoryIndex]; SendCustomizationToOthers(); }
     public void PreviousBackAccessory() { backAccessoryIndex = (backAccessoryIndex - 1 + backAccessoryOptions.Length) % backAccessoryOptions.Length; backAccessoryAnimator.runtimeAnimatorController = backAccessoryOptions[backAccessoryIndex]; SendCustomizationToOthers(); }
+
+    void AddShopItems(
+    ref RuntimeAnimatorController[] options,
+    ShopCosmeticItem[] shopItems
+)
+    {
+        var list = new System.Collections.Generic.List<RuntimeAnimatorController>(options);
+
+        foreach (var item in shopItems)
+        {
+            if (PlayerHasShopItem(item.itemId))
+            {
+                list.Add(item.animator);
+            }
+        }
+
+        options = list.ToArray();
+    }
+
+    bool PlayerHasShopItem(int itemId)
+    {
+        // 🔴 IMPLEMENTAR DEPOIS
+        // Ex: backend / cache / inventário
+        return false;
+    }
+
+    int ClampIndex(int index, int length)
+    {
+        if (length <= 0) return 0;
+        return Mathf.Clamp(index, 0, length - 1);
+    }
+
 }

@@ -1358,6 +1358,12 @@ MonoBehaviour:
   - {fileID: 22100000, guid: cea3bb2ebef470c4eba0e74929d5bc77, type: 2}
   - {fileID: 22100000, guid: 346452fac0497d845897a3c8c0e94fc8, type: 2}
   backAccessoryOptions: []
+  bodyShopItems: []
+  hairShopItems:
+  - {fileID: 11400000, guid: ad3f5b5797a16d1409d0e0ac6f3570fa, type: 2}
+  eyesShopItems: []
+  clothesShopItems: []
+  backAccessoryShopItems: []
 --- !u!114 &811379033
 MonoBehaviour:
   m_ObjectHideFlags: 0
