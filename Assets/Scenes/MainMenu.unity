@@ -1352,7 +1352,7 @@ MonoBehaviour:
   - {fileID: 22100000, guid: c23a032f382bfc34795ea5b0985248db, type: 2}
   hairOptions:
   - {fileID: 22100000, guid: 5ecdde4f6bbf9d34f90a2bcded72f326, type: 2}
-  - {fileID: 22100000, guid: 6a6f13af5799a5345b8927c36d08e6ba, type: 2}
+  - {fileID: 22100000, guid: 6c89f80c52a559244842a179b379aef8, type: 2}
   eyesOptions: []
   clothesOptions:
   - {fileID: 22100000, guid: cea3bb2ebef470c4eba0e74929d5bc77, type: 2}
@@ -1360,7 +1360,7 @@ MonoBehaviour:
   backAccessoryOptions: []
   bodyShopItems: []
   hairShopItems:
-  - {fileID: 11400000, guid: ad3f5b5797a16d1409d0e0ac6f3570fa, type: 2}
+  - {fileID: 11400000, guid: 718a282d12bfb8446bd21944d96dbe15, type: 2}
   eyesShopItems: []
   clothesShopItems: []
   backAccessoryShopItems: []

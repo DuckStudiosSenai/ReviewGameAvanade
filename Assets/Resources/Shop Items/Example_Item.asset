@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemShop
   itemID: 1
   itemIcon: {fileID: -551609191, guid: e428f84fdb545004b9ae5d98c2ec899f, type: 3}
-  itemIconScale: 0.7
+  itemIconScale: 0.8
   itemName: Example
   itemPrice: 0
   itemDescription: 

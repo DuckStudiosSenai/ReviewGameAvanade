@@ -2,6 +2,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterCustomization : MonoBehaviourPunCallbacks
 {
@@ -35,31 +36,77 @@ public class CharacterCustomization : MonoBehaviourPunCallbacks
     private int lastHash;
     private PhotonView pv;
 
+    private int userId;
+
     void Start()
     {
-        pv = GetComponent<PhotonView>();
-
-        Debug.Log("PV: " + pv);
-        if (pv.IsMine)
+        if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            LoadCustomization();
-
-            AddShopItems(ref bodyOptions, bodyShopItems);
-            AddShopItems(ref hairOptions, hairShopItems);
-            AddShopItems(ref eyesOptions, eyesShopItems);
-            AddShopItems(ref clothesOptions, clothesShopItems);
-            AddShopItems(ref backAccessoryOptions, backAccessoryShopItems);
-
-            ApplyLoadedOptions();
-            SendCustomizationToOthers();
+            userId = FindAnyObjectByType<PlayFabMainMenu>().GetUserId();
         }
         else
         {
+            userId = FindAnyObjectByType<PlayFabManager>().GetUserId();
+        }
+        Debug.Log("UserId: " + userId);
+
+        pv = GetComponent<PhotonView>();
+        Debug.Log("PV: " + pv);
+
+        if (!pv.IsMine)
+        {
             ApplyRemoteCustomization(pv.Owner.CustomProperties);
+            bodyAnimator.SetTrigger("IdleDown");
+            return;
         }
 
-        bodyAnimator.SetTrigger("IdleDown");
+        LoadCustomization();
+
+        int pending = 5; // body, hair, eyes, clothes, backAccessory
+
+        void OnCategoryLoaded()
+        {
+            pending--;
+
+            if (pending == 0)
+            {
+                ApplyLoadedOptions();
+                SendCustomizationToOthers();
+                bodyAnimator.SetTrigger("IdleDown");
+            }
+        }
+
+        AddShopItems(bodyOptions, bodyShopItems, result =>
+        {
+            bodyOptions = result;
+            OnCategoryLoaded();
+        });
+
+        AddShopItems(hairOptions, hairShopItems, result =>
+        {
+            hairOptions = result;
+            OnCategoryLoaded();
+        });
+
+        AddShopItems(eyesOptions, eyesShopItems, result =>
+        {
+            eyesOptions = result;
+            OnCategoryLoaded();
+        });
+
+        AddShopItems(clothesOptions, clothesShopItems, result =>
+        {
+            clothesOptions = result;
+            OnCategoryLoaded();
+        });
+
+        AddShopItems(backAccessoryOptions, backAccessoryShopItems, result =>
+        {
+            backAccessoryOptions = result;
+            OnCategoryLoaded();
+        });
     }
+
 
     void Update()
     {
@@ -148,7 +195,7 @@ public class CharacterCustomization : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(data);
     }
 
-    public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, Hashtable changedProps)  
+    public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, Hashtable changedProps)
     {
         if (pv.Owner != targetPlayer) return;
 
@@ -190,29 +237,42 @@ public class CharacterCustomization : MonoBehaviourPunCallbacks
     public void PreviousBackAccessory() { backAccessoryIndex = (backAccessoryIndex - 1 + backAccessoryOptions.Length) % backAccessoryOptions.Length; backAccessoryAnimator.runtimeAnimatorController = backAccessoryOptions[backAccessoryIndex]; SendCustomizationToOthers(); }
 
     void AddShopItems(
-    ref RuntimeAnimatorController[] options,
-    ShopCosmeticItem[] shopItems
-)
+     RuntimeAnimatorController[] baseOptions,
+     ShopCosmeticItem[] shopItems,
+     System.Action<RuntimeAnimatorController[]> onComplete
+ )
     {
-        var list = new System.Collections.Generic.List<RuntimeAnimatorController>(options);
+        var list = new System.Collections.Generic.List<RuntimeAnimatorController>(baseOptions);
+
+        if (shopItems.Length == 0)
+        {
+            onComplete?.Invoke(list.ToArray());
+            return;
+        }
+
+        int pending = shopItems.Length;
 
         foreach (var item in shopItems)
         {
-            if (PlayerHasShopItem(item.itemId))
+            ShopManager.PlayerHasShopItem(item.itemId, userId, owns =>
             {
-                list.Add(item.animator);
-            }
+                if (owns && item.animator != null)
+                {
+                    list.Add(item.animator);
+                    Debug.Log("Item liberado: " + item.itemId);
+                }
+
+                pending--;
+
+                if (pending == 0)
+                {
+                    onComplete?.Invoke(list.ToArray());
+                }
+            });
         }
-
-        options = list.ToArray();
     }
 
-    bool PlayerHasShopItem(int itemId)
-    {
-        // 🔴 IMPLEMENTAR DEPOIS
-        // Ex: backend / cache / inventário
-        return false;
-    }
+
 
     int ClampIndex(int index, int length)
     {

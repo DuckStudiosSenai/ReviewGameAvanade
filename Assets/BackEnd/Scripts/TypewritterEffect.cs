@@ -14,6 +14,7 @@ public class TypewritterEffect : MonoBehaviour
 
     [Header("UI Buttons")]
     public GameObject UIButtons;
+    public GameObject shopButton;
 
     private int currentlyVisibleCharacterIndex;
     private Coroutine typewritterCoroutine;
@@ -108,6 +109,11 @@ public class TypewritterEffect : MonoBehaviour
         {
             UIButtons.SetActive(true);
             Debug.Log("✅ UI Buttons ativados após diálogo da secretária!");
+        }
+
+        if (shopButton != null)
+        {
+            shopButton.SetActive(true);
         }
 
         if (isFristTime)

@@ -463,6 +463,11 @@ MonoBehaviour:
   - {fileID: 22100000, guid: 346452fac0497d845897a3c8c0e94fc8, type: 2}
   backAccessoryOptions:
   - {fileID: 0}
+  bodyShopItems: []
+  hairShopItems: []
+  eyesShopItems: []
+  clothesShopItems: []
+  backAccessoryShopItems: []
 --- !u!95 &3885351228564299790
 Animator:
   serializedVersion: 7

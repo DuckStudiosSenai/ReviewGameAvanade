@@ -1212,7 +1212,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 994862567}
   m_HandleRect: {fileID: 994862566}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2075,7 +2075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1047734018
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2452,7 +2452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1241184494
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2989,8 +2989,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopManager
   pointsManager: {fileID: 1934070685}
   shopItems:
-  - {fileID: 11400000, guid: 0820504d374d3cb499afb232808ac01f, type: 2}
-  - {fileID: 11400000, guid: a3bedd3818736d34aa88f4ec404b8cac, type: 2}
+  - {fileID: 11400000, guid: f82a5fd7042de4a4299fa2cb5f341311, type: 2}
   itemPrefab: {fileID: 3603729586317727264, guid: 6b61680cb00a2984a84c4f7bc3925eea, type: 3}
   shopContentPanel: {fileID: 592086661}
   itemIcon: {fileID: 262895832}

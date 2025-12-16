@@ -1,14 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using Unity.VisualScripting;
+
+[System.Serializable]
+public class OwnsItemDto
+{
+    public int userId;
+    public int itemId;
+    public bool owns;
+}
+
 
 public class ShopManager : MonoBehaviour
 {
+    private const string baseUrl = "https://reviewgameapi.squareweb.app/api";
+
     public PointsManager pointsManager;
     public List<ItemShop> shopItems = new List<ItemShop>();
     public GameObject itemPrefab;
     public RectTransform shopContentPanel;
+    public GameObject shopMenu;
 
     [Header("Preview")]
     public Image itemIcon;
@@ -16,8 +32,12 @@ public class ShopManager : MonoBehaviour
     public TextMeshProUGUI itemPriceText;
     public Button buyButton;
 
+    private PlayFabManager api;
+
     void Start()
     {
+        api = FindAnyObjectByType<PlayFabManager>();
+
         LoadShopItems();
         LoadPreview(shopItems[0]);
     }
@@ -25,12 +45,19 @@ public class ShopManager : MonoBehaviour
     void LoadShopItems()
     {
         ResetItems();
+
         foreach (var item in shopItems)
         {
-            Debug.Log($"[ItemShop] Item: {item.itemName}, Price: {item.itemPrice}, Description: {item.itemDescription}");
-            LoadItemPrefab(item);
+            PlayerHasShopItem(item.itemID, api.GetUserId(), owns =>
+            {
+                if (!owns)
+                {
+                    LoadItemPrefab(item);
+                }
+            });
         }
     }
+
 
     void SelectItem(ItemShop item)
     {
@@ -68,40 +95,53 @@ public class ShopManager : MonoBehaviour
 
     void BuyItem(ItemShop item, int userId)
     {
-        Debug.Log($"Iniciando compra do item: {item.itemName} por {item.itemPrice} pontos.");
-        StartCoroutine(pointsManager.GetUserPoints(
-            userId,
-            onSuccess: (points, currentPoints) =>
+        PlayerHasShopItem(item.itemID, api.GetUserId(), owns =>
+        {
+            if (owns)
             {
-                if (currentPoints >= item.itemPrice)
-                {
-                    int newCurrentPoints = currentPoints - item.itemPrice;
-
-                    StartCoroutine(pointsManager.UpdateUserPoints(
+                Debug.LogWarning("O usuário já possui o item: " + item.itemName);
+                return;
+            } else
+            {
+                Debug.Log($"Iniciando compra do item: {item.itemName} por {item.itemPrice} pontos.");
+                StartCoroutine(pointsManager.GetUserPoints(
                     userId,
-                    points: null,
-                    currentPoints: newCurrentPoints,
-                    onSuccess: () =>
+                    onSuccess: (points, currentPoints) =>
                     {
-                        Debug.Log($"✅ Item comprado: {item.itemName} por {item.itemPrice} pontos. Pontos restantes: {newCurrentPoints}");
-                        LoadShopItems();
+                        if (currentPoints >= item.itemPrice)
+                        {
+                            int newCurrentPoints = currentPoints - item.itemPrice;
+
+                            StartCoroutine(pointsManager.UpdateUserPoints(
+                            userId,
+                            points: null,
+                            currentPoints: newCurrentPoints,
+                            onSuccess: () =>
+                            {
+                                Debug.Log($"✅ Item comprado: {item.itemName} por {item.itemPrice} pontos. Pontos restantes: {newCurrentPoints}");
+                                AddItemToUser(userId, item.itemID);
+                                LoadShopItems();
+                            },
+                            onError: (err) =>
+                            {
+                                Debug.LogError("Erro ao atualizar pontos: " + err);
+                            }
+                        ));
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Pontos insuficientes para comprar o item: " + item.itemName);
+                        }
                     },
                     onError: (err) =>
                     {
-                        Debug.LogError("Erro ao atualizar pontos: " + err);
+                        Debug.LogError("Erro ao buscar pontos: " + err);
                     }
                 ));
-                }
-                else
-                {
-                    Debug.LogWarning("Pontos insuficientes para comprar o item: " + item.itemName);
-                }
-            },
-            onError: (err) =>
-            {
-                Debug.LogError("Erro ao buscar pontos: " + err);
             }
-        ));
+        });
+
+        
     }
 
     void LoadPreview(ItemShop item)
@@ -112,7 +152,7 @@ public class ShopManager : MonoBehaviour
         itemPriceText.text = item.itemPrice.ToString();
 
         buyButton.onClick.RemoveAllListeners();
-        buyButton.onClick.AddListener(() => BuyItem(item, 1));
+        buyButton.onClick.AddListener(() => BuyItem(item, api.GetUserId()));
 
         Debug.Log($"Preview carregado: {item.itemName}, Preço: {item.itemPrice}");
     }
@@ -123,5 +163,159 @@ public class ShopManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    public static void UserHasItem(
+    int userId,
+    int itemId,
+    Action<bool> onResult,
+    Action<string> onError = null
+)
+    {
+        CoroutineRunner.instance.StartCoroutine(
+            UserHasItemCoroutine(
+                userId,
+                itemId,
+                onResult,
+                onError
+            )
+        );
+    }
+
+
+    public static IEnumerator UserHasItemCoroutine(
+    int userId,
+    int itemId,
+    Action<bool> onSuccess,
+    Action<string> onError
+)
+    {
+        string url = $"{baseUrl}/Users/{userId}/owns/{itemId}";
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                onError?.Invoke(request.error);
+                yield break;
+            }
+
+            try
+            {
+                OwnsItemDto response =
+                    JsonUtility.FromJson<OwnsItemDto>(request.downloadHandler.text);
+
+                onSuccess?.Invoke(response.owns);
+            }
+            catch (System.Exception e)
+            {
+                onError?.Invoke("Erro ao converter JSON: " + e.Message);
+            }
+        }
+    }
+
+    public void AddItemToUser(int userId, int itemId)
+    {
+        StartCoroutine(AddItemCoroutine(userId, itemId));
+    }
+
+    public void RemoveItemFromUser(int userId, int itemId)
+    {
+        StartCoroutine(RemoveItemCoroutine(userId, itemId));
+    }
+
+    private IEnumerator AddItemCoroutine(int userId, int itemId)
+    {
+        string url = $"{baseUrl}/Users/{userId}/owns/{itemId}";
+
+        using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
+        {
+            request.uploadHandler = new UploadHandlerRaw(Array.Empty<byte>());
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            Debug.Log($"[AddItem] Status: {request.responseCode}");
+            Debug.Log($"[AddItem] Response: {request.downloadHandler.text}");
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"[AddItem] ERRO: {request.error}");
+            }
+        }
+    }
+
+    private IEnumerator RemoveItemCoroutine(int userId, int itemId)
+    {
+        string url = $"{baseUrl}/Users/{userId}/owns/{itemId}";
+
+        using (UnityWebRequest request = new UnityWebRequest(url, "DELETE"))
+        {
+            request.uploadHandler = new UploadHandlerRaw(Array.Empty<byte>());
+            request.downloadHandler = new DownloadHandlerBuffer();
+
+            yield return request.SendWebRequest();
+
+            Debug.Log($"[RemoveItem] Status: {request.responseCode}");
+            Debug.Log($"[RemoveItem] Response: {request.downloadHandler.text}");
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"[RemoveItem] ERRO: {request.error}");
+            }
+        }
+    }
+
+
+    private IEnumerator SendRequest(UnityWebRequest request)
+    {
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError(
+                $"[HTTP ERROR]\n" +
+                $"Status: {request.responseCode}\n" +
+                $"URL: {request.url}\n" +
+                $"Method: {request.method}\n" +
+                $"Body:\n{request.downloadHandler?.text}"
+            );
+        }
+        else
+        {
+            Debug.Log(
+                $"[HTTP OK]\n" +
+                $"Status: {request.responseCode}\n" +
+                $"Body:\n{request.downloadHandler.text}"
+            );
+        }
+    }
+
+
+    public static void PlayerHasShopItem(int itemId, int userId, Action<bool> onResult)
+    {
+        UserHasItem(
+            userId,
+            itemId,
+            owns =>
+            {
+                onResult?.Invoke(owns);
+            },
+            error =>
+            {
+                Debug.LogError(error);
+                onResult?.Invoke(false);
+            }
+        );
+    }
+
+    public void ToggleShopMenu()
+    {
+        shopMenu.SetActive(!shopMenu.activeSelf);
     }
 }
